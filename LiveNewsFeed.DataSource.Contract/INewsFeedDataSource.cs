@@ -6,7 +6,7 @@ using LiveNewsFeed.Models;
 
 namespace LiveNewsFeed.DataSource.Contract
 {
-    public interface INewsFeedDataSource : IDisposable
+    public interface INewsFeedDataSource
     {
         Task<IList<NewsArticlePost>> GetLatestPostsAsync(int count = 50);
         
