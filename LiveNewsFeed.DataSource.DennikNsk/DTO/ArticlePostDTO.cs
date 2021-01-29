@@ -22,7 +22,7 @@ namespace LiveNewsFeed.DataSource.DennikNsk.DTO
         public IEnumerable<CategoryDTO> Categories { get; set; }
 
         [JsonPropertyName("tag")]
-        public IEnumerable<CategoryDTO> Tags { get; set; }
+        public IEnumerable<TagDTO> Tags { get; set; }
 
         [JsonPropertyName("image")]
         public ImageDTO? Image { get; set; }

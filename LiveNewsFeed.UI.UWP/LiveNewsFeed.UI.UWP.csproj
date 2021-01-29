@@ -150,9 +150,31 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions">
+      <Version>5.0.0</Version>
+    </PackageReference>
     <PackageReference Include="Microsoft.NETCore.UniversalWindowsPlatform">
       <Version>6.2.10</Version>
     </PackageReference>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\LiveNewsFeed.DataSource.Contract\LiveNewsFeed.DataSource.Contract.csproj">
+      <Project>{69c1d3b6-f187-45fb-b28f-d746b4d3c70f}</Project>
+      <Name>LiveNewsFeed.DataSource.Contract</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\LiveNewsFeed.DataSource.DennikNsk\LiveNewsFeed.DataSource.DennikNsk.csproj">
+      <Project>{c4adde03-06a6-491a-a7d9-b0ae32cde2cb}</Project>
+      <Name>LiveNewsFeed.DataSource.DennikNsk</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\LiveNewsFeed.Models\LiveNewsFeed.Models.csproj">
+      <Project>{16112830-d3e9-46ef-870c-d0606c94f070}</Project>
+      <Name>LiveNewsFeed.Models</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.Extensions.Logging.Abstractions">
+      <HintPath>C:\Users\super\.nuget\packages\microsoft.extensions.logging.abstractions\5.0.0\lib\netstandard2.0\Microsoft.Extensions.Logging.Abstractions.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>

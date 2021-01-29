@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
@@ -15,7 +17,7 @@ namespace LiveNewsFeed.DataSource.DennikNsk
         private readonly SkDennikNApiDownloader _downloader;
         private readonly string _rootApiUrl;
 
-        private readonly IList<NewsArticlePost> _posts;
+        private IList<NewsArticlePost> _posts;
 
         private DateTime _lastUpdateTime;
 
@@ -31,11 +33,29 @@ namespace LiveNewsFeed.DataSource.DennikNsk
             _posts = new List<NewsArticlePost>();
         }
 
-        public Task<IList<NewsArticlePost>> GetLatestPostsAsync(int count = 50)
+        public async Task<IList<NewsArticlePost>> GetLatestPostsAsync(int count = 50)
         {
-            throw new NotImplementedException();
-        }
+            try
+            {
+                var postsDtos = await _downloader.DownloadPostsAsync(_rootApiUrl, count).ConfigureAwait(false);
 
+                _posts = _posts.Union(postsDtos.Select(ModelsConverter.ToNewsArticlePost))
+                               .OrderBy(post => post.PublishTime)
+                               .ToList();
+
+                // update last update time
+                _lastUpdateTime = DateTime.Now;
+
+                return new ReadOnlyCollection<NewsArticlePost>(_posts);
+            }
+            catch (DownloadException dEx)
+            {
+                _logger?.LogError(dEx, $"Error getting latest posts from Dennik N - {dEx.Message}");
+
+                return new List<NewsArticlePost>();
+            }
+        }
+        
         public Task<IList<NewsArticlePost>> GetLatestPostsAsync(Category category, int count = 50)
         {
             throw new NotImplementedException();

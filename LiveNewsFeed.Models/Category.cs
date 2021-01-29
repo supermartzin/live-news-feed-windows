@@ -7,6 +7,8 @@
         Economy,
         Sport,
         Arts,
-        Science
+        Science,
+        Commentary,
+        NotCategorized
     }
 }

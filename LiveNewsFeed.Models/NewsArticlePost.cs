@@ -15,7 +15,7 @@ namespace LiveNewsFeed.Models
 
         public DateTime UpdateTime { get; }
 
-        public Uri? ImageUrl { get; }
+        public Image? Image { get; }
 
         public Uri? SocialPostUrl { get; }
 
@@ -34,22 +34,23 @@ namespace LiveNewsFeed.Models
                                DateTime updateTime,
                                Uri fullArticleUrl,
                                bool isImportant,
-                               Uri? imageUrl = null,
-                               Uri? socialPostUrl = null)
+                               Image? image = null,
+                               Uri? socialPostUrl = null,
+                               ISet<Category>? categories = null,
+                               ISet<Tag>? tags = null)
         {
             Id = id ?? throw new ArgumentNullException(nameof(id));
-            Title = title;
-            Message = message;
+            Title = title ?? throw new ArgumentNullException(nameof(title));
+            Message = message ?? throw new ArgumentNullException(nameof(message));
             PublishTime = publishTime;
             UpdateTime = updateTime;
-            FullArticleUrl = fullArticleUrl;
+            FullArticleUrl = fullArticleUrl ?? throw new ArgumentNullException(nameof(fullArticleUrl));
             IsImportant = isImportant;
 
-            ImageUrl = imageUrl;
+            Image = image;
             SocialPostUrl = socialPostUrl;
-
-            Tags = new HashSet<Tag>();
-            Categories = new HashSet<Category>();
+            Categories = categories ?? new HashSet<Category>();
+            Tags = tags ?? new HashSet<Tag>();
         }
         
         public override bool Equals(object? obj)
