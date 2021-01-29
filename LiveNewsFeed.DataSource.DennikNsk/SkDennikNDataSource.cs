@@ -1,52 +1,61 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Linq;
 using System.Net.Http;
+using System.Text.Json;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 
 using LiveNewsFeed.DataSource.Contract;
+using LiveNewsFeed.DataSource.DennikNsk.Converters;
+using LiveNewsFeed.DataSource.DennikNsk.DTO;
 using LiveNewsFeed.Models;
 
 namespace LiveNewsFeed.DataSource.DennikNsk
 {
     public class SkDennikNDataSource : INewsFeedDataSource
     {
+        private const string RootApiUrl = "https://dennikn.sk/api/minute";
+
         private readonly ILogger<SkDennikNDataSource>? _logger;
-        private readonly SkDennikNApiDownloader _downloader;
-        private readonly string _rootApiUrl;
+        private readonly HttpClient _httpClient;
 
-        private IList<NewsArticlePost> _posts;
-
-        private DateTime _lastUpdateTime;
-
-        public SkDennikNDataSource(string rootApiUrl,
-                                   HttpClient httpClient,
-                                   ILogger<SkDennikNDataSource>? logger = null)
+        public SkDennikNDataSource(HttpClient httpClient, ILogger<SkDennikNDataSource>? logger = null)
         {
-            _rootApiUrl = rootApiUrl ?? throw new ArgumentNullException(nameof(rootApiUrl));
+            _httpClient = httpClient ?? throw new ArgumentNullException(nameof(httpClient));
             _logger = logger;
-
-            _downloader = new SkDennikNApiDownloader(httpClient);
-            _lastUpdateTime = DateTime.MinValue;
-            _posts = new List<NewsArticlePost>();
         }
 
-        public async Task<IList<NewsArticlePost>> GetLatestPostsAsync(int count = 50)
+        public async Task<IList<NewsArticlePost>> GetPostsAsync(DateTime? before = default,
+                                                                DateTime? after = default,
+                                                                Category? category = default,
+                                                                Tag? tag = default,
+                                                                bool? important = default,
+                                                                int? count = default)
         {
             try
             {
-                var postsDtos = await _downloader.DownloadPostsAsync(_rootApiUrl, count).ConfigureAwait(false);
+                var url = BuildUrl(before, after, category, tag, important);
 
-                _posts = _posts.Union(postsDtos.Select(ModelsConverter.ToNewsArticlePost))
-                               .OrderBy(post => post.PublishTime)
-                               .ToList();
+                var postsDtos = await DownloadPostsAsync(url, count ?? 0).ConfigureAwait(false);
 
-                // update last update time
-                _lastUpdateTime = DateTime.Now;
+                // convert to model
+                var posts = postsDtos.Select(ModelsConverter.ToNewsArticlePost)
+                                                        .OrderByDescending(post => post.PublishTime)
+                                                        .ToList();
 
-                return new ReadOnlyCollection<NewsArticlePost>(_posts);
+                if (count > 0 && posts.Count > 0 && posts.Count < count)
+                {
+                    // get missing number of posts
+                    var anotherPosts = await GetPostsAsync(posts.Last().PublishTime,
+                                                                                after, category, tag, important,
+                                                                                count - posts.Count).ConfigureAwait(false);
+                    posts = posts.Union(anotherPosts)
+                                 .OrderByDescending(post => post.PublishTime)
+                                 .ToList();
+                }
+
+                return posts;
             }
             catch (DownloadException dEx)
             {
@@ -55,25 +64,79 @@ namespace LiveNewsFeed.DataSource.DennikNsk
                 return new List<NewsArticlePost>();
             }
         }
-        
-        public Task<IList<NewsArticlePost>> GetLatestPostsAsync(Category category, int count = 50)
+
+
+        private static string BuildUrl(DateTime? before, DateTime? after, Category? category, Tag? tag, bool? important)
         {
-            throw new NotImplementedException();
+            var parameters = "";
+
+            if (before.HasValue)
+                parameters += $"before={Uri.EscapeDataString(before.Value.ToUniversalTime().ToString(Constants.DateTimeFormat))}&";
+            if (after.HasValue)
+                parameters += $"after={Uri.EscapeDataString(after.Value.ToUniversalTime().ToString(Constants.DateTimeFormat))}&";
+            if (category.HasValue)
+                parameters += $"cat={ModelsConverter.ToCode(category.Value)}&";
+            if (important.HasValue && important == true)
+                parameters += "important=1&";
+            if (tag != null)
+            {
+                var code = ModelsConverter.ToCode(tag);
+                if (code > 0)
+                    parameters += $"tag={code}";
+            }
+
+            parameters = parameters.TrimEnd('&');
+
+            return !string.IsNullOrEmpty(parameters)
+                        ? $"{RootApiUrl}?{parameters}"
+                        : RootApiUrl;
         }
 
-        public Task<IList<NewsArticlePost>> GetLatestPostsAsync(Tag tag, int count = 50)
+        private async Task<IList<ArticlePostDTO>> DownloadPostsAsync(string url, int count = 0)
         {
-            throw new NotImplementedException();
-        }
+            if (url == null)
+                throw new ArgumentNullException(nameof(url));
 
-        public Task<IList<NewsArticlePost>> GetLatestImportantPostsAsync(int count = 50)
-        {
-            throw new NotImplementedException();
-        }
+            try
+            {
+                var response = await _httpClient.GetAsync(url).ConfigureAwait(false);
 
-        public Task<IList<NewsArticlePost>> GetNewPostsSinceLastUpdateAsync()
-        {
-            throw new NotImplementedException();
+                response.EnsureSuccessStatusCode();
+
+                // get data string from response
+                var data = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
+
+                // serialize to DTO objects
+                var container = JsonSerializer.Deserialize<RootContainer>(data, new JsonSerializerOptions
+                {
+                    Converters =
+                    {
+                        new DateTimeConverter(Constants.DateTimeFormat)
+                    }
+                });
+
+                if (container == null)
+                    throw new DownloadException("Error getting or parsing posts from Dennik N.");
+
+                // order posts by datetime
+                var posts = (container.ImportantPosts ?? container.TimelinePosts).OrderBy(post => post.Created);
+
+                return count > 0
+                    ? posts.Take(count).ToList()
+                    : posts.ToList();
+            }
+            catch (HttpRequestException hrEx)
+            {
+                throw new DownloadException($"Error getting posts from Dennik N: {hrEx.Message}", hrEx);
+            }
+            catch (JsonException jsonEx)
+            {
+                throw new DownloadException($"Error parsing received data from Dennik N: {jsonEx.Message}", jsonEx);
+            }
+            catch (Exception ex)
+            {
+                throw new DownloadException(ex.Message, ex);
+            }
         }
     }
 }
