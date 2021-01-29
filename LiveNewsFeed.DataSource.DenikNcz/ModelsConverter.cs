@@ -2,14 +2,14 @@
 using System.Collections.Generic;
 using System.Linq;
 
-using LiveNewsFeed.DataSource.DennikNsk.DTO;
+using LiveNewsFeed.DataSource.DenikNcz.DTO;
 using LiveNewsFeed.Models;
 
-namespace LiveNewsFeed.DataSource.DennikNsk
+namespace LiveNewsFeed.DataSource.DenikNcz
 {
     internal static class ModelsConverter
     {
-        private const string DefaultTitle = "Denník N";
+        private const string DefaultTitle = "Deník N";
 
         private static readonly Dictionary<int, Category> CodeToCategoryDictionary = new ()
         {

@@ -57,9 +57,21 @@ namespace LiveNewsFeed.DataSource.DennikNsk
 
                 return posts;
             }
-            catch (DownloadException dEx)
+            catch (HttpRequestException hrEx)
             {
-                _logger?.LogError(dEx, $"Error getting latest posts from Dennik N - {dEx.Message}");
+                _logger?.LogError(hrEx, $"Error getting posts from Dennik N: {hrEx.Message}");
+
+                return new List<NewsArticlePost>();
+            }
+            catch (JsonException jsonEx)
+            {
+                _logger?.LogError(jsonEx, $"Error parsing received data from Dennik N: {jsonEx.Message}");
+
+                return new List<NewsArticlePost>();
+            }
+            catch (Exception ex)
+            {
+                _logger?.LogError(ex, $"Error getting posts from Dennik N: {ex.Message}");
 
                 return new List<NewsArticlePost>();
             }
@@ -97,46 +109,31 @@ namespace LiveNewsFeed.DataSource.DennikNsk
             if (url == null)
                 throw new ArgumentNullException(nameof(url));
 
-            try
+            var response = await _httpClient.GetAsync(url).ConfigureAwait(false);
+
+            response.EnsureSuccessStatusCode();
+
+            // get data string from response
+            var data = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
+
+            // serialize to DTO objects
+            var container = JsonSerializer.Deserialize<RootContainer>(data, new JsonSerializerOptions
             {
-                var response = await _httpClient.GetAsync(url).ConfigureAwait(false);
-
-                response.EnsureSuccessStatusCode();
-
-                // get data string from response
-                var data = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
-
-                // serialize to DTO objects
-                var container = JsonSerializer.Deserialize<RootContainer>(data, new JsonSerializerOptions
+                Converters =
                 {
-                    Converters =
-                    {
-                        new DateTimeConverter(Constants.DateTimeFormat)
-                    }
-                });
+                    new DateTimeConverter(Constants.DateTimeFormat)
+                }
+            });
 
-                if (container == null)
-                    throw new DownloadException("Error getting or parsing posts from Dennik N.");
+            if (container == null)
+                throw new Exception("Error getting or parsing posts from Dennik N.");
 
-                // order posts by datetime
-                var posts = (container.ImportantPosts ?? container.TimelinePosts).OrderBy(post => post.Created);
+            // order posts by datetime
+            var posts = (container.ImportantPosts ?? container.TimelinePosts).OrderBy(post => post.Created);
 
-                return count > 0
-                    ? posts.Take(count).ToList()
-                    : posts.ToList();
-            }
-            catch (HttpRequestException hrEx)
-            {
-                throw new DownloadException($"Error getting posts from Dennik N: {hrEx.Message}", hrEx);
-            }
-            catch (JsonException jsonEx)
-            {
-                throw new DownloadException($"Error parsing received data from Dennik N: {jsonEx.Message}", jsonEx);
-            }
-            catch (Exception ex)
-            {
-                throw new DownloadException(ex.Message, ex);
-            }
+            return count > 0
+                ? posts.Take(count).ToList()
+                : posts.ToList();
         }
     }
 }

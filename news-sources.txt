@@ -1,5 +1,0 @@
-Minúta po minúte - Denník N
-URL: https://dennikn.sk/api/minute
-
-Minuta po minute - Deník N
-URL: https://denikn.cz/api/minute
