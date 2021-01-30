@@ -9,13 +9,13 @@
   <Identity
     Name="0b597019-cdaa-4f7e-b120-4bd333ac3f8d"
     Publisher="CN=super"
-    Version="1.0.0.0" />
+    Version="0.0.1.0" />
 
   <mp:PhoneIdentity PhoneProductId="0b597019-cdaa-4f7e-b120-4bd333ac3f8d" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
 
   <Properties>
-    <DisplayName>LiveNewsFeed.UI.UWP</DisplayName>
-    <PublisherDisplayName>super</PublisherDisplayName>
+    <DisplayName>Live News Feed</DisplayName>
+    <PublisherDisplayName>Martin Vrábel</PublisherDisplayName>
     <Logo>Assets\StoreLogo.png</Logo>
   </Properties>
 
@@ -32,13 +32,24 @@
       Executable="$targetnametoken$.exe"
       EntryPoint="LiveNewsFeed.UI.UWP.App">
       <uap:VisualElements
-        DisplayName="LiveNewsFeed.UI.UWP"
+        DisplayName="Live News Feed"
         Square150x150Logo="Assets\Square150x150Logo.png"
         Square44x44Logo="Assets\Square44x44Logo.png"
-        Description="LiveNewsFeed.UI.UWP"
-        BackgroundColor="transparent">
-        <uap:DefaultTile Wide310x150Logo="Assets\Wide310x150Logo.png"/>
-        <uap:SplashScreen Image="Assets\SplashScreen.png" />
+        Description="Live News Feed app provides the most current news from various sources and comes with customisable notification system." BackgroundColor="transparent">
+        <uap:DefaultTile Wide310x150Logo="Assets\Wide310x150Logo.png" Square71x71Logo="Assets\SmallTile.png" Square310x310Logo="Assets\LargeTile.png" ShortName="Live News Feed">
+          <uap:ShowNameOnTiles>
+            <uap:ShowOn Tile="square150x150Logo"/>
+            <uap:ShowOn Tile="wide310x150Logo"/>
+            <uap:ShowOn Tile="square310x310Logo"/>
+          </uap:ShowNameOnTiles>
+        </uap:DefaultTile >
+        <uap:SplashScreen Image="Assets\SplashScreen.png"  BackgroundColor="transparent"/>
+        <uap:InitialRotationPreference>
+          <uap:Rotation Preference="landscape"/>
+          <uap:Rotation Preference="portrait"/>
+          <uap:Rotation Preference="landscapeFlipped"/>
+          <uap:Rotation Preference="portraitFlipped"/></uap:InitialRotationPreference>
+        <uap:LockScreen BadgeLogo="Assets\BadgeLogo.png" Notification="badge"/>
       </uap:VisualElements>
     </Application>
   </Applications>
