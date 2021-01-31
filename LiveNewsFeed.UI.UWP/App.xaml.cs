@@ -5,6 +5,9 @@ using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
 
+using LiveNewsFeed.UI.UWP.Common;
+using LiveNewsFeed.UI.UWP.Views;
+
 namespace LiveNewsFeed.UI.UWP
 {
     /// <summary>
@@ -18,8 +21,10 @@ namespace LiveNewsFeed.UI.UWP
         /// </summary>
         public App()
         {
-            this.InitializeComponent();
-            this.Suspending += OnSuspending;
+            InitializeComponent();
+            ServiceLocator.Initialize();
+
+            Suspending += OnSuspending;
         }
 
         /// <summary>
@@ -69,7 +74,7 @@ namespace LiveNewsFeed.UI.UWP
         /// </summary>
         /// <param name="sender">The Frame which failed navigation</param>
         /// <param name="e">Details about the navigation failure</param>
-        void OnNavigationFailed(object sender, NavigationFailedEventArgs e)
+        private void OnNavigationFailed(object sender, NavigationFailedEventArgs e)
         {
             throw new Exception("Failed to load Page " + e.SourcePageType.FullName);
         }

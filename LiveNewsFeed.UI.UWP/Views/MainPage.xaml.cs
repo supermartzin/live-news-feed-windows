@@ -2,11 +2,17 @@
 using Windows.UI.ViewManagement;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
+using Microsoft.Extensions.DependencyInjection;
 
-namespace LiveNewsFeed.UI.UWP
+using LiveNewsFeed.UI.UWP.Common;
+using LiveNewsFeed.UI.UWP.ViewModels;
+
+namespace LiveNewsFeed.UI.UWP.Views
 {
     public sealed partial class MainPage : Page
     {
+        public MainPageViewModel ViewModel => ServiceLocator.Container.GetRequiredService<MainPageViewModel>();
+
         public MainPage()
         {
             InitializeComponent();
