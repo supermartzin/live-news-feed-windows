@@ -7,13 +7,13 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LiveNewsFeed.UI.UWP", "Live
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LiveNewsFeed.Models", "LiveNewsFeed.Models\LiveNewsFeed.Models.csproj", "{16112830-D3E9-46EF-870C-D0606C94F070}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LiveNewsFeed.DataSource.Contract", "LiveNewsFeed.DataSource.Contract\LiveNewsFeed.DataSource.Contract.csproj", "{69C1D3B6-F187-45FB-B28F-D746B4D3C70F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LiveNewsFeed.DataSource.Common", "LiveNewsFeed.DataSource.Common\LiveNewsFeed.DataSource.Common.csproj", "{69C1D3B6-F187-45FB-B28F-D746B4D3C70F}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LiveNewsFeed.DataSource.DennikNsk", "LiveNewsFeed.DataSource.DennikNsk\LiveNewsFeed.DataSource.DennikNsk.csproj", "{C4ADDE03-06A6-491A-A7D9-B0AE32CDE2CB}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Data Sources", "Data Sources", "{D187A6DA-B123-4E04-85E0-E4F557B8E911}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LiveNewsFeed.DataSource.DenikNcz", "LiveNewsFeed.DataSource.DenikNcz\LiveNewsFeed.DataSource.DenikNcz.csproj", "{42B3B894-02BA-48B4-97C3-06E4343CBF3C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LiveNewsFeed.DataSource.DenikNcz", "LiveNewsFeed.DataSource.DenikNcz\LiveNewsFeed.DataSource.DenikNcz.csproj", "{42B3B894-02BA-48B4-97C3-06E4343CBF3C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

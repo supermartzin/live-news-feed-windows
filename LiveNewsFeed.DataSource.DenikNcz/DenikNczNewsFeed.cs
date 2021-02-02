@@ -4,19 +4,19 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 
-using LiveNewsFeed.DataSource.Contract;
 using LiveNewsFeed.Models;
+using LiveNewsFeed.DataSource.Common;
 
 namespace LiveNewsFeed.DataSource.DenikNcz
 {
-    public class CzDenikNDataSource : INewsFeedDataSource
+    public class DenikNczNewsFeed : INewsFeed
     {
         private const string RootApiUrl = "https://denikn.cz/api/minute";
 
-        private readonly ILogger<CzDenikNDataSource>? _logger;
+        private readonly ILogger<DenikNczNewsFeed>? _logger;
         private readonly HttpClient _httpClient;
 
-        public CzDenikNDataSource(HttpClient httpClient, ILogger<CzDenikNDataSource>? logger = null)
+        public DenikNczNewsFeed(HttpClient httpClient, ILogger<DenikNczNewsFeed>? logger = null)
         {
             _httpClient = httpClient ?? throw new ArgumentNullException(nameof(httpClient));
             _logger = logger;
@@ -29,7 +29,7 @@ namespace LiveNewsFeed.DataSource.DenikNcz
                                                           bool? important = default,
                                                           int? count = default)
         {
-            
+            throw new NotImplementedException();
         }
     }
 }

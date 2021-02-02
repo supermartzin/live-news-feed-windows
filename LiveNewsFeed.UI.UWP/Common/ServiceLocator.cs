@@ -1,9 +1,8 @@
 ﻿using System;
+using LiveNewsFeed.DataSource.Common;
 using Microsoft.Extensions.DependencyInjection;
-
-using LiveNewsFeed.DataSource.Contract;
 using LiveNewsFeed.DataSource.DennikNsk;
-
+using LiveNewsFeed.UI.UWP.Managers;
 using LiveNewsFeed.UI.UWP.ViewModels;
 
 namespace LiveNewsFeed.UI.UWP.Common
@@ -32,12 +31,13 @@ namespace LiveNewsFeed.UI.UWP.Common
 
         private static void AddServices(IServiceCollection serviceCollection)
         {
-            serviceCollection.AddSingleton<INewsFeedDataSource, SkDennikNDataSource>();
+            serviceCollection.AddSingleton<INewsFeed, DennikNskNewsFeed>();
+            serviceCollection.AddSingleton<IDataSourcesManager, DataSourcesManager>();
         }
 
         private static void AddViewModels(IServiceCollection serviceCollection)
         {
-            serviceCollection.AddTransient<MainPageViewModel>();
+            serviceCollection.AddTransient<NewsFeedPageViewModel>();
         }
     }
 }

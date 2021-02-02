@@ -4,9 +4,9 @@ using System.Threading.Tasks;
 
 using LiveNewsFeed.Models;
 
-namespace LiveNewsFeed.DataSource.Contract
+namespace LiveNewsFeed.DataSource.Common
 {
-    public interface INewsFeedDataSource
+    public interface INewsFeed
     {
         /// <summary>
         /// Get posts that are satisfying specified parameters.

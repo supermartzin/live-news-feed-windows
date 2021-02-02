@@ -6,21 +6,22 @@ using System.Text.Json;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 
-using LiveNewsFeed.DataSource.Contract;
+using LiveNewsFeed.DataSource.Common;
+using LiveNewsFeed.Models;
+
 using LiveNewsFeed.DataSource.DennikNsk.Converters;
 using LiveNewsFeed.DataSource.DennikNsk.DTO;
-using LiveNewsFeed.Models;
 
 namespace LiveNewsFeed.DataSource.DennikNsk
 {
-    public class SkDennikNDataSource : INewsFeedDataSource
+    public class DennikNskNewsFeed : INewsFeed
     {
         private const string RootApiUrl = "https://dennikn.sk/api/minute";
 
-        private readonly ILogger<SkDennikNDataSource>? _logger;
+        private readonly ILogger<DennikNskNewsFeed>? _logger;
         private readonly HttpClient _httpClient;
 
-        public SkDennikNDataSource(HttpClient httpClient, ILogger<SkDennikNDataSource>? logger = null)
+        public DennikNskNewsFeed(HttpClient httpClient, ILogger<DennikNskNewsFeed>? logger = null)
         {
             _httpClient = httpClient ?? throw new ArgumentNullException(nameof(httpClient));
             _logger = logger;
