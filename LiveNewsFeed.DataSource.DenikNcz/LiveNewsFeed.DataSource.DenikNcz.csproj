@@ -12,7 +12,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\LiveNewsFeed.DataSource.Contract\LiveNewsFeed.DataSource.Common.csproj" />
+    <ProjectReference Include="..\LiveNewsFeed.DataSource.Common\LiveNewsFeed.DataSource.Common.csproj" />
   </ItemGroup>
 
 </Project>
