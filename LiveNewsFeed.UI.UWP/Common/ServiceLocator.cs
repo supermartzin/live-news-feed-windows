@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Net.Http;
+using System.Net.Http.Headers;
+using Windows.Web.Http.Filters;
 using Microsoft.Extensions.DependencyInjection;
 
 using LiveNewsFeed.UI.UWP.Managers;
@@ -30,7 +32,7 @@ namespace LiveNewsFeed.UI.UWP.Common
         }
 
 
-        private static void AddCoreModules(ServiceCollection serviceCollection)
+        private static void AddCoreModules(IServiceCollection serviceCollection)
         {
             serviceCollection.AddSingleton<HttpClient>();
         }

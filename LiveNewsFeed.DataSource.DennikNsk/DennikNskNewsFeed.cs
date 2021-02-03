@@ -130,7 +130,7 @@ namespace LiveNewsFeed.DataSource.DennikNsk
                 throw new Exception("Error getting or parsing posts from Dennik N.");
 
             // order posts by datetime
-            var posts = (container.ImportantPosts ?? container.TimelinePosts).OrderBy(post => post.Created);
+            var posts = (container.ImportantPosts ?? container.TimelinePosts).OrderByDescending(post => post.Created);
 
             return count > 0
                 ? posts.Take(count).ToList()
