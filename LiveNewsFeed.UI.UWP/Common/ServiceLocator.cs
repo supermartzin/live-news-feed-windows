@@ -1,7 +1,7 @@
 ﻿using System;
-using LiveNewsFeed.DataSource.Common;
+using System.Net.Http;
 using Microsoft.Extensions.DependencyInjection;
-using LiveNewsFeed.DataSource.DennikNsk;
+
 using LiveNewsFeed.UI.UWP.Managers;
 using LiveNewsFeed.UI.UWP.ViewModels;
 
@@ -20,6 +20,7 @@ namespace LiveNewsFeed.UI.UWP.Common
 
             var serviceCollection = new ServiceCollection();
 
+            AddCoreModules(serviceCollection);
             AddServices(serviceCollection);
             AddViewModels(serviceCollection);
 
@@ -29,9 +30,13 @@ namespace LiveNewsFeed.UI.UWP.Common
         }
 
 
+        private static void AddCoreModules(ServiceCollection serviceCollection)
+        {
+            serviceCollection.AddSingleton<HttpClient>();
+        }
+
         private static void AddServices(IServiceCollection serviceCollection)
         {
-            serviceCollection.AddSingleton<INewsFeed, DennikNskNewsFeed>();
             serviceCollection.AddSingleton<IDataSourcesManager, DataSourcesManager>();
         }
 

@@ -122,6 +122,7 @@
     <Compile Include="Common\ServiceLocator.cs" />
     <Compile Include="Managers\DataSourcesManager.cs" />
     <Compile Include="Managers\IDataSourcesManager.cs" />
+    <Compile Include="ViewModels\NewsArticlePostViewModel.cs" />
     <Compile Include="ViewModels\NewsFeedPageViewModel.cs" />
     <Compile Include="Views\NewsFeedPage.xaml.cs">
       <DependentUpon>NewsFeedPage.xaml</DependentUpon>

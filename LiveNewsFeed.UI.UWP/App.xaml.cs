@@ -1,12 +1,21 @@
 ﻿using System;
+using System.Diagnostics;
+using System.Net.Http;
+using System.Threading.Tasks;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
+using Microsoft.Extensions.DependencyInjection;
+
+using LiveNewsFeed.DataSource.Common;
+using LiveNewsFeed.DataSource.DennikNsk;
 
 using LiveNewsFeed.UI.UWP.Common;
+using LiveNewsFeed.UI.UWP.Managers;
 using LiveNewsFeed.UI.UWP.Views;
+using UnhandledExceptionEventArgs = Windows.UI.Xaml.UnhandledExceptionEventArgs;
 
 namespace LiveNewsFeed.UI.UWP
 {
@@ -24,7 +33,21 @@ namespace LiveNewsFeed.UI.UWP
             InitializeComponent();
             ServiceLocator.Initialize();
 
+            LoadDataSources();
+
             Suspending += OnSuspending;
+            UnhandledException += OnUnhandledException;
+            TaskScheduler.UnobservedTaskException += OnUnobservedException;
+        }
+
+        private void OnUnhandledException(object sender, UnhandledExceptionEventArgs e)
+        {
+            Debugger.Break();
+        }
+
+        private void OnUnobservedException(object sender, UnobservedTaskExceptionEventArgs e)
+        {
+            Debugger.Break();
         }
 
         /// <summary>
@@ -61,7 +84,7 @@ namespace LiveNewsFeed.UI.UWP
                     // When the navigation stack isn't restored navigate to the first page,
                     // configuring the new page by passing required information as a navigation
                     // parameter
-                    rootFrame.Navigate(typeof(MainPage), e.Arguments);
+                    rootFrame.Navigate(typeof(NewsFeedPage), e.Arguments);
                 }
 
                 // Ensure the current window is active
@@ -91,6 +114,14 @@ namespace LiveNewsFeed.UI.UWP
             var deferral = e.SuspendingOperation.GetDeferral();
             //TODO: Save application state and stop any background activity
             deferral.Complete();
+        }
+
+        private static void LoadDataSources()
+        {
+            var manager = ServiceLocator.Container.GetRequiredService<IDataSourcesManager>();
+            var httpClient = ServiceLocator.Container.GetRequiredService<HttpClient>();
+
+            manager.RegisterDataSource(new NewsFeedDataSource("Denník N", new DennikNskNewsFeed(httpClient)));
         }
     }
 }

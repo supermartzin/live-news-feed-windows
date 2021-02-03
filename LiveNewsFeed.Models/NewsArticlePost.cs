@@ -9,7 +9,7 @@ namespace LiveNewsFeed.Models
 
         public string Title { get; }
 
-        public string Message { get; }
+        public string Content { get; }
 
         public DateTime PublishTime { get; }
 
@@ -29,7 +29,7 @@ namespace LiveNewsFeed.Models
 
         public NewsArticlePost(string id, 
                                string title,
-                               string message,
+                               string content,
                                DateTime publishTime,
                                DateTime updateTime,
                                Uri fullArticleUrl,
@@ -41,7 +41,7 @@ namespace LiveNewsFeed.Models
         {
             Id = id ?? throw new ArgumentNullException(nameof(id));
             Title = title ?? throw new ArgumentNullException(nameof(title));
-            Message = message ?? throw new ArgumentNullException(nameof(message));
+            Content = content ?? throw new ArgumentNullException(nameof(content));
             PublishTime = publishTime;
             UpdateTime = updateTime;
             FullArticleUrl = fullArticleUrl ?? throw new ArgumentNullException(nameof(fullArticleUrl));

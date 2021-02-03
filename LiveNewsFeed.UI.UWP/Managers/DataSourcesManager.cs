@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.Linq;
+using System.Threading.Tasks;
 
 using LiveNewsFeed.DataSource.Common;
+using LiveNewsFeed.Models;
 
 namespace LiveNewsFeed.UI.UWP.Managers
 {
@@ -29,6 +32,19 @@ namespace LiveNewsFeed.UI.UWP.Managers
         public IList<NewsFeedDataSource> GetRegisteredDataSources()
         {
             return _dataSources.Values.ToImmutableList();
+        }
+
+        public async Task<IList<NewsArticlePost>> GetLatestPostsFromAllAsync()
+        {
+            var posts = new List<NewsArticlePost>();
+
+            foreach (var dataSource in _dataSources.Values)
+            {
+                posts.AddRange(await dataSource.NewsFeed.GetPostsAsync(count: 20).ConfigureAwait(false));
+            }
+
+            // order and return posts
+            return posts.OrderByDescending(post => post.PublishTime).ToList();
         }
     }
 }
