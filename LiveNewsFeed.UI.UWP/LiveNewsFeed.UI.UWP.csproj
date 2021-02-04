@@ -120,6 +120,7 @@
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
     <Compile Include="Common\ServiceLocator.cs" />
+    <Compile Include="Common\ViewModelBase.cs" />
     <Compile Include="Managers\DataSourcesManager.cs" />
     <Compile Include="Managers\IDataSourcesManager.cs" />
     <Compile Include="ViewModels\NewsArticlePostViewModel.cs" />
@@ -145,6 +146,8 @@
     <Content Include="Assets\LargeTile.scale-150.png" />
     <Content Include="Assets\LargeTile.scale-200.png" />
     <Content Include="Assets\LargeTile.scale-400.png" />
+    <Content Include="Assets\Logos\denikncz-logo.jpg" />
+    <Content Include="Assets\Logos\denniknsk-logo.png" />
     <Content Include="Assets\SmallTile.scale-100.png" />
     <Content Include="Assets\SmallTile.scale-125.png" />
     <Content Include="Assets\SmallTile.scale-150.png" />

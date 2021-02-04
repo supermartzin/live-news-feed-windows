@@ -16,11 +16,14 @@ namespace LiveNewsFeed.DataSource.DenikNcz
         private readonly ILogger<DenikNczNewsFeed>? _logger;
         private readonly HttpClient _httpClient;
 
+        public string Name => "Deník N";
+
         public DenikNczNewsFeed(HttpClient httpClient, ILogger<DenikNczNewsFeed>? logger = null)
         {
             _httpClient = httpClient ?? throw new ArgumentNullException(nameof(httpClient));
             _logger = logger;
         }
+
 
         public Task<IList<NewsArticlePost>> GetPostsAsync(DateTime? before = default,
                                                           DateTime? after = default,

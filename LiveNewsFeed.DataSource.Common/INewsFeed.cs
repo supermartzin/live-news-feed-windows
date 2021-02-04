@@ -9,6 +9,11 @@ namespace LiveNewsFeed.DataSource.Common
     public interface INewsFeed
     {
         /// <summary>
+        /// Name of the news feed source
+        /// </summary>
+        string Name { get; }
+
+        /// <summary>
         /// Get posts that are satisfying specified parameters.
         /// </summary>
         /// <param name="before">gets only posts before specified <see cref="DateTime"/></param>

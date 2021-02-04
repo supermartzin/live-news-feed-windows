@@ -27,6 +27,8 @@ namespace LiveNewsFeed.Models
 
         public bool IsImportant { get; }
 
+        public string NewsFeedName { get; }
+
         public NewsArticlePost(string id, 
                                string title,
                                string content,
@@ -34,6 +36,7 @@ namespace LiveNewsFeed.Models
                                DateTime updateTime,
                                Uri fullArticleUrl,
                                bool isImportant,
+                               string newsFeedName,
                                Image? image = null,
                                Uri? socialPostUrl = null,
                                ISet<Category>? categories = null,
@@ -46,6 +49,7 @@ namespace LiveNewsFeed.Models
             UpdateTime = updateTime;
             FullArticleUrl = fullArticleUrl ?? throw new ArgumentNullException(nameof(fullArticleUrl));
             IsImportant = isImportant;
+            NewsFeedName = newsFeedName;
 
             Image = image;
             SocialPostUrl = socialPostUrl;

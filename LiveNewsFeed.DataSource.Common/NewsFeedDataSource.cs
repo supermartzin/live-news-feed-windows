@@ -6,12 +6,17 @@ namespace LiveNewsFeed.DataSource.Common
     {
         public string Name { get; }
 
+        public string Logo { get; }
+
         public INewsFeed NewsFeed { get; }
 
-        public NewsFeedDataSource(string name, INewsFeed newsFeed)
+        public NewsFeedDataSource(INewsFeed newsFeed,
+                                  string logo)
         {
-            Name = name ?? throw new ArgumentNullException(nameof(name));
             NewsFeed = newsFeed ?? throw new ArgumentNullException(nameof(newsFeed));
+            Logo = logo ?? throw new ArgumentNullException(nameof(logo));
+
+            Name = newsFeed.Name;
         }
     }
 }

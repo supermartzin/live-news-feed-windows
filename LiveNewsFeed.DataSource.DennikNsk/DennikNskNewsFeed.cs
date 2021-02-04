@@ -21,12 +21,14 @@ namespace LiveNewsFeed.DataSource.DennikNsk
         private readonly ILogger<DennikNskNewsFeed>? _logger;
         private readonly HttpClient _httpClient;
 
+        public string Name => "Denník N";
+
         public DennikNskNewsFeed(HttpClient httpClient, ILogger<DennikNskNewsFeed>? logger = null)
         {
             _httpClient = httpClient ?? throw new ArgumentNullException(nameof(httpClient));
             _logger = logger;
         }
-
+        
         public async Task<IList<NewsArticlePost>> GetPostsAsync(DateTime? before = default,
                                                                 DateTime? after = default,
                                                                 Category? category = default,
@@ -41,7 +43,7 @@ namespace LiveNewsFeed.DataSource.DennikNsk
                 var postsDtos = await DownloadPostsAsync(url, count ?? 0).ConfigureAwait(false);
 
                 // convert to model
-                var posts = postsDtos.Select(ModelsConverter.ToNewsArticlePost)
+                var posts = postsDtos.Select(dto => ModelsConverter.ToNewsArticlePost(dto, Name))
                                                         .OrderByDescending(post => post.PublishTime)
                                                         .ToList();
 
@@ -130,11 +132,13 @@ namespace LiveNewsFeed.DataSource.DennikNsk
                 throw new Exception("Error getting or parsing posts from Dennik N.");
 
             // order posts by datetime
-            var posts = (container.ImportantPosts ?? container.TimelinePosts).OrderByDescending(post => post.Created);
-
-            return count > 0
+            var posts = (container.ImportantPosts 
+                                                ?? container.TimelinePosts
+                                                ?? Enumerable.Empty<ArticlePostDTO>()).OrderByDescending(post => post.Created).ToList();
+            
+            return posts.Count > 0 && count > 0
                 ? posts.Take(count).ToList()
-                : posts.ToList();
+                : posts;
         }
     }
 }

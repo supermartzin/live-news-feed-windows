@@ -8,67 +8,113 @@
       Background="{ThemeResource SystemControlAcrylicWindowBrush}"
       DataContext="{x:Bind ViewModel}">
 
-    <GridView SelectionMode="None"
-              ItemsSource="{x:Bind ViewModel.ArticlePosts, Mode=OneWay}">
-        <GridView.ItemsPanel>
-            <ItemsPanelTemplate>
-                <ItemsStackPanel Orientation="Vertical"/>
-            </ItemsPanelTemplate>
-        </GridView.ItemsPanel>
+    <Page.BottomAppBar>
+        <CommandBar Background="Transparent"
+                    OverflowButtonVisibility="Collapsed"
+                    DefaultLabelPosition="Right">
+            <AppBarButton Style="{StaticResource AppBarButtonRevealStyle}"
+                          Icon="Setting"
+                          Label="Settings"
+                          IsEnabled="False" />
+            <AppBarButton Style="{StaticResource AppBarButtonRevealStyle}"
+                          Icon="Refresh"
+                          Label="Refresh"
+                          Command="{x:Bind ViewModel.RefreshNewsFeedCommand}" />
+        </CommandBar>
+    </Page.BottomAppBar>
+    
+    <Grid Margin="0 0  0 5">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
 
-        <GridView.ItemContainerStyle>
-            <Style TargetType="GridViewItem">
-                <Setter Property="Margin" Value="10 5"/>
-                <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
-            </Style>
-        </GridView.ItemContainerStyle>
+        <TextBlock Grid.Row="0"
+                   Text="News Feed"
+                   FontSize="25"
+                   FontWeight="ExtraBold"
+                   Margin="15" />
+        <GridView Grid.Row="1"
+                  SelectionMode="None"
+                  ItemsSource="{x:Bind ViewModel.ArticlePosts, Mode=OneWay}">
+            <GridView.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <ItemsStackPanel Orientation="Vertical"/>
+                </ItemsPanelTemplate>
+            </GridView.ItemsPanel>
 
-        <GridView.ItemTemplate>
-            <DataTemplate x:DataType="vm:NewsArticlePostViewModel">
-                <Grid HorizontalAlignment="Stretch">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="Auto"/>
-                    </Grid.ColumnDefinitions>
+            <GridView.ItemContainerStyle>
+                <Style TargetType="GridViewItem">
+                    <Setter Property="Margin" Value="10 5"/>
+                    <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                </Style>
+            </GridView.ItemContainerStyle>
 
-                    <StackPanel Orientation="Vertical"
-                                Grid.Column="0">
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="Auto"/>
-                            </Grid.ColumnDefinitions>
+            <GridView.ItemTemplate>
+                <DataTemplate x:DataType="vm:NewsArticlePostViewModel">
+                    <Grid HorizontalAlignment="Stretch">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
 
-                            <TextBlock Grid.Column="0" Text="{x:Bind Title}"
-                                       HorizontalTextAlignment="Left"
-                                       FontWeight="Bold"
-                                       FontSize="14"
-                                       Margin="5 5 5 0"/>
-                            <TextBlock Grid.Column="1"
-                                       HorizontalAlignment="Right"
-                                       VerticalAlignment="Center"
-                                       FontSize="12"
-                                       FontWeight="Light"
-                                       Text="{x:Bind PublishTime}"/>
-                        </Grid>
-                        <TextBlock Text="{x:Bind Content}"
-                                   Margin="5"
-                                   TextWrapping="Wrap"
-                                   TextAlignment="Justify"
-                                   IsTextSelectionEnabled="True"/>
-                    </StackPanel>
-                    <Button Grid.Column="1"
-                            Command="{x:Bind OpenFullArticleCommand}"
-                            Style="{StaticResource ButtonRevealStyle}"
-                            Background="Transparent"
-                            Padding="10"
-                            Margin="10"
-                            VerticalAlignment="Center"
-                            HorizontalAlignment="Center">
-                        <FontIcon Glyph="&#xE12B;"/>
-                    </Button>
-                </Grid>
-            </DataTemplate>
-        </GridView.ItemTemplate>
-    </GridView>
+                        <!--  Article post content  -->
+                        <StackPanel Orientation="Vertical"
+                                    Grid.Column="0">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+
+                                <Border Grid.Column="0"
+                                        Height="20"
+                                        Width="20"
+                                        Margin="5"
+                                        HorizontalAlignment="Center"
+                                        VerticalAlignment="Center"
+                                        BorderBrush="Transparent"
+                                        BorderThickness="0"
+                                        CornerRadius="2">
+                                    <Border.Background>
+                                        <ImageBrush ImageSource="{x:Bind NewsFeedLogo}"
+                                                    Stretch="Fill"/>
+                                    </Border.Background>
+                                </Border>
+                                <TextBlock Grid.Column="1" Text="{x:Bind Title}"
+                                           HorizontalTextAlignment="Left"
+                                           FontWeight="Bold"
+                                           FontSize="14"
+                                           Margin="2 5 5 0"/>
+                                <TextBlock Grid.Column="2"
+                                           HorizontalAlignment="Right"
+                                           VerticalAlignment="Center"
+                                           FontSize="12"
+                                           FontWeight="Light"
+                                           Text="{x:Bind PublishTime}"/>
+                            </Grid>
+                            <TextBlock Text="{x:Bind Content}"
+                                       Margin="5"
+                                       TextWrapping="Wrap"
+                                       TextAlignment="Justify"
+                                       IsTextSelectionEnabled="True"/>
+                        </StackPanel>
+
+                        <!--  Open in browser button  -->
+                        <Button Grid.Column="1"
+                                Command="{x:Bind OpenFullArticleCommand}"
+                                Style="{StaticResource ButtonRevealStyle}"
+                                Background="Transparent"
+                                Padding="10"
+                                Margin="10"
+                                VerticalAlignment="Bottom"
+                                HorizontalAlignment="Center">
+                            <FontIcon Glyph="&#xE12B;"/>
+                        </Button>
+                    </Grid>
+                </DataTemplate>
+            </GridView.ItemTemplate>
+        </GridView>
+    </Grid>
 </Page>

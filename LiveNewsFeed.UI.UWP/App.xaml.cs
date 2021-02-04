@@ -121,7 +121,7 @@ namespace LiveNewsFeed.UI.UWP
             var manager = ServiceLocator.Container.GetRequiredService<IDataSourcesManager>();
             var httpClient = ServiceLocator.Container.GetRequiredService<HttpClient>();
 
-            manager.RegisterDataSource(new NewsFeedDataSource("Denník N", new DennikNskNewsFeed(httpClient)));
+            manager.RegisterDataSource(new NewsFeedDataSource(new DennikNskNewsFeed(httpClient), "../Assets/Logos/denniknsk-logo.png"));
         }
     }
 }

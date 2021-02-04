@@ -35,7 +35,7 @@ namespace LiveNewsFeed.DataSource.DennikNsk
 
         private static readonly Dictionary<string, long> TagNameToCodeDictionary = new();
 
-        public static NewsArticlePost ToNewsArticlePost(ArticlePostDTO postDto) =>
+        public static NewsArticlePost ToNewsArticlePost(ArticlePostDTO postDto, string newsFeedName) =>
             new(postDto.Id.ToString(),
                               DefaultTitle,
                               postDto.Content.MainText,
@@ -43,6 +43,7 @@ namespace LiveNewsFeed.DataSource.DennikNsk
                               postDto.Updated,
                               new Uri(postDto.Url),
                               postDto.ImportantCode.HasValue,
+                              newsFeedName,
                               ToImage(postDto.Image),
                               ToUri(postDto.SocialPost?.Url),
                               ParseCategories(postDto.Categories),

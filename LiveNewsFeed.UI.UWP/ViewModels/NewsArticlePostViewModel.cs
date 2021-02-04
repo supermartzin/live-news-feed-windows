@@ -16,14 +16,21 @@ namespace LiveNewsFeed.UI.UWP.ViewModels
 
         public Uri ArticleUrl { get; }
 
+        public string NewsFeedLogo { get; }
+
         public ICommand OpenFullArticleCommand { get; }
 
-        public NewsArticlePostViewModel(string title, string content, DateTime publishTime, Uri articleUrl)
+        public NewsArticlePostViewModel(string title,
+                                        string content,
+                                        DateTime publishTime,
+                                        Uri articleUrl,
+                                        string newsFeedLogo)
         {
             Title = title;
             Content = content;
             PublishTime = publishTime;
             ArticleUrl = articleUrl;
+            NewsFeedLogo = newsFeedLogo;
 
             OpenFullArticleCommand = new RelayCommand(async () => await Launcher.LaunchUriAsync(ArticleUrl));
         }

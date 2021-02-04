@@ -1,14 +1,12 @@
 ﻿using System;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Threading.Tasks;
-using Windows.ApplicationModel.Core;
 using Windows.Data.Html;
-using Windows.UI.Core;
-using GalaSoft.MvvmLight;
+using GalaSoft.MvvmLight.Command;
 
 using LiveNewsFeed.Models;
 
+using LiveNewsFeed.UI.UWP.Common;
 using LiveNewsFeed.UI.UWP.Managers;
 
 namespace LiveNewsFeed.UI.UWP.ViewModels
@@ -17,6 +15,8 @@ namespace LiveNewsFeed.UI.UWP.ViewModels
     {
         private readonly IDataSourcesManager _dataSourcesManager;
 
+        private bool _postsLoading;
+
         private ObservableCollection<NewsArticlePostViewModel> _articlePosts;
         public ObservableCollection<NewsArticlePostViewModel> ArticlePosts
         {
@@ -24,26 +24,74 @@ namespace LiveNewsFeed.UI.UWP.ViewModels
             set => Set(ref _articlePosts, value);
         }
 
+        public RelayCommand RefreshNewsFeedCommand { get; private set; }
+
         public NewsFeedPageViewModel(IDataSourcesManager dataSourcesManager)
         {
             _dataSourcesManager = dataSourcesManager ?? throw new ArgumentNullException(nameof(dataSourcesManager));
+            
+            _postsLoading = false;
 
-            Task.Factory.StartNew(async () => await LoadPosts());
+            InitializeCommands();
+            LoadPosts();
         }
 
-        public async Task LoadPosts()
+
+        private void LoadPosts()
         {
-            var posts = await _dataSourcesManager.GetLatestPostsFromAllAsync();
+            PostsLoading();
 
-            await CoreApplication.MainView.CoreWindow.Dispatcher.RunAsync(CoreDispatcherPriority.Normal,
-                () => ArticlePosts = new ObservableCollection<NewsArticlePostViewModel>(posts.Select(ToViewModel)));
+            _dataSourcesManager.GetLatestPostsFromAllAsync()
+                .ContinueWith(task => InvokeOnUi(() =>
+                {
+                    ArticlePosts = new ObservableCollection<NewsArticlePostViewModel>(task.Result.Select(ToViewModel));
+
+                    PostsLoading(false);
+                }));
         }
 
-        
-        private static NewsArticlePostViewModel ToViewModel(NewsArticlePost articlePost) =>
+        private void InitializeCommands()
+        {
+            RefreshNewsFeedCommand = new RelayCommand(ReloadArticlesManually, CanReloadArticlesManually);
+        }
+
+        private void ReevaluateCommands()
+        {
+            RefreshNewsFeedCommand.RaiseCanExecuteChanged();
+        }
+
+        private void ReloadArticlesManually()
+        {
+            PostsLoading();
+
+            _dataSourcesManager.GetLatestPostsSinceLastUpdateAsync()
+                .ContinueWith(task => InvokeOnUi(() =>
+                {
+                    foreach (var post in task.Result)
+                    {
+                        ArticlePosts.Add(ToViewModel(post));
+                    }
+
+                    PostsLoading(false);
+                }));
+        }
+
+        private bool CanReloadArticlesManually() => !_postsLoading;
+
+        private void PostsLoading(bool loading = true)
+        {
+
+            _postsLoading = loading;
+            ReevaluateCommands();
+        }
+
+        private NewsArticlePostViewModel ToViewModel(NewsArticlePost articlePost) =>
             new NewsArticlePostViewModel(articlePost.Title,
                                          HtmlUtilities.ConvertToText(articlePost.Content),
                                          articlePost.PublishTime,
-                                         articlePost.FullArticleUrl);
+                                         articlePost.FullArticleUrl,
+                                         GetNewsFeedLogo(articlePost));
+
+        private string GetNewsFeedLogo(NewsArticlePost articlePost) => _dataSourcesManager.GetDataSourceByName(articlePost.NewsFeedName)?.Logo;
     }
 }
