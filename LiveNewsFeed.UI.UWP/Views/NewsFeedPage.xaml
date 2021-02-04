@@ -5,6 +5,7 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
       xmlns:vm="using:LiveNewsFeed.UI.UWP.ViewModels"
       xmlns:ext="using:Microsoft.Toolkit.Uwp.UI.Extensions"
+      xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
       mc:Ignorable="d"
       Background="{ThemeResource CustomAcrylicBackgroundBrush}"
       ext:TitleBarExtensions.ButtonBackgroundColor="Transparent"
@@ -26,13 +27,17 @@
     </Page.BottomAppBar>
     
     <Grid>
+        <!--  News Feed  -->
         <GridView SelectionMode="None"
-                  Padding="0 80 0 40"
+                  Padding="0 90 0 40"
                   Margin="0 0 0 -40"
+                  Visibility="{x:Bind Path=ViewModel.PostsLoading,
+                                      Mode=TwoWay,
+                                      Converter={StaticResource InverseBoolToVisibilityConverter}}"
                   ItemsSource="{x:Bind ViewModel.ArticlePosts, Mode=OneWay}">
             <GridView.ItemsPanel>
                 <ItemsPanelTemplate>
-                    <ItemsStackPanel Orientation="Vertical"/>
+                    <ItemsStackPanel Orientation="Vertical" />
                 </ItemsPanelTemplate>
             </GridView.ItemsPanel>
 
@@ -111,13 +116,29 @@
             </GridView.ItemTemplate>
         </GridView>
 
+        <!--  News Feed loading placeholder grid  -->
+        <StackPanel Orientation="Vertical"
+                    Visibility="{x:Bind Path=ViewModel.PostsLoading,
+                                        Mode=TwoWay,
+                                        Converter={StaticResource BoolToVisibilityConverter}}"
+                    VerticalAlignment="Center"
+                    HorizontalAlignment="Center">
+            <muxc:ProgressRing IsActive="True"
+                               Margin="10"/>
+            <TextBlock x:Uid="NewsFeed_LoadingLabel"
+                       FontSize="20"
+                       FontWeight="Medium"
+                       Margin="5"/>
+        </StackPanel>
+
+        <!--  Title grid  -->
         <Grid x:Name="NewsFeedTitleBar"
               Background="{ThemeResource CustomAcrylicElementBrush}"
               VerticalAlignment="Top">
             <TextBlock x:Uid="NewsFeed_NewsFeedTitle"
                        FontSize="30"
                        FontWeight="ExtraBold"
-                       Margin="25 20" />
+                       Margin="25 30 25 20" />
         </Grid>
     </Grid>
 </Page>

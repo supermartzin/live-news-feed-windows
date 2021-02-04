@@ -120,6 +120,9 @@
   <data name="ArticlePost_OpenInBrowser.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
     <value>Otvoriť v prehliadači</value>
   </data>
+  <data name="NewsFeed_LoadingLabel.Text" xml:space="preserve">
+    <value>Načítavam články...</value>
+  </data>
   <data name="NewsFeed_NewsFeedTitle.Text" xml:space="preserve">
     <value>Správy</value>
   </data>

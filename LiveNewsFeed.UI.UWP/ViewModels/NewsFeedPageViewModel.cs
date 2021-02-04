@@ -16,6 +16,17 @@ namespace LiveNewsFeed.UI.UWP.ViewModels
         private readonly IDataSourcesManager _dataSourcesManager;
 
         private bool _postsLoading;
+        public bool PostsLoading
+        {
+            get => _postsLoading;
+            set
+            {
+                var changed = Set(ref _postsLoading, value);
+
+                if (changed)
+                    ReevaluateCommands();
+            }
+        }
 
         private ObservableCollection<NewsArticlePostViewModel> _articlePosts;
         public ObservableCollection<NewsArticlePostViewModel> ArticlePosts
@@ -29,8 +40,6 @@ namespace LiveNewsFeed.UI.UWP.ViewModels
         public NewsFeedPageViewModel(IDataSourcesManager dataSourcesManager)
         {
             _dataSourcesManager = dataSourcesManager ?? throw new ArgumentNullException(nameof(dataSourcesManager));
-            
-            _postsLoading = false;
 
             InitializeCommands();
             LoadPosts();
@@ -39,14 +48,14 @@ namespace LiveNewsFeed.UI.UWP.ViewModels
 
         private void LoadPosts()
         {
-            PostsLoading();
+            PostsLoading = true;
 
             _dataSourcesManager.GetLatestPostsFromAllAsync()
                 .ContinueWith(task => InvokeOnUi(() =>
                 {
                     ArticlePosts = new ObservableCollection<NewsArticlePostViewModel>(task.Result.Select(ToViewModel));
 
-                    PostsLoading(false);
+                    PostsLoading = false;
                 }));
         }
 
@@ -62,7 +71,7 @@ namespace LiveNewsFeed.UI.UWP.ViewModels
 
         private void ReloadArticlesManually()
         {
-            PostsLoading();
+            PostsLoading = true;
 
             _dataSourcesManager.GetLatestPostsSinceLastUpdateAsync()
                 .ContinueWith(task => InvokeOnUi(() =>
@@ -72,19 +81,12 @@ namespace LiveNewsFeed.UI.UWP.ViewModels
                         ArticlePosts.Add(ToViewModel(post));
                     }
 
-                    PostsLoading(false);
+                    PostsLoading = false;
                 }));
         }
 
-        private bool CanReloadArticlesManually() => !_postsLoading;
-
-        private void PostsLoading(bool loading = true)
-        {
-
-            _postsLoading = loading;
-            ReevaluateCommands();
-        }
-
+        private bool CanReloadArticlesManually() => !PostsLoading;
+        
         private NewsArticlePostViewModel ToViewModel(NewsArticlePost articlePost) =>
             new NewsArticlePostViewModel(articlePost.Title,
                                          HtmlUtilities.ConvertToText(articlePost.Content),

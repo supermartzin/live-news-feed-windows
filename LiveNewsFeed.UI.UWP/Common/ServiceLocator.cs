@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Net.Http;
-using System.Net.Http.Headers;
-using Windows.Web.Http.Filters;
 using Microsoft.Extensions.DependencyInjection;
 
 using LiveNewsFeed.UI.UWP.Managers;

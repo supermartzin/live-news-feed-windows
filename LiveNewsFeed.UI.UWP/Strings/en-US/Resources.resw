@@ -120,6 +120,9 @@
   <data name="ArticlePost_OpenInBrowser.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
     <value>Open in Browser</value>
   </data>
+  <data name="NewsFeed_LoadingLabel.Text" xml:space="preserve">
+    <value>Loading posts...</value>
+  </data>
   <data name="NewsFeed_NewsFeedTitle.Text" xml:space="preserve">
     <value>News Feed</value>
   </data>
