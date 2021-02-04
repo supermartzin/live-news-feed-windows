@@ -1,5 +1,6 @@
 ﻿using Windows.ApplicationModel.Core;
 using Windows.UI.ViewManagement;
+using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -18,8 +19,10 @@ namespace LiveNewsFeed.UI.UWP.Views
 
             ApplicationView.PreferredLaunchWindowingMode = ApplicationViewWindowingMode.Auto;
 
-            CoreApplicationViewTitleBar coreTitleBar = CoreApplication.GetCurrentView().TitleBar;
+            var coreTitleBar = CoreApplication.GetCurrentView().TitleBar;
             coreTitleBar.ExtendViewIntoTitleBar = true;
+            
+            Window.Current.SetTitleBar(NewsFeedTitleBar);
         }
     }
 }

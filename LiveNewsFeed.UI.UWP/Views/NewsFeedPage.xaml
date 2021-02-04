@@ -4,8 +4,10 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
       xmlns:vm="using:LiveNewsFeed.UI.UWP.ViewModels"
+      xmlns:ext="using:Microsoft.Toolkit.Uwp.UI.Extensions"
       mc:Ignorable="d"
       Background="{ThemeResource CustomAcrylicBackgroundBrush}"
+      ext:TitleBarExtensions.ButtonBackgroundColor="Transparent"
       DataContext="{x:Bind ViewModel}">
 
     <Page.BottomAppBar>
@@ -109,7 +111,8 @@
             </GridView.ItemTemplate>
         </GridView>
 
-        <Grid Background="{ThemeResource CustomAcrylicElementBrush}"
+        <Grid x:Name="NewsFeedTitleBar"
+              Background="{ThemeResource CustomAcrylicElementBrush}"
               VerticalAlignment="Top">
             <TextBlock x:Uid="NewsFeed_NewsFeedTitle"
                        FontSize="30"
