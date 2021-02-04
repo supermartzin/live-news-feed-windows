@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Globalization;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Windows.ApplicationModel;
@@ -32,6 +33,8 @@ namespace LiveNewsFeed.UI.UWP
         {
             InitializeComponent();
             ServiceLocator.Initialize();
+
+            CultureInfo.CurrentUICulture = CultureInfo.GetCultureInfo("sk-SK");
 
             LoadDataSources();
 

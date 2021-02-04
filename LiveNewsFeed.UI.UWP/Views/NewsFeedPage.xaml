@@ -5,37 +5,28 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
       xmlns:vm="using:LiveNewsFeed.UI.UWP.ViewModels"
       mc:Ignorable="d"
-      Background="{ThemeResource SystemControlAcrylicWindowBrush}"
+      Background="{ThemeResource CustomAcrylicBackgroundBrush}"
       DataContext="{x:Bind ViewModel}">
 
     <Page.BottomAppBar>
-        <CommandBar Background="Transparent"
+        <CommandBar Background="{ThemeResource CustomAcrylicElementBrush}"
                     OverflowButtonVisibility="Collapsed"
                     DefaultLabelPosition="Right">
-            <AppBarButton Style="{StaticResource AppBarButtonRevealStyle}"
+            <AppBarButton x:Uid="NewsFeed_OpenSettingsButton"
+                          Style="{StaticResource AppBarButtonRevealStyle}"
                           Icon="Setting"
-                          Label="Settings"
                           IsEnabled="False" />
-            <AppBarButton Style="{StaticResource AppBarButtonRevealStyle}"
+            <AppBarButton x:Uid="NewsFeed_RefreshFeedButton"
+                          Style="{StaticResource AppBarButtonRevealStyle}"
                           Icon="Refresh"
-                          Label="Refresh"
                           Command="{x:Bind ViewModel.RefreshNewsFeedCommand}" />
         </CommandBar>
     </Page.BottomAppBar>
     
-    <Grid Margin="0 0  0 5">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
-        </Grid.RowDefinitions>
-
-        <TextBlock Grid.Row="0"
-                   Text="News Feed"
-                   FontSize="25"
-                   FontWeight="ExtraBold"
-                   Margin="15" />
-        <GridView Grid.Row="1"
-                  SelectionMode="None"
+    <Grid>
+        <GridView SelectionMode="None"
+                  Padding="0 80 0 40"
+                  Margin="0 0 0 -40"
                   ItemsSource="{x:Bind ViewModel.ArticlePosts, Mode=OneWay}">
             <GridView.ItemsPanel>
                 <ItemsPanelTemplate>
@@ -45,7 +36,7 @@
 
             <GridView.ItemContainerStyle>
                 <Style TargetType="GridViewItem">
-                    <Setter Property="Margin" Value="10 5"/>
+                    <Setter Property="Margin" Value="25 5"/>
                     <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
                 </Style>
             </GridView.ItemContainerStyle>
@@ -103,6 +94,7 @@
 
                         <!--  Open in browser button  -->
                         <Button Grid.Column="1"
+                                x:Uid="ArticlePost_OpenInBrowser"
                                 Command="{x:Bind OpenFullArticleCommand}"
                                 Style="{StaticResource ButtonRevealStyle}"
                                 Background="Transparent"
@@ -116,5 +108,13 @@
                 </DataTemplate>
             </GridView.ItemTemplate>
         </GridView>
+
+        <Grid Background="{ThemeResource CustomAcrylicElementBrush}"
+              VerticalAlignment="Top">
+            <TextBlock x:Uid="NewsFeed_NewsFeedTitle"
+                       FontSize="30"
+                       FontWeight="ExtraBold"
+                       Margin="25 20" />
+        </Grid>
     </Grid>
 </Page>
