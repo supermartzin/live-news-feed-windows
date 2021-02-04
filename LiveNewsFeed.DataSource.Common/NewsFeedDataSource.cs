@@ -6,15 +6,15 @@ namespace LiveNewsFeed.DataSource.Common
     {
         public string Name { get; }
 
-        public string Logo { get; }
+        public Uri LogoUrl { get; }
 
         public INewsFeed NewsFeed { get; }
 
         public NewsFeedDataSource(INewsFeed newsFeed,
-                                  string logo)
+                                  Uri logoUrl)
         {
             NewsFeed = newsFeed ?? throw new ArgumentNullException(nameof(newsFeed));
-            Logo = logo ?? throw new ArgumentNullException(nameof(logo));
+            LogoUrl = logoUrl ?? throw new ArgumentNullException(nameof(logoUrl));
 
             Name = newsFeed.Name;
         }

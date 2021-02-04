@@ -12,7 +12,7 @@ namespace LiveNewsFeed.UI.UWP.Managers
 
         IList<NewsFeedDataSource> GetRegisteredDataSources();
 
-        NewsFeedDataSource GetDataSourceByName(string name);
+        NewsFeedDataSource? GetDataSourceByName(string name);
 
         Task<IList<NewsArticlePost>> GetLatestPostsFromAllAsync();
 

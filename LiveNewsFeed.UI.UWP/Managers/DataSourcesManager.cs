@@ -3,9 +3,13 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
 using System.Threading.Tasks;
+using Windows.UI.Xaml.Media;
+using Windows.UI.Xaml.Media.Imaging;
 
 using LiveNewsFeed.DataSource.Common;
 using LiveNewsFeed.Models;
+
+using LiveNewsFeed.UI.UWP.Common;
 
 namespace LiveNewsFeed.UI.UWP.Managers
 {
@@ -30,6 +34,12 @@ namespace LiveNewsFeed.UI.UWP.Managers
                 throw new ArgumentException("Data source already registered.", nameof(newsFeedDataSource));
 
             _dataSources[newsFeedDataSource.Name] = newsFeedDataSource;
+
+            // register logo
+            Helpers.RegisterLogoForNewsFeed(newsFeedDataSource.Name, new ImageBrush
+            {
+                ImageSource = new BitmapImage(newsFeedDataSource.LogoUrl)
+            });
         }
 
         public IList<NewsFeedDataSource> GetRegisteredDataSources()
@@ -37,7 +47,7 @@ namespace LiveNewsFeed.UI.UWP.Managers
             return _dataSources.Values.ToImmutableList();
         }
 
-        public NewsFeedDataSource GetDataSourceByName(string name)
+        public NewsFeedDataSource? GetDataSourceByName(string name)
         {
             if (name == null)
                 throw new ArgumentNullException(nameof(name));

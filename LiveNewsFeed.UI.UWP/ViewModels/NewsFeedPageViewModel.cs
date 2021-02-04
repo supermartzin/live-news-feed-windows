@@ -2,6 +2,7 @@
 using System.Collections.ObjectModel;
 using System.Linq;
 using Windows.Data.Html;
+using Windows.UI.Xaml.Media;
 using GalaSoft.MvvmLight.Command;
 
 using LiveNewsFeed.Models;
@@ -88,12 +89,14 @@ namespace LiveNewsFeed.UI.UWP.ViewModels
         private bool CanReloadArticlesManually() => !PostsLoading;
         
         private NewsArticlePostViewModel ToViewModel(NewsArticlePost articlePost) =>
-            new NewsArticlePostViewModel(articlePost.Title,
+            new (articlePost.Title,
                                          HtmlUtilities.ConvertToText(articlePost.Content),
                                          articlePost.PublishTime,
                                          articlePost.FullArticleUrl,
-                                         GetNewsFeedLogo(articlePost));
+                                         GetNewsFeedLogo(articlePost),
+                                         articlePost.Image?.Url,
+                                         articlePost.Image?.Title);
 
-        private string GetNewsFeedLogo(NewsArticlePost articlePost) => _dataSourcesManager.GetDataSourceByName(articlePost.NewsFeedName)?.Logo;
+        private ImageBrush GetNewsFeedLogo(NewsArticlePost articlePost) => Helpers.GetLogoForNewsFeed(articlePost.NewsFeedName) ?? new ImageBrush();
     }
 }
