@@ -11,6 +11,7 @@ using Windows.UI.Xaml.Navigation;
 using Microsoft.Extensions.DependencyInjection;
 
 using LiveNewsFeed.DataSource.Common;
+using LiveNewsFeed.DataSource.DenikNcz;
 using LiveNewsFeed.DataSource.DennikNsk;
 
 using LiveNewsFeed.UI.UWP.Common;
@@ -125,6 +126,7 @@ namespace LiveNewsFeed.UI.UWP
             var httpClient = ServiceLocator.Container.GetRequiredService<HttpClient>();
 
             manager.RegisterDataSource(new NewsFeedDataSource(new DennikNskNewsFeed(httpClient), new Uri("ms-appx:///Assets/Logos/denniknsk-logo.png")));
+            manager.RegisterDataSource(new NewsFeedDataSource(new DenikNczNewsFeed(httpClient), new Uri("ms-appx:///Assets/Logos/denikncz-logo.jpg")));
         }
     }
 }

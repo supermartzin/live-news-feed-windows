@@ -21,7 +21,7 @@ namespace LiveNewsFeed.DataSource.DennikNsk
         private readonly ILogger<DennikNskNewsFeed>? _logger;
         private readonly HttpClient _httpClient;
 
-        public string Name => "Denník N";
+        public string Name => "Denník N [SK]";
 
         public DennikNskNewsFeed(HttpClient httpClient, ILogger<DennikNskNewsFeed>? logger = null)
         {
@@ -112,20 +112,20 @@ namespace LiveNewsFeed.DataSource.DennikNsk
             if (url == null)
                 throw new ArgumentNullException(nameof(url));
 
-            var response = await _httpClient.GetAsync(url).ConfigureAwait(false);
+            var response = await _httpClient.GetAsync(url)
+                                            .ConfigureAwait(false);
 
             response.EnsureSuccessStatusCode();
 
             // get data string from response
-            var data = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
+            var data = await response.Content
+                                            .ReadAsStringAsync()
+                                            .ConfigureAwait(false);
 
             // serialize to DTO objects
             var container = JsonSerializer.Deserialize<RootContainer>(data, new JsonSerializerOptions
             {
-                Converters =
-                {
-                    new DateTimeConverter(Constants.DateTimeFormat)
-                }
+                Converters = { new DateTimeConverter(Constants.DateTimeFormat) }
             });
 
             if (container == null)

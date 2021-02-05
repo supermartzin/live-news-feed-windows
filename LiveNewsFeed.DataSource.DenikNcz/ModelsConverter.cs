@@ -9,35 +9,33 @@ namespace LiveNewsFeed.DataSource.DenikNcz
 {
     internal static class ModelsConverter
     {
-        private const string DefaultTitle = "Deník N";
-
         private static readonly Dictionary<int, Category> CodeToCategoryDictionary = new ()
         {
-            { 430, Category.Local },
-            { 431, Category.World },
-            { 432, Category.Economy },
-            { 433, Category.Arts },
-            { 435, Category.Commentary },
-            { 508, Category.Science },
-            { 545, Category.Sport }
+            { 8, Category.Local },
+            { 9, Category.World },
+            { 10, Category.Economy },
+            { 12, Category.Arts },
+            { 14, Category.Commentary },
+            { 11, Category.Science },
+            { 13, Category.Sport }
         };
 
         private static readonly Dictionary<Category, int> CategoryToCodeDictionary = new ()
         {
-            { Category.Local, 430 },
-            { Category.World, 431 },
-            { Category.Economy, 432 },
-            { Category.Arts, 433 },
-            { Category.Commentary, 435 },
-            { Category.Science, 508 },
-            { Category.Sport, 545 }
+            { Category.Local, 8 },
+            { Category.World, 9 },
+            { Category.Economy, 10 },
+            { Category.Arts, 12 },
+            { Category.Commentary, 14 },
+            { Category.Science, 11 },
+            { Category.Sport, 13 }
         };
 
         private static readonly Dictionary<string, long> TagNameToCodeDictionary = new();
 
         public static NewsArticlePost ToNewsArticlePost(ArticlePostDTO postDto, string newsFeedName) =>
             new(postDto.Id.ToString(),
-                              DefaultTitle,
+                              newsFeedName,
                               postDto.Content.MainText,
                               postDto.Created,
                               postDto.Updated,

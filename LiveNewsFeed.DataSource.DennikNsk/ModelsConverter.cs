@@ -9,8 +9,6 @@ namespace LiveNewsFeed.DataSource.DennikNsk
 {
     internal static class ModelsConverter
     {
-        private const string DefaultTitle = "Denník N";
-
         private static readonly Dictionary<int, Category> CodeToCategoryDictionary = new ()
         {
             { 430, Category.Local },
@@ -37,7 +35,7 @@ namespace LiveNewsFeed.DataSource.DennikNsk
 
         public static NewsArticlePost ToNewsArticlePost(ArticlePostDTO postDto, string newsFeedName) =>
             new(postDto.Id.ToString(),
-                              DefaultTitle,
+                              newsFeedName,
                               postDto.Content.MainText,
                               postDto.Created,
                               postDto.Updated,

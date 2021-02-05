@@ -1,11 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net.Http;
+using System.Text.Json;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 
 using LiveNewsFeed.Models;
+
 using LiveNewsFeed.DataSource.Common;
+using LiveNewsFeed.DataSource.DenikNcz.Converters;
+using LiveNewsFeed.DataSource.DenikNcz.DTO;
 
 namespace LiveNewsFeed.DataSource.DenikNcz
 {
@@ -16,7 +21,7 @@ namespace LiveNewsFeed.DataSource.DenikNcz
         private readonly ILogger<DenikNczNewsFeed>? _logger;
         private readonly HttpClient _httpClient;
 
-        public string Name => "Deník N";
+        public string Name => "Deník N [CZ]";
 
         public DenikNczNewsFeed(HttpClient httpClient, ILogger<DenikNczNewsFeed>? logger = null)
         {
@@ -25,14 +30,116 @@ namespace LiveNewsFeed.DataSource.DenikNcz
         }
 
 
-        public Task<IList<NewsArticlePost>> GetPostsAsync(DateTime? before = default,
-                                                          DateTime? after = default,
-                                                          Category? category = default,
-                                                          Tag? tag = default,
-                                                          bool? important = default,
-                                                          int? count = default)
+        public async Task<IList<NewsArticlePost>> GetPostsAsync(DateTime? before = default,
+                                                                DateTime? after = default,
+                                                                Category? category = default,
+                                                                Tag? tag = default,
+                                                                bool? important = default,
+                                                                int? count = default)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var url = BuildUrl(before, after, category, tag, important);
+
+                var postsDtos = await DownloadPostsAsync(url, count ?? 0).ConfigureAwait(false);
+
+                // convert to model
+                var posts = postsDtos.Select(dto => ModelsConverter.ToNewsArticlePost(dto, Name))
+                                                        .OrderByDescending(post => post.PublishTime)
+                                                        .ToList();
+
+                if (count > 0 && posts.Count > 0 && posts.Count < count)
+                {
+                    // get missing number of posts
+                    var anotherPosts = await GetPostsAsync(posts.Last().PublishTime,
+                                                                                after, category, tag, important,
+                                                                                count - posts.Count).ConfigureAwait(false);
+                    posts = posts.Union(anotherPosts)
+                                 .OrderByDescending(post => post.PublishTime)
+                                 .ToList();
+                }
+
+                return posts;
+            }
+            catch (HttpRequestException hrEx)
+            {
+                _logger?.LogError(hrEx, $"Error getting posts from Dennik N: {hrEx.Message}");
+
+                return new List<NewsArticlePost>();
+            }
+            catch (JsonException jsonEx)
+            {
+                _logger?.LogError(jsonEx, $"Error parsing received data from Dennik N: {jsonEx.Message}");
+
+                return new List<NewsArticlePost>();
+            }
+            catch (Exception ex)
+            {
+                _logger?.LogError(ex, $"Error getting posts from Dennik N: {ex.Message}");
+
+                return new List<NewsArticlePost>();
+            }
+        }
+
+
+        private static string BuildUrl(DateTime? before, DateTime? after, Category? category, Tag? tag, bool? important)
+        {
+            var parameters = "";
+
+            if (before.HasValue)
+                parameters += $"before={Uri.EscapeDataString(before.Value.ToUniversalTime().ToString(Constants.DateTimeFormat))}&";
+            if (after.HasValue)
+                parameters += $"after={Uri.EscapeDataString(after.Value.ToUniversalTime().ToString(Constants.DateTimeFormat))}&";
+            if (category.HasValue)
+                parameters += $"cat={ModelsConverter.ToCode(category.Value)}&";
+            if (important.HasValue && important == true)
+                parameters += "important=1&";
+            if (tag != null)
+            {
+                var code = ModelsConverter.ToCode(tag);
+                if (code > 0)
+                    parameters += $"tag={code}";
+            }
+
+            parameters = parameters.TrimEnd('&');
+
+            return !string.IsNullOrEmpty(parameters)
+                ? $"{RootApiUrl}?{parameters}"
+                : RootApiUrl;
+        }
+
+        private async Task<IList<ArticlePostDTO>> DownloadPostsAsync(string url, int count = 0)
+        {
+            if (url == null)
+                throw new ArgumentNullException(nameof(url));
+
+            var response = await _httpClient.GetAsync(url)
+                                            .ConfigureAwait(false);
+
+            response.EnsureSuccessStatusCode();
+
+            // get data string from response
+            var data = await response.Content
+                                            .ReadAsStringAsync()
+                                            .ConfigureAwait(false);
+
+            // serialize to DTO objects
+            var container = JsonSerializer.Deserialize<RootContainer>(data, new JsonSerializerOptions
+            {
+                Converters = { new DateTimeConverter(Constants.DateTimeFormat) }
+            });
+
+            if (container == null)
+                throw new Exception("Error getting or parsing posts from Dennik N.");
+
+            // order posts by datetime
+            var posts = (container.ImportantPosts
+                                                ?? container.TimelinePosts
+                                                ?? Enumerable.Empty<ArticlePostDTO>()).OrderByDescending(post => post.Created).ToList();
+
+            return posts.Count > 0 && count > 0
+                    ? posts.Take(count).ToList()
+                    : posts;
         }
     }
 }

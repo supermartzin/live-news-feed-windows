@@ -256,6 +256,10 @@
       <Project>{69c1d3b6-f187-45fb-b28f-d746b4d3c70f}</Project>
       <Name>LiveNewsFeed.DataSource.Common</Name>
     </ProjectReference>
+    <ProjectReference Include="..\LiveNewsFeed.DataSource.DenikNcz\LiveNewsFeed.DataSource.DenikNcz.csproj">
+      <Project>{42b3b894-02ba-48b4-97c3-06e4343cbf3c}</Project>
+      <Name>LiveNewsFeed.DataSource.DenikNcz</Name>
+    </ProjectReference>
     <ProjectReference Include="..\LiveNewsFeed.DataSource.DennikNsk\LiveNewsFeed.DataSource.DennikNsk.csproj">
       <Project>{c4adde03-06a6-491a-a7d9-b0ae32cde2cb}</Project>
       <Name>LiveNewsFeed.DataSource.DennikNsk</Name>
