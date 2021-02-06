@@ -120,6 +120,30 @@
   <data name="ArticlePost_OpenInBrowser.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
     <value>Otvoriť v prehliadači</value>
   </data>
+  <data name="CategoryEnum_Arts" xml:space="preserve">
+    <value>Kultúra</value>
+  </data>
+  <data name="CategoryEnum_Commentary" xml:space="preserve">
+    <value>Komentáre</value>
+  </data>
+  <data name="CategoryEnum_Economy" xml:space="preserve">
+    <value>Ekonomika</value>
+  </data>
+  <data name="CategoryEnum_Local" xml:space="preserve">
+    <value>Domáce</value>
+  </data>
+  <data name="CategoryEnum_NotCategorized" xml:space="preserve">
+    <value>Nezaradené</value>
+  </data>
+  <data name="CategoryEnum_Science" xml:space="preserve">
+    <value>Veda</value>
+  </data>
+  <data name="CategoryEnum_Sport" xml:space="preserve">
+    <value>Šport</value>
+  </data>
+  <data name="CategoryEnum_World" xml:space="preserve">
+    <value>Svet</value>
+  </data>
   <data name="NewsFeed_LoadingLabel.Text" xml:space="preserve">
     <value>Načítavam články...</value>
   </data>

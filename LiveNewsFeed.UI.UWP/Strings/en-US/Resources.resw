@@ -120,6 +120,30 @@
   <data name="ArticlePost_OpenInBrowser.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
     <value>Open in Browser</value>
   </data>
+  <data name="CategoryEnum_Arts" xml:space="preserve">
+    <value>Arts</value>
+  </data>
+  <data name="CategoryEnum_Commentary" xml:space="preserve">
+    <value>Commentaries</value>
+  </data>
+  <data name="CategoryEnum_Economy" xml:space="preserve">
+    <value>Economy</value>
+  </data>
+  <data name="CategoryEnum_Local" xml:space="preserve">
+    <value>Local</value>
+  </data>
+  <data name="CategoryEnum_NotCategorized" xml:space="preserve">
+    <value>No Category</value>
+  </data>
+  <data name="CategoryEnum_Science" xml:space="preserve">
+    <value>Science</value>
+  </data>
+  <data name="CategoryEnum_Sport" xml:space="preserve">
+    <value>Sport</value>
+  </data>
+  <data name="CategoryEnum_World" xml:space="preserve">
+    <value>World</value>
+  </data>
   <data name="NewsFeed_LoadingLabel.Text" xml:space="preserve">
     <value>Loading posts...</value>
   </data>

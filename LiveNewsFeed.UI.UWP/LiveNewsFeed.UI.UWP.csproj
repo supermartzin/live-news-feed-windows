@@ -140,6 +140,7 @@
     <Compile Include="Common\ViewModelBase.cs" />
     <Compile Include="Managers\DataSourcesManager.cs" />
     <Compile Include="Managers\IDataSourcesManager.cs" />
+    <Compile Include="ViewModels\CategoryViewModel.cs" />
     <Compile Include="ViewModels\NewsArticlePostViewModel.cs" />
     <Compile Include="ViewModels\NewsFeedPageViewModel.cs" />
     <Compile Include="ViewModels\TagViewModel.cs" />

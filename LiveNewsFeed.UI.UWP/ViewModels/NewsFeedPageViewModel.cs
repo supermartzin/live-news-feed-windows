@@ -91,13 +91,16 @@ namespace LiveNewsFeed.UI.UWP.ViewModels
         
         private NewsArticlePostViewModel ToViewModel(NewsArticlePost articlePost) =>
             new (articlePost.Title,
-                                         HtmlUtilities.ConvertToText(articlePost.Content),
-                                         articlePost.PublishTime,
-                                         articlePost.FullArticleUrl,
-                                         GetNewsFeedLogo(articlePost),
-                                         articlePost.Image?.Url,
-                                         articlePost.Image?.Title,
-                                         articlePost.Tags.Select(tag => new TagViewModel(tag.Name)));
+                                      HtmlUtilities.ConvertToText(articlePost.Content).Trim(),
+                                      articlePost.PublishTime,
+                                      articlePost.FullArticleUrl,
+                                      GetNewsFeedLogo(articlePost),
+                                      articlePost.Image?.Url,
+                                      articlePost.Image?.Title,
+                                      articlePost.Categories
+                                                 .Where(category => category != Category.NotCategorized)
+                                                 .Select(Helpers.GetCategoryViewModel),
+                                      articlePost.Tags.Select(tag => new TagViewModel(tag.Name)));
         
         private ImageBrush GetNewsFeedLogo(NewsArticlePost articlePost) => Helpers.GetLogoForNewsFeed(articlePost.NewsFeedName) ?? new ImageBrush();
     }

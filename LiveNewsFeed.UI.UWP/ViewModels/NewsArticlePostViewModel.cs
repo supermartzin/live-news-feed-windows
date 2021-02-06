@@ -27,6 +27,8 @@ namespace LiveNewsFeed.UI.UWP.ViewModels
 
         public ObservableCollection<TagViewModel>? Tags { get; }
 
+        public ObservableCollection<CategoryViewModel>? Categories { get; }
+
         public ICommand OpenFullArticleCommand { get; }
 
         public NewsArticlePostViewModel(string title,
@@ -36,7 +38,8 @@ namespace LiveNewsFeed.UI.UWP.ViewModels
                                         ImageBrush newsFeedLogo,
                                         Uri? imageUrl = default,
                                         string? imageTitle = default,
-                                        IEnumerable<TagViewModel>? tags = null)
+                                        IEnumerable<CategoryViewModel>? categories = default,
+                                        IEnumerable<TagViewModel>? tags = default)
         {
             Title = title;
             Content = content;
@@ -45,6 +48,8 @@ namespace LiveNewsFeed.UI.UWP.ViewModels
             NewsFeedLogo = newsFeedLogo;
             ImageUrl = imageUrl;
             ImageTitle = imageTitle;
+            if (categories != null)
+                Categories = new ObservableCollection<CategoryViewModel>(categories);
             if (tags != null)
                 Tags = new ObservableCollection<TagViewModel>(tags);
 
