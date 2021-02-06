@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using Windows.Data.Html;
@@ -95,8 +96,9 @@ namespace LiveNewsFeed.UI.UWP.ViewModels
                                          articlePost.FullArticleUrl,
                                          GetNewsFeedLogo(articlePost),
                                          articlePost.Image?.Url,
-                                         articlePost.Image?.Title);
-
+                                         articlePost.Image?.Title,
+                                         articlePost.Tags.Select(tag => new TagViewModel(tag.Name)));
+        
         private ImageBrush GetNewsFeedLogo(NewsArticlePost articlePost) => Helpers.GetLogoForNewsFeed(articlePost.NewsFeedName) ?? new ImageBrush();
     }
 }

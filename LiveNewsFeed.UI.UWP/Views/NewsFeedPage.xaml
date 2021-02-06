@@ -27,6 +27,11 @@
     </Page.BottomAppBar>
     
     <Grid>
+        <Grid.Resources>
+            <CollectionViewSource x:Key="PostsViewSource"
+                                  IsSourceGrouped="False"
+                                  Source="{x:Bind ViewModel.ArticlePosts, Mode=OneWay}"/>
+        </Grid.Resources>
         <!--  News Feed  -->
         <GridView SelectionMode="None"
                   Padding="0 90 0 40"
@@ -34,7 +39,7 @@
                   Visibility="{x:Bind Path=ViewModel.PostsLoading,
                                       Mode=TwoWay,
                                       Converter={StaticResource InverseBoolToVisibilityConverter}}"
-                  ItemsSource="{x:Bind ViewModel.ArticlePosts, Mode=OneWay}">
+                  ItemsSource="{Binding Source={StaticResource PostsViewSource}}">
             <GridView.ItemsPanel>
                 <ItemsPanelTemplate>
                     <ItemsStackPanel Orientation="Vertical" CacheLength="1" />
@@ -57,10 +62,11 @@
                             <ColumnDefinition Width="Auto"/>
                             <ColumnDefinition Width="Auto"/>
                         </Grid.ColumnDefinitions>
-
-                        <!--  Article post content  -->
+                        
+                        <!--  Article post  -->  
                         <StackPanel Orientation="Vertical"
                                     Grid.Column="0">
+                            <!--  Data source Title and logo  -->
                             <Grid Margin="0 0 0 5">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="Auto"/>
@@ -89,13 +95,15 @@
                                            FontWeight="Light"
                                            Text="{x:Bind PublishTime}"/>
                             </Grid>
+
+                            <!--  Article post image % content  -->
                             <Grid Margin="0 5 0 0">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="Auto"/>
                                     <ColumnDefinition Width="*"/>
                                 </Grid.ColumnDefinitions>
 
-                                <!--  Article image  -->
+                                <!--  Article post image  -->  
                                 <Image Grid.Column="0"
                                        MaxWidth="180"
                                        Margin="0 0 10 0"
@@ -108,12 +116,80 @@
                                     </Image.Source>
                                 </Image>
 
+                                <!--  Article post Content  -->
                                 <TextBlock Grid.Column="1"
                                            Text="{x:Bind Content}"
                                            TextWrapping="Wrap"
                                            TextAlignment="Justify"
                                            IsTextSelectionEnabled="True"/>
                             </Grid>
+
+                            <!--  Tags  -->
+                            <!--<GridView ItemsSource="{x:Bind Tags}"
+                                      Padding="0 5 5 0">
+                                <GridView.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <StackPanel Orientation="Horizontal" Padding="4 -10"/>
+                                    </ItemsPanelTemplate>
+                                </GridView.ItemsPanel>
+
+                                <GridView.ItemContainerStyle>
+                                    <Style TargetType="GridViewItem">
+                                        <Setter Property="Background" Value="{ThemeResource SystemControlBackgroundAccentBrush}"/>
+                                    </Style>
+                                </GridView.ItemContainerStyle>
+
+                                <GridView.ItemTemplate>
+                                    <DataTemplate x:DataType="vm:TagViewModel">
+                                        <Grid Margin="5 0">
+                                            <TextBlock Text="{x:Bind Name}"
+                                                       FontSize="12"
+                                                       FontWeight="SemiBold"/>
+                                        </Grid>
+                                    </DataTemplate>
+                                </GridView.ItemTemplate>
+                            </GridView>-->
+                            <ItemsControl ItemsSource="{x:Bind Tags}"
+                                          Margin="0 10 5 0">
+                                <ItemsControl.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <StackPanel Orientation="Horizontal"/>
+                                    </ItemsPanelTemplate>
+                                </ItemsControl.ItemsPanel>
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate x:DataType="vm:TagViewModel">
+                                        <Button Margin="0 0 5 0"
+                                                Padding="3"
+                                                Style="{ThemeResource ButtonRevealStyle}"
+                                                FontSize="12">
+                                            <Button.Background>
+                                                <AcrylicBrush TintColor="{ThemeResource SystemAccentColor}"
+                                                              TintOpacity="0.7"/>
+                                            </Button.Background>
+
+                                            <StackPanel Orientation="Horizontal">
+                                                <FontIcon Glyph="&#xE8EC;"
+                                                          FontSize="12"
+                                                          FontWeight="Medium"
+                                                          Margin="0 0 5 0"/>
+                                                <TextBlock Text="{x:Bind Name}"
+                                                           FontSize="12"
+                                                           FontWeight="Medium"/>
+                                            </StackPanel>
+                                        </Button>
+                                        <!--<Grid Margin="0 0 5 0"
+                                              Padding="5"
+                                              CornerRadius="4">
+                                            <Grid.Background>
+                                                <RevealBackgroundBrush Color="{ThemeResource SystemAccentColor}" Opacity="0.5"/>
+                                            </Grid.Background>
+                                            <TextBlock Text="{x:Bind Name}"
+                                                       FontSize="12"
+                                                       FontWeight="SemiBold"/>
+                                        </Grid>-->
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
                         </StackPanel>
 
                         <!--  Open in browser button  -->

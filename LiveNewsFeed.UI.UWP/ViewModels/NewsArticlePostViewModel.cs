@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Windows.Input;
 using Windows.System;
 using Windows.UI.Xaml.Media;
@@ -23,6 +25,8 @@ namespace LiveNewsFeed.UI.UWP.ViewModels
 
         public ImageBrush NewsFeedLogo { get; }
 
+        public ObservableCollection<TagViewModel>? Tags { get; }
+
         public ICommand OpenFullArticleCommand { get; }
 
         public NewsArticlePostViewModel(string title,
@@ -31,7 +35,8 @@ namespace LiveNewsFeed.UI.UWP.ViewModels
                                         Uri articleUrl,
                                         ImageBrush newsFeedLogo,
                                         Uri? imageUrl = default,
-                                        string? imageTitle = default)
+                                        string? imageTitle = default,
+                                        IEnumerable<TagViewModel>? tags = null)
         {
             Title = title;
             Content = content;
@@ -40,6 +45,8 @@ namespace LiveNewsFeed.UI.UWP.ViewModels
             NewsFeedLogo = newsFeedLogo;
             ImageUrl = imageUrl;
             ImageTitle = imageTitle;
+            if (tags != null)
+                Tags = new ObservableCollection<TagViewModel>(tags);
 
             OpenFullArticleCommand = new RelayCommand(async () => await Launcher.LaunchUriAsync(ArticleUrl));
         }
