@@ -55,7 +55,7 @@ namespace LiveNewsFeed.UI.UWP.ViewModels
             _dataSourcesManager.GetLatestPostsFromAllAsync()
                 .ContinueWith(task => InvokeOnUi(() =>
                 {
-                    ArticlePosts = new ObservableCollection<NewsArticlePostViewModel>(task.Result.Select(ToViewModel));
+                    ArticlePosts = new ObservableCollection<NewsArticlePostViewModel>(task.Result.Select(Helpers.ToViewModel));
 
                     PostsLoading = false;
                 }));
@@ -80,7 +80,7 @@ namespace LiveNewsFeed.UI.UWP.ViewModels
                 {
                     foreach (var post in task.Result)
                     {
-                        ArticlePosts.Add(ToViewModel(post));
+                        ArticlePosts.Add(Helpers.ToViewModel(post));
                     }
 
                     PostsLoading = false;
@@ -88,20 +88,5 @@ namespace LiveNewsFeed.UI.UWP.ViewModels
         }
 
         private bool CanReloadArticlesManually() => !PostsLoading;
-        
-        private NewsArticlePostViewModel ToViewModel(NewsArticlePost articlePost) =>
-            new (articlePost.Title,
-                                      HtmlUtilities.ConvertToText(articlePost.Content).Trim(),
-                                      articlePost.PublishTime,
-                                      articlePost.FullArticleUrl,
-                                      GetNewsFeedLogo(articlePost),
-                                      articlePost.Image?.Url,
-                                      articlePost.Image?.Title,
-                                      articlePost.Categories
-                                                 .Where(category => category != Category.NotCategorized)
-                                                 .Select(Helpers.GetCategoryViewModel),
-                                      articlePost.Tags.Select(tag => new TagViewModel(tag.Name)));
-        
-        private ImageBrush GetNewsFeedLogo(NewsArticlePost articlePost) => Helpers.GetLogoForNewsFeed(articlePost.NewsFeedName) ?? new ImageBrush();
     }
 }

@@ -23,7 +23,7 @@ namespace LiveNewsFeed.UI.UWP.ViewModels
 
         public string? ImageTitle { get; }
 
-        public ImageBrush NewsFeedLogo { get; }
+        public ImageBrush? NewsFeedLogo { get; }
 
         public ObservableCollection<TagViewModel>? Tags { get; }
 
@@ -35,7 +35,7 @@ namespace LiveNewsFeed.UI.UWP.ViewModels
                                         string content,
                                         DateTime publishTime,
                                         Uri articleUrl,
-                                        ImageBrush newsFeedLogo,
+                                        ImageBrush? newsFeedLogo,
                                         Uri? imageUrl = default,
                                         string? imageTitle = default,
                                         IEnumerable<CategoryViewModel>? categories = default,

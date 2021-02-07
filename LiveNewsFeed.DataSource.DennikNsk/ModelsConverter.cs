@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Web;
+
+using LiveNewsFeed.Models;
 
 using LiveNewsFeed.DataSource.DennikNsk.DTO;
-using LiveNewsFeed.Models;
 
 namespace LiveNewsFeed.DataSource.DennikNsk
 {
@@ -57,7 +59,7 @@ namespace LiveNewsFeed.DataSource.DennikNsk
             return new(tagDto.Name);
         }
 
-        public static Image? ToImage(ImageDTO? imageDto) => imageDto != null ? new Image(imageDto.Title, new Uri(imageDto.NormalSizeUrl)) : default;
+        public static Image? ToImage(ImageDTO? imageDto) => imageDto != null ? new Image(HttpUtility.HtmlDecode(imageDto.Title), new Uri(imageDto.NormalSizeUrl)) : default;
 
         public static Uri? ToUri(string? url) => url != null ? new Uri(url) : default;
 

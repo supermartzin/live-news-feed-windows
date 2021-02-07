@@ -1,5 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using Windows.Data.Html;
 using Windows.UI;
 using Windows.UI.Xaml.Media;
 
@@ -43,5 +46,18 @@ namespace LiveNewsFeed.UI.UWP.Common
         }
 
         public static CategoryViewModel GetCategoryViewModel(Category category) => CategoriesMap[category];
+
+        public static NewsArticlePostViewModel ToViewModel(NewsArticlePost articlePost) =>
+            new(articlePost.Title,
+                                      HtmlUtilities.ConvertToText(articlePost.Content).Trim(),
+                                      articlePost.PublishTime,
+                                      articlePost.FullArticleUrl,
+                                      GetLogoForNewsFeed(articlePost.NewsFeedName),
+                                      articlePost.Image?.Url,
+                                      articlePost.Image?.Title,
+                                      articlePost.Categories
+                                                 .Where(category => category != Category.NotCategorized)
+                                                 .Select(GetCategoryViewModel),
+                                      articlePost.Tags.Select(tag => new TagViewModel(tag.Name)));
     }
 }
