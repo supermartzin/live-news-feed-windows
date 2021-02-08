@@ -17,7 +17,7 @@ namespace LiveNewsFeed.Models
 
         public Image? Image { get; }
 
-        public Uri? SocialPostUrl { get; }
+        public SocialPost? SocialPost { get; }
 
         public Uri FullArticleUrl { get; }
 
@@ -38,7 +38,7 @@ namespace LiveNewsFeed.Models
                                bool isImportant,
                                string newsFeedName,
                                Image? image = null,
-                               Uri? socialPostUrl = null,
+                               SocialPost? socialPost = null,
                                ISet<Category>? categories = null,
                                ISet<Tag>? tags = null)
         {
@@ -52,7 +52,7 @@ namespace LiveNewsFeed.Models
             NewsFeedName = newsFeedName;
 
             Image = image;
-            SocialPostUrl = socialPostUrl;
+            SocialPost = socialPost;
             Categories = categories ?? new HashSet<Category>();
             Tags = tags ?? new HashSet<Tag>();
         }

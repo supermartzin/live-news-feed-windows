@@ -45,7 +45,7 @@ namespace LiveNewsFeed.DataSource.DennikNsk
                               postDto.ImportantCode.HasValue,
                               newsFeedName,
                               ToImage(postDto.Image),
-                              ToUri(postDto.SocialPost?.Url),
+                              ToSocialPost(postDto.SocialPost),
                               ParseCategories(postDto.Categories),
                               ParseTags(postDto.Tags));
         
@@ -60,9 +60,7 @@ namespace LiveNewsFeed.DataSource.DennikNsk
         }
 
         public static Image? ToImage(ImageDTO? imageDto) => imageDto != null ? new Image(HttpUtility.HtmlDecode(imageDto.Title), new Uri(imageDto.NormalSizeUrl)) : default;
-
-        public static Uri? ToUri(string? url) => url != null ? new Uri(url) : default;
-
+        
         public static Category ToCategory(int dataSourceCode) =>
             CodeToCategoryDictionary.ContainsKey(dataSourceCode)
                 ? CodeToCategoryDictionary[dataSourceCode]
@@ -79,10 +77,16 @@ namespace LiveNewsFeed.DataSource.DennikNsk
                 : 0;
 
 
-        private static ISet<Tag>? ParseTags(IEnumerable<TagDTO>? tagDtos)
-            => tagDtos != null ? new HashSet<Tag>(tagDtos.Select(ToTag)) : default;
+        private static SocialPost? ToSocialPost(SocialPostDTO? socialPostDto) => socialPostDto != null
+            ? new SocialPost(new Uri(socialPostDto.Url), socialPostDto.EmbedCode)
+            : default;
 
-        private static ISet<Category>? ParseCategories(IEnumerable<CategoryDTO>? categoryDtos)
-            => categoryDtos != null ? new HashSet<Category>(categoryDtos.Select(ToCategory)) : default;
+        private static ISet<Tag>? ParseTags(IEnumerable<TagDTO>? tagDtos) => tagDtos != null
+            ? new HashSet<Tag>(tagDtos.Select(ToTag))
+            : default;
+
+        private static ISet<Category>? ParseCategories(IEnumerable<CategoryDTO>? categoryDtos) => categoryDtos != null
+            ? new HashSet<Category>(categoryDtos.Select(ToCategory))
+            : default;
     }
 }

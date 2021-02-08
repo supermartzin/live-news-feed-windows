@@ -6,10 +6,19 @@
       xmlns:vm="using:LiveNewsFeed.UI.UWP.ViewModels"
       xmlns:ext="using:Microsoft.Toolkit.Uwp.UI.Extensions"
       xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
+      xmlns:mtuc="using:Microsoft.Toolkit.Uwp.UI.Controls"
+      xmlns:controls="using:LiveNewsFeed.UI.UWP.Controls"
       mc:Ignorable="d"
       Background="{ThemeResource CustomAcrylicBackgroundBrush}"
       ext:TitleBarExtensions.ButtonBackgroundColor="Transparent"
       DataContext="{x:Bind ViewModel}">
+
+    <Page.Resources>
+        <Style x:Key="CustomExpanderHeaderStyle"
+               TargetType="ToggleButton">
+            <Setter Property="Background" Value="Transparent"/>
+        </Style>
+    </Page.Resources>
 
     <Page.BottomAppBar>
         <CommandBar Background="{ThemeResource CustomAcrylicElementBrush}"
@@ -158,6 +167,18 @@
                                            TextAlignment="Justify"
                                            IsTextSelectionEnabled="True"/>
                             </Grid>
+
+                            <!--  Social post Content  -->
+                            <mtuc:Expander Margin="0 10 0 0"
+                                           HorizontalContentAlignment="Stretch"
+                                           ExpandDirection="Down"
+                                           IsExpanded="False"
+                                           Expanded="Expander_OnExpanded"
+                                           HeaderStyle="{StaticResource CustomExpanderHeaderStyle}"
+                                           Visibility="{x:Bind SocialPostContent, Converter={StaticResource NullToVisibilityConverter}}">
+                                <WebView controls:WebExtensions.HtmlString="{x:Bind SocialPostContent}"
+                                         Height="100"/>
+                            </mtuc:Expander>
 
                             <!--  Tags  -->
                             <ItemsControl ItemsSource="{x:Bind Tags}"

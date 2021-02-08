@@ -55,9 +55,14 @@ namespace LiveNewsFeed.UI.UWP.Common
                                       GetLogoForNewsFeed(articlePost.NewsFeedName),
                                       articlePost.Image?.Url,
                                       articlePost.Image?.Title,
+                                      SanitizeSocialPostContent(articlePost.SocialPost?.Content),
                                       articlePost.Categories
                                                  .Where(category => category != Category.NotCategorized)
                                                  .Select(GetCategoryViewModel),
                                       articlePost.Tags.Select(tag => new TagViewModel(tag.Name)));
+
+        private static string? SanitizeSocialPostContent(string? socialPostContent) => socialPostContent != null
+            ? $"<html>{HttpUtility.HtmlDecode(socialPostContent)}</html>"
+            : default;
     }
 }

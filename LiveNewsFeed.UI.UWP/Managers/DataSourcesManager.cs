@@ -10,6 +10,7 @@ using LiveNewsFeed.DataSource.Common;
 using LiveNewsFeed.Models;
 
 using LiveNewsFeed.UI.UWP.Common;
+using Microsoft.Toolkit.Uwp.UI;
 
 namespace LiveNewsFeed.UI.UWP.Managers
 {
@@ -23,6 +24,8 @@ namespace LiveNewsFeed.UI.UWP.Managers
         {
             _dataSources = new Dictionary<string, NewsFeedDataSource>();
             _lastUpdate = DateTime.MinValue;
+
+            ImageCache.Instance.MaxMemoryCacheCount = 50;
         }
 
         public void RegisterDataSource(NewsFeedDataSource newsFeedDataSource)
@@ -40,6 +43,9 @@ namespace LiveNewsFeed.UI.UWP.Managers
             {
                 ImageSource = new BitmapImage(newsFeedDataSource.LogoUrl)
             });
+
+            // cache logo in memory
+            ImageCache.Instance.PreCacheAsync(newsFeedDataSource.LogoUrl, false, true);
         }
 
         public IList<NewsFeedDataSource> GetRegisteredDataSources()

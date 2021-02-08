@@ -23,6 +23,8 @@ namespace LiveNewsFeed.UI.UWP.ViewModels
 
         public string? ImageTitle { get; }
 
+        public string? SocialPostContent { get; }
+
         public ImageBrush? NewsFeedLogo { get; }
 
         public ObservableCollection<TagViewModel>? Tags { get; }
@@ -38,6 +40,7 @@ namespace LiveNewsFeed.UI.UWP.ViewModels
                                         ImageBrush? newsFeedLogo,
                                         Uri? imageUrl = default,
                                         string? imageTitle = default,
+                                        string? socialPostContent = default,
                                         IEnumerable<CategoryViewModel>? categories = default,
                                         IEnumerable<TagViewModel>? tags = default)
         {
@@ -48,6 +51,7 @@ namespace LiveNewsFeed.UI.UWP.ViewModels
             NewsFeedLogo = newsFeedLogo;
             ImageUrl = imageUrl;
             ImageTitle = imageTitle;
+            SocialPostContent = socialPostContent;
             if (categories != null)
                 Categories = new ObservableCollection<CategoryViewModel>(categories);
             if (tags != null)

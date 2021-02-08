@@ -138,6 +138,7 @@
     <Compile Include="Common\Helpers.cs" />
     <Compile Include="Common\ServiceLocator.cs" />
     <Compile Include="Common\ViewModelBase.cs" />
+    <Compile Include="Controls\WebExtensions.cs" />
     <Compile Include="Managers\DataSourcesManager.cs" />
     <Compile Include="Managers\IDataSourcesManager.cs" />
     <Compile Include="ViewModels\CategoryViewModel.cs" />
@@ -244,6 +245,9 @@
       <Version>6.2.11</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.Toolkit.Uwp.UI">
+      <Version>6.1.1</Version>
+    </PackageReference>
+    <PackageReference Include="Microsoft.Toolkit.Uwp.UI.Controls">
       <Version>6.1.1</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.UI.Xaml">
