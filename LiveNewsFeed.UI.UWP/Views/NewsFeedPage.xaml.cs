@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Windows.ApplicationModel.Core;
+using Windows.UI;
 using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -20,12 +21,20 @@ namespace LiveNewsFeed.UI.UWP.Views
         {
             InitializeComponent();
 
-            ApplicationView.PreferredLaunchWindowingMode = ApplicationViewWindowingMode.Auto;
+            SetTitleBarProperties();
+        }
 
+
+        private void SetTitleBarProperties()
+        {
             var coreTitleBar = CoreApplication.GetCurrentView().TitleBar;
             coreTitleBar.ExtendViewIntoTitleBar = true;
-            
+
             Window.Current.SetTitleBar(NewsFeedTitleBar);
+
+            // set buttons foreground
+            var titleBar = ApplicationView.GetForCurrentView().TitleBar;
+            titleBar.ButtonForegroundColor = (Color?) Application.Current.Resources["TitleBarButtonsForegroundColor"];
         }
 
 

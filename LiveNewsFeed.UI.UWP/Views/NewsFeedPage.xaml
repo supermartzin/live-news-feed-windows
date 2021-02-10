@@ -177,6 +177,7 @@
                                            HeaderStyle="{StaticResource CustomExpanderHeaderStyle}"
                                            Visibility="{x:Bind SocialPostContent, Converter={StaticResource NullToVisibilityConverter}}">
                                 <WebView controls:WebExtensions.HtmlString="{x:Bind SocialPostContent}"
+                                         DefaultBackgroundColor="Transparent"
                                          Height="100"/>
                             </mtuc:Expander>
 
