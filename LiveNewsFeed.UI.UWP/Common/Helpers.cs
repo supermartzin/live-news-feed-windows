@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using Windows.Data.Html;
 using Windows.UI;
+using Windows.UI.Xaml;
 using Windows.UI.Xaml.Media;
 
 using LiveNewsFeed.Models;
@@ -20,13 +21,13 @@ namespace LiveNewsFeed.UI.UWP.Common
         private static readonly Dictionary<string, ImageBrush> NewsFeedLogos = new();
         private static readonly Dictionary<Category, CategoryViewModel> CategoriesMap = new()
         {
-            { Category.Local, new CategoryViewModel(Category.Local, Color.FromArgb(255, 45, 157, 210), "\uE10F", SegoeMdl2AssetsFontFamily) },
-            { Category.World, new CategoryViewModel(Category.World, Color.FromArgb(255, 196, 111, 13), "\uE128", SegoeMdl2AssetsFontFamily) },
-            { Category.Economy, new CategoryViewModel(Category.Economy,  Color.FromArgb(255, 111, 77, 128), "\U0001F4B2", SegoeUiSymbolFontFamily) },
-            { Category.Sport, new CategoryViewModel(Category.Sport, Color.FromArgb(255, 0, 138, 62), "\u26BD", SegoeUiSymbolFontFamily) },
-            { Category.Arts, new CategoryViewModel(Category.Arts, Color.FromArgb(255, 7, 97, 141), "\U0001F3A8", SegoeUiSymbolFontFamily) },
-            { Category.Science, new CategoryViewModel(Category.Science,  Color.FromArgb(255, 233, 29, 150), "\U0001F4A1", SegoeUiSymbolFontFamily) },
-            { Category.Commentary, new CategoryViewModel(Category.Commentary, Color.FromArgb(255, 191, 33, 52), "\uE206", SegoeMdl2AssetsFontFamily) }
+            { Category.Local, new CategoryViewModel(Category.Local, "CategoryLocalColor", "\uE10F", SegoeMdl2AssetsFontFamily) },
+            { Category.World, new CategoryViewModel(Category.World, "CategoryWorldColor", "\uE128", SegoeMdl2AssetsFontFamily) },
+            { Category.Economy, new CategoryViewModel(Category.Economy, "CategoryEconomyColor", "\U0001F4B2", SegoeUiSymbolFontFamily) },
+            { Category.Sport, new CategoryViewModel(Category.Sport, "CategorySportColor", "\u26BD", SegoeUiSymbolFontFamily) },
+            { Category.Arts, new CategoryViewModel(Category.Arts, "CategoryArtsColor", "\U0001F3A8", SegoeUiSymbolFontFamily) },
+            { Category.Science, new CategoryViewModel(Category.Science, "CategoryScienceColor", "\U0001F4A1", SegoeUiSymbolFontFamily) },
+            { Category.Commentary, new CategoryViewModel(Category.Commentary, "CategoryCommentaryColor", "\uE206", SegoeMdl2AssetsFontFamily) }
         };
 
         public static ImageBrush? GetLogoForNewsFeed(string newsFeedName)

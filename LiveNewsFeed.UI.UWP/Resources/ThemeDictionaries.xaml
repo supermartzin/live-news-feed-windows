@@ -3,10 +3,26 @@
     <ResourceDictionary.ThemeDictionaries>
         <ResourceDictionary x:Key="Light">
             <Color x:Key="TitleBarButtonsForegroundColor">Black</Color>
+
+            <Color x:Key="CategoryLocalColor">#FF22769F</Color>
+            <Color x:Key="CategoryWorldColor">#FF915209</Color>
+            <Color x:Key="CategoryEconomyColor">#FF422E4D</Color>
+            <Color x:Key="CategorySportColor">#FF005627</Color>
+            <Color x:Key="CategoryArtsColor">#FF07618D</Color>
+            <Color x:Key="CategoryScienceColor">#FFB51675</Color>
+            <Color x:Key="CategoryCommentaryColor">#FFBF2134</Color>
         </ResourceDictionary>
 
         <ResourceDictionary x:Key="Dark">
             <Color x:Key="TitleBarButtonsForegroundColor">White</Color>
+
+            <Color x:Key="CategoryLocalColor">#36BCFF</Color>
+            <Color x:Key="CategoryWorldColor">#FFFF9010</Color>
+            <Color x:Key="CategoryEconomyColor">#FFB17BCC</Color>
+            <Color x:Key="CategorySportColor">#FF00D660</Color>
+            <Color x:Key="CategoryArtsColor">#FF0A95D9</Color>
+            <Color x:Key="CategoryScienceColor">#FFFF1F86</Color>
+            <Color x:Key="CategoryCommentaryColor">#FFFF2C45</Color>
         </ResourceDictionary>
     </ResourceDictionary.ThemeDictionaries>
 </ResourceDictionary>

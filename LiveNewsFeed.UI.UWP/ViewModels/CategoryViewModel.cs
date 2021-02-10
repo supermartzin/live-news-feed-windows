@@ -1,4 +1,5 @@
 ﻿using Windows.UI;
+using Windows.UI.Xaml;
 using Windows.UI.Xaml.Media;
 
 using LiveNewsFeed.Models;
@@ -15,17 +16,19 @@ namespace LiveNewsFeed.UI.UWP.ViewModels
 
         public FontFamily FontFamily { get; }
 
-        public Color Color { get; }
+        private readonly string _colorResourceKey;
+        public Color Color => (Color) Application.Current.Resources[_colorResourceKey];
         
         public CategoryViewModel(Category category,
-                                 Color color,
+                                 string colorResourceKey,
                                  string iconGlyph,
                                  FontFamily fontFamily)
         {
             Name = GetLocalizedString($"CategoryEnum_{category}");
-            Color = color;
             IconGlyph = iconGlyph;
             FontFamily = fontFamily;
+
+            _colorResourceKey = colorResourceKey;
         }
     }
 }
