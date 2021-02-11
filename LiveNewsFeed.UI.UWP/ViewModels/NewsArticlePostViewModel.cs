@@ -31,7 +31,14 @@ namespace LiveNewsFeed.UI.UWP.ViewModels
 
         public ObservableCollection<CategoryViewModel>? Categories { get; }
 
-        public ICommand OpenFullArticleCommand { get; }
+        public ICommand OpenFullArticleCommand { get; private set; }
+
+        public ICommand ShowImagePreviewCommand { get; private set; }
+
+        public ICommand HideImagePreviewCommand { get; private set; }
+
+        public event EventHandler ShowImagePreviewRequested;
+        public event EventHandler HideImagePreviewRequested;
 
         public NewsArticlePostViewModel(string title,
                                         string content,
@@ -57,7 +64,14 @@ namespace LiveNewsFeed.UI.UWP.ViewModels
             if (tags != null)
                 Tags = new ObservableCollection<TagViewModel>(tags);
 
+            InitializeCommands();
+        }
+
+        private void InitializeCommands()
+        {
             OpenFullArticleCommand = new RelayCommand(async () => await Launcher.LaunchUriAsync(ArticleUrl));
+            ShowImagePreviewCommand = new RelayCommand(() => ShowImagePreviewRequested?.Invoke(this, EventArgs.Empty));
+            HideImagePreviewCommand = new RelayCommand(() => HideImagePreviewRequested?.Invoke(this, EventArgs.Empty));
         }
     }
 }

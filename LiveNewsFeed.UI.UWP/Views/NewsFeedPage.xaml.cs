@@ -13,10 +13,10 @@ using LiveNewsFeed.UI.UWP.ViewModels;
 
 namespace LiveNewsFeed.UI.UWP.Views
 {
-    public sealed partial class NewsFeedPage : Page
+    public sealed partial class NewsFeedPage : BasePage
     {
         public NewsFeedPageViewModel ViewModel => ServiceLocator.Container.GetRequiredService<NewsFeedPageViewModel>();
-
+        
         public NewsFeedPage()
         {
             InitializeComponent();
@@ -24,7 +24,12 @@ namespace LiveNewsFeed.UI.UWP.Views
             SetTitleBarProperties();
         }
 
+        protected override void OnApplicationThemeChanged(ApplicationTheme theme)
+        {
+            SetTitleBarButtonColors();
+        }
 
+        
         private void SetTitleBarProperties()
         {
             var coreTitleBar = CoreApplication.GetCurrentView().TitleBar;
@@ -32,19 +37,16 @@ namespace LiveNewsFeed.UI.UWP.Views
 
             Window.Current.SetTitleBar(NewsFeedTitleBar);
 
-            // set buttons foreground
-            var titleBar = ApplicationView.GetForCurrentView().TitleBar;
-            titleBar.ButtonForegroundColor = (Color?) Application.Current.Resources["TitleBarButtonsForegroundColor"];
+            SetTitleBarButtonColors();
         }
-
-
+        
         private async void Expander_OnExpanded(object sender, EventArgs e)
         {
             var expander = sender as Expander;
 
             if (expander?.Content is WebView webView)
             {
-                await Task.Delay(200).ConfigureAwait(true);
+                await Task.Delay(400).ConfigureAwait(true);
 
                 var result = await webView.InvokeScriptAsync("eval", new[] { "document.body.scrollHeight.toString()" });
 
@@ -55,6 +57,13 @@ namespace LiveNewsFeed.UI.UWP.Views
                     webView.MinHeight = height;
                 }
             }
+        }
+
+        private void SetTitleBarButtonColors()
+        {
+            // set buttons foreground
+            var titleBar = ApplicationView.GetForCurrentView().TitleBar;
+            titleBar.ButtonForegroundColor = titleBar.ButtonHoverForegroundColor = (Color?) Application.Current.Resources["TitleBarButtonsForegroundColor"];
         }
     }
 }

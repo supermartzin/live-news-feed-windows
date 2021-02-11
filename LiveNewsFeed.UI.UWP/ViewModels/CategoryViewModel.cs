@@ -30,5 +30,11 @@ namespace LiveNewsFeed.UI.UWP.ViewModels
 
             _colorResourceKey = colorResourceKey;
         }
+
+        protected override void OnApplicationThemeChanged(ApplicationTheme theme)
+        {
+            // force reevaluation of Color property
+            RaisePropertyChanged(nameof(Color));
+        }
     }
 }

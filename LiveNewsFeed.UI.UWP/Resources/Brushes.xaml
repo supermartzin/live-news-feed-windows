@@ -5,9 +5,9 @@
     <AcrylicBrush x:Key="CustomAcrylicBackgroundBrush"
                   BackgroundSource="HostBackdrop"
                   TintOpacity="0.6"
-                  TintColor="{Binding Color, Source={ThemeResource ApplicationPageBackgroundThemeBrush}}" />
+                  TintColor="{ThemeResource SystemAltHighColor}" />
     <AcrylicBrush x:Key="CustomAcrylicElementBrush" 
                   BackgroundSource="Backdrop"
                   TintOpacity="0.0"
-                  TintColor="{Binding Color, Source={ThemeResource ApplicationPageBackgroundThemeBrush}}" />
+                  TintColor="{ThemeResource SystemAltHighColor}" />
 </ResourceDictionary>

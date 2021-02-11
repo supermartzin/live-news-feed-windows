@@ -4,11 +4,20 @@ using Windows.ApplicationModel.Core;
 using Windows.ApplicationModel.Resources;
 using Windows.UI.Core;
 using Windows.UI.Xaml;
+using Microsoft.Toolkit.Uwp.UI.Helpers;
 
 namespace LiveNewsFeed.UI.UWP.Common
 {
-    public class ViewModelBase : GalaSoft.MvvmLight.ViewModelBase
+    public abstract class ViewModelBase : GalaSoft.MvvmLight.ViewModelBase
     {
+        protected readonly ThemeListener ThemeListener;
+
+        protected ViewModelBase()
+        {
+            ThemeListener = new ThemeListener();
+            ThemeListener.ThemeChanged += ThemeListener_OnThemeChanged;
+        }
+        
         protected virtual async Task InvokeOnUi(Action action)
         {
             if (action == null)
@@ -27,6 +36,16 @@ namespace LiveNewsFeed.UI.UWP.Common
             var resourceLoader = ResourceLoader.GetForViewIndependentUse();
 
             return resourceLoader.GetString(key);
+        }
+
+        protected virtual void OnApplicationThemeChanged(ApplicationTheme theme)
+        {
+        }
+
+
+        private void ThemeListener_OnThemeChanged(ThemeListener sender)
+        {
+            OnApplicationThemeChanged(sender.CurrentTheme);
         }
     }
 }

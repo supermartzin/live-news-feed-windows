@@ -37,6 +37,13 @@ namespace LiveNewsFeed.UI.UWP.ViewModels
             set => Set(ref _articlePosts, value);
         }
 
+        private NewsArticlePostViewModel? _selectedPost;
+        public NewsArticlePostViewModel? SelectedPost
+        {
+            get => _selectedPost;
+            set => Set(ref _selectedPost, value);
+        }
+
         public RelayCommand RefreshNewsFeedCommand { get; private set; }
 
         public NewsFeedPageViewModel(IDataSourcesManager dataSourcesManager)
@@ -53,12 +60,38 @@ namespace LiveNewsFeed.UI.UWP.ViewModels
             PostsLoading = true;
 
             _dataSourcesManager.GetLatestPostsFromAllAsync()
-                .ContinueWith(task => InvokeOnUi(() =>
-                {
-                    ArticlePosts = new ObservableCollection<NewsArticlePostViewModel>(task.Result.Select(Helpers.ToViewModel));
+                               .ContinueWith(task => InvokeOnUi(() =>
+                               {
+                                   var posts = task.Result.Select(Helpers.ToViewModel).ToList();
 
-                    PostsLoading = false;
-                }));
+                                   RegisterEvents(posts);
+
+                                   ArticlePosts = new ObservableCollection<NewsArticlePostViewModel>(posts);
+
+                                   PostsLoading = false;
+                               }));
+        }
+
+        private void RegisterEvents(IEnumerable<NewsArticlePostViewModel> posts)
+        {
+            foreach (var post in posts)
+            {
+                post.ShowImagePreviewRequested += NewsArticlePost_OnShowImagePreviewRequested;
+                post.HideImagePreviewRequested += NewsArticlePost_OnHideImagePreviewRequested;
+            }
+        }
+        
+        private void NewsArticlePost_OnShowImagePreviewRequested(object sender, EventArgs e)
+        {
+            if (sender is NewsArticlePostViewModel postViewModel)
+            {
+                SelectedPost = postViewModel;
+            }
+        }
+
+        private void NewsArticlePost_OnHideImagePreviewRequested(object sender, EventArgs e)
+        {
+            SelectedPost = default;
         }
 
         private void InitializeCommands()
