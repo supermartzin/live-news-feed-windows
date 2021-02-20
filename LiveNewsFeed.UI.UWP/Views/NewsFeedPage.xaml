@@ -33,7 +33,7 @@
         
         <!--  News Feed  -->
         <GridView SelectionMode="None"
-                  Padding="0 90 0 40"
+                  Padding="0 100 0 40"
                   Margin="0 0 0 5"
                   Visibility="{x:Bind Path=ViewModel.PostsLoading,
                                       Mode=TwoWay,
@@ -144,10 +144,11 @@
                                        Margin="0 0 10 0"
                                        HorizontalAlignment="Left"
                                        VerticalAlignment="Top"
-                                       Visibility="{x:Bind Path=ImageUrl, Converter={StaticResource NullToVisibilityConverter}}"
-                                       ToolTipService.ToolTip="{x:Bind ImageTitle}">
+                                       Visibility="{x:Bind Path=Image, Converter={StaticResource NullToVisibilityConverter}}"
+                                       ToolTipService.ToolTip="{x:Bind Image.Title}"
+                                       PointerPressed="ArticlePostImageThumbnail_OnPointerPressed">
                                     <Image.Source>
-                                        <BitmapImage UriSource="{x:Bind ImageUrl}"/>
+                                        <BitmapImage UriSource="{x:Bind Image.NormalImageUrl}"/>
                                     </Image.Source>
                                     <i:Interaction.Behaviors>
                                         <core:EventTriggerBehavior EventName="PointerPressed">
@@ -251,12 +252,18 @@
         <Grid x:Name="NewsFeedTitleBar"
               Background="{ThemeResource CustomAcrylicElementBrush}"
               VerticalAlignment="Top">
-            <TextBlock x:Uid="NewsFeed_NewsFeedTitle"
-                       FontSize="30"
-                       FontWeight="ExtraBold"
-                       Margin="25 30 25 20" />
+            <StackPanel Orientation="Horizontal">
+                <Image MaxWidth="60"
+                       Margin="25 20 5 15"
+                       Source="../Assets/Logos/app-logo.png"/>
+                <TextBlock x:Uid="NewsFeed_NewsFeedTitle"
+                           FontSize="30"
+                           FontWeight="ExtraBold"
+                           Margin="5 30 25 20" />
+            </StackPanel>
         </Grid>
 
+        <!--  Bottom Menu bar  -->
         <CommandBar VerticalAlignment="Bottom"
                     Background="{ThemeResource CustomAcrylicElementBrush}"
                     OverflowButtonVisibility="Collapsed"
@@ -280,23 +287,26 @@
             </Grid.Background>
 
             <Grid.RowDefinitions>
-                <RowDefinition Height="32"/>
-                <RowDefinition Height="*"/>
-                <RowDefinition Height="8*"/>
-                <RowDefinition Height="*"/>
+                <RowDefinition Height="32" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="8*" />
+                <RowDefinition Height="*" />
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="8*"/>
-                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="8*" />
+                <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
 
-            <Grid Grid.Row="0"
+            <Grid x:Name="ImagePreviewTitleBar"
+                  Grid.Row="0"
                   Grid.Column="0"
                   Grid.ColumnSpan="3"
                   Background="Transparent"/>
 
-            <Button Grid.Row="1"
+            <!--  Close Preview button  -->
+            <Button x:Uid="ImagePreview_CloseButton"
+                    Grid.Row="1"
                     Grid.Column="0"
                     Grid.ColumnSpan="3"
                     Grid.RowSpan="3"
@@ -305,7 +315,8 @@
                     Margin="10 20 20 10"
                     Padding="15"
                     Background="Transparent"
-                    Style="{ThemeResource ButtonRevealStyle}">
+                    Style="{ThemeResource ButtonRevealStyle}"
+                    Click="CloseImagePreviewButton_OnClick">
                 <FontIcon Glyph="&#xE106;" />
                 <i:Interaction.Behaviors>
                     <core:EventTriggerBehavior EventName="Click">
@@ -316,32 +327,36 @@
                 </i:Interaction.Behaviors>
             </Button>
 
-            <Grid Grid.Row="2"
-                  Grid.Column="1">
-                <Viewbox VerticalAlignment="Stretch"
-                         HorizontalAlignment="Stretch">
-                    <mtuc:DropShadowPanel BlurRadius="40"
-                                          ShadowOpacity="0.5"
-                                          OffsetX="0"
-                                          OffsetY="0"
-                                          Color="{ThemeResource SystemBaseHighColor}"
-                                          VerticalAlignment="Center"
-                                          HorizontalAlignment="Center"
-                                          IsMasked="True">
-                        <Image x:Name="ImagePreview"
-                               Stretch="Uniform">
-                            <Image.Source>
-                                <BitmapImage UriSource="{x:Bind Path=ViewModel.SelectedPost.ImageUrl}" />
-                            </Image.Source>
-                        </Image>
-                    </mtuc:DropShadowPanel>
-                </Viewbox>
-                <TextBlock Text="{x:Bind ViewModel.SelectedPost.ImageTitle}"
-                           Visibility="{x:Bind ViewModel.SelectedPost.ImageTitle, Converter={StaticResource NullToVisibilityConverter}}"
-                           Width="{Binding Path=ActualWidth, ElementName=ImagePreview}"
-                           FontWeight="Bold"
-                           Margin="0 10"/>
-            </Grid>
+            <!--  Image  -->
+            <ScrollViewer x:Name="ZoomPanel" 
+                          Grid.Row="2"
+                          Grid.Column="1"
+                          ZoomMode="Enabled"
+                          MinZoomFactor="0.75"
+                          MaxZoomFactor="2.0"
+                          HorizontalScrollBarVisibility="Hidden"
+                          VerticalScrollBarVisibility="Hidden"
+                          HorizontalContentAlignment="Stretch"
+                          VerticalContentAlignment="Stretch"
+                          DoubleTapped="ZoomPanel_OnDoubleTapped">
+                <mtuc:DropShadowPanel BlurRadius="40"
+                                      ShadowOpacity="0.5"
+                                      OffsetX="0"
+                                      OffsetY="0"
+                                      Color="{ThemeResource SystemBaseHighColor}"
+                                      VerticalAlignment="Center"
+                                      HorizontalAlignment="Center"
+                                      Width="{Binding Path=ActualWidth, Mode=OneTime, ElementName=ZoomPanel}"
+                                      Height="{Binding Path=ActualHeight, Mode=OneTime, ElementName=ZoomPanel}"
+                                      IsMasked="True">
+                    <Image Stretch="Uniform">
+                        <Image.Source>
+                            <BitmapImage CreateOptions="IgnoreImageCache"
+                                         UriSource="{x:Bind ViewModel.SelectedPost.Image.LargeImageUrl}" />
+                        </Image.Source>
+                    </Image>
+                </mtuc:DropShadowPanel>
+            </ScrollViewer>
         </Grid>
     </Grid>
 </views:BasePage>

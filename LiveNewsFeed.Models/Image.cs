@@ -8,10 +8,13 @@ namespace LiveNewsFeed.Models
 
         public Uri Url { get; }
 
-        public Image(string title, Uri url)
+        public Uri? LargeSizeUrl { get; }
+
+        public Image(string title, Uri url, Uri? largeSizeUrl)
         {
             Title = title;
             Url = url ?? throw new ArgumentNullException(nameof(url));
+            LargeSizeUrl = largeSizeUrl;
         }
     }
 }

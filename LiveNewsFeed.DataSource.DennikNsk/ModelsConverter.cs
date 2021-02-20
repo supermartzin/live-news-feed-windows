@@ -59,7 +59,11 @@ namespace LiveNewsFeed.DataSource.DennikNsk
             return new(tagDto.Name);
         }
 
-        public static Image? ToImage(ImageDTO? imageDto) => imageDto != null ? new Image(HttpUtility.HtmlDecode(imageDto.Title), new Uri(imageDto.NormalSizeUrl)) : default;
+        public static Image? ToImage(ImageDTO? imageDto) => imageDto != null
+            ? new Image(HttpUtility.HtmlDecode(imageDto.Title),
+                        new Uri(imageDto.NormalSizeUrl),
+                        imageDto.LargeSizeUrl != null ? new Uri(imageDto.LargeSizeUrl) : default)
+            : default;
         
         public static Category ToCategory(int dataSourceCode) =>
             CodeToCategoryDictionary.ContainsKey(dataSourceCode)

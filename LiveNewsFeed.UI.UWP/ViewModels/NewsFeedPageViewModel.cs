@@ -91,7 +91,7 @@ namespace LiveNewsFeed.UI.UWP.ViewModels
 
         private void NewsArticlePost_OnHideImagePreviewRequested(object sender, EventArgs e)
         {
-            SelectedPost = default;
+            SelectedPost = null;
         }
 
         private void InitializeCommands()

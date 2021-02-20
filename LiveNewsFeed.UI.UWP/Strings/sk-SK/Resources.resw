@@ -144,6 +144,9 @@
   <data name="CategoryEnum_World" xml:space="preserve">
     <value>Svet</value>
   </data>
+  <data name="ImagePreview_CloseButton.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
+    <value>Zatvoriť náhľad</value>
+  </data>
   <data name="NewsFeed_LoadingLabel.Text" xml:space="preserve">
     <value>Načítavam články...</value>
   </data>

@@ -5,6 +5,7 @@ using Windows.UI;
 using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Input;
 using Microsoft.Toolkit.Uwp.UI.Controls;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -23,7 +24,7 @@ namespace LiveNewsFeed.UI.UWP.Views
 
             SetTitleBarProperties();
         }
-
+        
         protected override void OnApplicationThemeChanged(ApplicationTheme theme)
         {
             SetTitleBarButtonColors();
@@ -39,6 +40,25 @@ namespace LiveNewsFeed.UI.UWP.Views
 
             SetTitleBarButtonColors();
         }
+
+        private void ImagePreviewOpened()
+        {
+            Window.Current.SetTitleBar(ImagePreviewTitleBar);
+        }
+
+        private void ImagePreviewClosed()
+        {
+            ResetImagePreviewZoom();
+
+            Window.Current.SetTitleBar(NewsFeedTitleBar);
+        }
+
+        private void ResetImagePreviewZoom()
+        {
+            ZoomPanel.ChangeView(0, 0, 1);
+        }
+
+        #region Event handlers
         
         private async void Expander_OnExpanded(object sender, EventArgs e)
         {
@@ -65,5 +85,22 @@ namespace LiveNewsFeed.UI.UWP.Views
             var titleBar = ApplicationView.GetForCurrentView().TitleBar;
             titleBar.ButtonForegroundColor = titleBar.ButtonHoverForegroundColor = (Color?) Application.Current.Resources["TitleBarButtonsForegroundColor"];
         }
+
+        private void CloseImagePreviewButton_OnClick(object sender, RoutedEventArgs e)
+        {
+            ImagePreviewClosed();
+        }
+        
+        private void ZoomPanel_OnDoubleTapped(object sender, DoubleTappedRoutedEventArgs e)
+        {
+            ResetImagePreviewZoom();
+        }
+
+        private void ArticlePostImageThumbnail_OnPointerPressed(object sender, PointerRoutedEventArgs eventArgs)
+        {
+            ImagePreviewOpened();
+        }
+
+        #endregion
     }
 }

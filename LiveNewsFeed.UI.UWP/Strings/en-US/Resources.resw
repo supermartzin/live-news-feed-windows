@@ -144,6 +144,9 @@
   <data name="CategoryEnum_World" xml:space="preserve">
     <value>World</value>
   </data>
+  <data name="ImagePreview_CloseButton.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
+    <value>Close preview</value>
+  </data>
   <data name="NewsFeed_LoadingLabel.Text" xml:space="preserve">
     <value>Loading posts...</value>
   </data>

@@ -19,9 +19,7 @@ namespace LiveNewsFeed.UI.UWP.ViewModels
 
         public Uri ArticleUrl { get; }
 
-        public Uri? ImageUrl { get; }
-
-        public string? ImageTitle { get; }
+        public ImageViewModel? Image { get; }
 
         public string? SocialPostContent { get; }
 
@@ -45,8 +43,7 @@ namespace LiveNewsFeed.UI.UWP.ViewModels
                                         DateTime publishTime,
                                         Uri articleUrl,
                                         ImageBrush? newsFeedLogo,
-                                        Uri? imageUrl = default,
-                                        string? imageTitle = default,
+                                        ImageViewModel? image = default,
                                         string? socialPostContent = default,
                                         IEnumerable<CategoryViewModel>? categories = default,
                                         IEnumerable<TagViewModel>? tags = default)
@@ -56,8 +53,7 @@ namespace LiveNewsFeed.UI.UWP.ViewModels
             PublishTime = publishTime;
             ArticleUrl = articleUrl;
             NewsFeedLogo = newsFeedLogo;
-            ImageUrl = imageUrl;
-            ImageTitle = imageTitle;
+            Image = image;
             SocialPostContent = socialPostContent;
             if (categories != null)
                 Categories = new ObservableCollection<CategoryViewModel>(categories);
