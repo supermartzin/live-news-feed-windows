@@ -31,6 +31,8 @@ namespace LiveNewsFeed.UI.UWP.ViewModels
 
         public ICommand OpenFullArticleCommand { get; private set; }
 
+        public ICommand OpenImageInBrowserCommand { get; private set; }
+
         public ICommand ShowImagePreviewCommand { get; private set; }
 
         public ICommand HideImagePreviewCommand { get; private set; }
@@ -66,6 +68,7 @@ namespace LiveNewsFeed.UI.UWP.ViewModels
         private void InitializeCommands()
         {
             OpenFullArticleCommand = new RelayCommand(async () => await Launcher.LaunchUriAsync(ArticleUrl));
+            OpenImageInBrowserCommand = new RelayCommand(async () => await Launcher.LaunchUriAsync(Image?.LargeImageUrl));
             ShowImagePreviewCommand = new RelayCommand(() => ShowImagePreviewRequested?.Invoke(this, EventArgs.Empty));
             HideImagePreviewCommand = new RelayCommand(() => HideImagePreviewRequested?.Invoke(this, EventArgs.Empty));
         }

@@ -23,14 +23,14 @@
             <Setter Property="Background" Value="Transparent"/>
         </Style>
     </Page.Resources>
-    
+
     <Grid>
         <Grid.Resources>
             <CollectionViewSource x:Key="PostsViewSource"
                                   IsSourceGrouped="False"
                                   Source="{x:Bind ViewModel.ArticlePosts, Mode=OneWay}"/>
         </Grid.Resources>
-        
+
         <!--  News Feed  -->
         <GridView SelectionMode="None"
                   Padding="0 100 0 40"
@@ -54,28 +54,21 @@
 
             <GridView.ItemTemplate>
                 <DataTemplate x:DataType="vm:NewsArticlePostViewModel">
-                    <Grid HorizontalAlignment="Stretch"
-                          Padding="10">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="Auto"/>
-                            <ColumnDefinition Width="Auto"/>
-                        </Grid.ColumnDefinitions>
-                        
-                        <!--  Article post  -->  
-                        <StackPanel Orientation="Vertical"
-                                    Grid.Column="0">
-                            <!--  Data source - Logo, Title, Categories and Publish time  -->
-                            <Grid Margin="0 0 0 5">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="Auto"/>
-                                    <ColumnDefinition Width="*"/>
-                                    <ColumnDefinition Width="Auto"/>
-                                    <ColumnDefinition Width="Auto"/>
-                                </Grid.ColumnDefinitions>
+                    <!--  Article post  -->
+                    <StackPanel Orientation="Vertical"
+                                HorizontalAlignment="Stretch"
+                                Padding="10">
+                        <!--  Data source - Logo, Title, Categories and Publish time  -->
+                        <Grid Margin="0 0 0 5">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
 
-                                <!--  Logo  -->
-                                <Border Grid.Column="0"
+                            <!--  Logo  -->
+                            <Border Grid.Column="0"
                                         Height="20"
                                         Width="20"
                                         Margin="0 0 5 0"
@@ -85,61 +78,61 @@
                                         BorderBrush="Transparent"
                                         BorderThickness="0"
                                         CornerRadius="2" />
-                                <!--  Title  -->
-                                <TextBlock Grid.Column="1" Text="{x:Bind Title}"
+                            <!--  Title  -->
+                            <TextBlock Grid.Column="1" Text="{x:Bind Title}"
                                            HorizontalTextAlignment="Left"
                                            FontWeight="Bold"
                                            FontSize="14"/>
-                                <!--  Categories  -->
-                                <ItemsControl Grid.Column="2"
+                            <!--  Categories  -->
+                            <ItemsControl Grid.Column="2"
                                               ItemsSource="{x:Bind Categories}">
-                                    <ItemsControl.ItemsPanel>
-                                        <ItemsPanelTemplate>
-                                            <StackPanel Orientation="Horizontal"/>
-                                        </ItemsPanelTemplate>
-                                    </ItemsControl.ItemsPanel>
-                                    <ItemsControl.ItemTemplate>
-                                        <DataTemplate x:DataType="vm:CategoryViewModel">
-                                            <StackPanel Orientation="Horizontal"
+                                <ItemsControl.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <StackPanel Orientation="Horizontal"/>
+                                    </ItemsPanelTemplate>
+                                </ItemsControl.ItemsPanel>
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate x:DataType="vm:CategoryViewModel">
+                                        <StackPanel Orientation="Horizontal"
                                                         UseLayoutRounding="True"
                                                         VerticalAlignment="Center"
                                                         Margin="0 0 10 0">
-                                                <FontIcon Glyph="{x:Bind IconGlyph}"
+                                            <FontIcon Glyph="{x:Bind IconGlyph}"
                                                           FontFamily="{x:Bind FontFamily}"
                                                           FontSize="12"
                                                           Margin="0 0 3 0">
-                                                    <FontIcon.Foreground>
-                                                        <SolidColorBrush Color="{x:Bind Color, Mode=OneWay}" />
-                                                    </FontIcon.Foreground>
-                                                </FontIcon>
-                                                <TextBlock Text="{x:Bind Name}"
+                                                <FontIcon.Foreground>
+                                                    <SolidColorBrush Color="{x:Bind Color, Mode=OneWay}" />
+                                                </FontIcon.Foreground>
+                                            </FontIcon>
+                                            <TextBlock Text="{x:Bind Name}"
                                                            FontSize="12">
-                                                    <TextBlock.Foreground>
-                                                        <SolidColorBrush Color="{x:Bind Color, Mode=OneWay}" />
-                                                    </TextBlock.Foreground>
-                                                </TextBlock>
-                                            </StackPanel>
-                                        </DataTemplate>
-                                    </ItemsControl.ItemTemplate>
-                                </ItemsControl>
-                                <!--  Publish time  -->
-                                <TextBlock Grid.Column="3"
+                                                <TextBlock.Foreground>
+                                                    <SolidColorBrush Color="{x:Bind Color, Mode=OneWay}" />
+                                                </TextBlock.Foreground>
+                                            </TextBlock>
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                            <!--  Publish time  -->
+                            <TextBlock Grid.Column="3"
                                            HorizontalAlignment="Right"
                                            VerticalAlignment="Center"
                                            FontSize="12"
                                            FontWeight="Light"
                                            Text="{x:Bind PublishTime, Converter={StaticResource DateTimeFormatter}, ConverterParameter=T}"/>
-                            </Grid>
+                        </Grid>
 
-                            <!--  Article post image % content  -->
-                            <Grid Margin="0 5 0 0">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="Auto"/>
-                                    <ColumnDefinition Width="*"/>
-                                </Grid.ColumnDefinitions>
+                        <!--  Article post image % content  -->
+                        <Grid Margin="0 5 0 0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
 
-                                <!--  Article post image  -->  
-                                <Image Grid.Column="0"
+                            <!--  Article post image  -->
+                            <Image Grid.Column="0"
                                        MaxWidth="180"
                                        Margin="0 0 10 0"
                                        HorizontalAlignment="Left"
@@ -147,88 +140,118 @@
                                        Visibility="{x:Bind Path=Image, Converter={StaticResource NullToVisibilityConverter}}"
                                        ToolTipService.ToolTip="{x:Bind Image.Title}"
                                        PointerPressed="ArticlePostImageThumbnail_OnPointerPressed">
-                                    <Image.Source>
-                                        <BitmapImage UriSource="{x:Bind Image.NormalImageUrl}"/>
-                                    </Image.Source>
-                                    <i:Interaction.Behaviors>
-                                        <core:EventTriggerBehavior EventName="PointerPressed">
-                                            <core:EventTriggerBehavior.Actions>
-                                                <core:InvokeCommandAction Command="{x:Bind ShowImagePreviewCommand}"/>
-                                            </core:EventTriggerBehavior.Actions>
-                                        </core:EventTriggerBehavior>
-                                    </i:Interaction.Behaviors>
-                                </Image>
+                                <Image.Source>
+                                    <BitmapImage UriSource="{x:Bind Image.NormalImageUrl}"/>
+                                </Image.Source>
+                                <i:Interaction.Behaviors>
+                                    <core:EventTriggerBehavior EventName="PointerPressed">
+                                        <core:EventTriggerBehavior.Actions>
+                                            <core:InvokeCommandAction Command="{x:Bind ShowImagePreviewCommand}"/>
+                                        </core:EventTriggerBehavior.Actions>
+                                    </core:EventTriggerBehavior>
+                                </i:Interaction.Behaviors>
+                            </Image>
 
-                                <!--  Article post Content  -->
-                                <TextBlock Grid.Column="1"
+                            <!--  Article post Content  -->
+                            <TextBlock Grid.Column="1"
                                            Text="{x:Bind Content}"
                                            TextWrapping="Wrap"
                                            TextAlignment="Justify"
                                            IsTextSelectionEnabled="True"/>
-                            </Grid>
+                        </Grid>
 
-                            <!--  Social post Content  -->
-                            <mtuc:Expander Margin="0 10 0 0"
-                                           HorizontalContentAlignment="Stretch"
-                                           ExpandDirection="Down"
-                                           IsExpanded="False"
-                                           Expanded="Expander_OnExpanded"
-                                           HeaderStyle="{StaticResource CustomExpanderHeaderStyle}"
-                                           Visibility="{x:Bind SocialPostContent, Converter={StaticResource NullToVisibilityConverter}}">
-                                <WebView controls:WebExtensions.HtmlString="{x:Bind SocialPostContent}"
-                                         DefaultBackgroundColor="Transparent"
-                                         Height="100"/>
-                            </mtuc:Expander>
+                        <!--  Social post Content, Tags & Actions button  -->
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
 
-                            <!--  Tags  -->
-                            <ItemsControl ItemsSource="{x:Bind Tags}"
-                                          Visibility="{x:Bind Tags, Converter={StaticResource EmptyCollectionToVisibilityConverter}}"
-                                          Margin="0 10 5 0">
-                                <ItemsControl.ItemsPanel>
-                                    <ItemsPanelTemplate>
-                                        <StackPanel Orientation="Horizontal"/>
-                                    </ItemsPanelTemplate>
-                                </ItemsControl.ItemsPanel>
-                                <ItemsControl.ItemTemplate>
-                                    <DataTemplate x:DataType="vm:TagViewModel">
-                                        <Button UseLayoutRounding="True"
-                                                Margin="0 0 5 0"
-                                                Padding="3"
-                                                Style="{ThemeResource ButtonRevealStyle}"
-                                                FontSize="12">
-                                            <Button.Background>
-                                                <AcrylicBrush TintColor="{ThemeResource SystemAccentColor}"
+                            <StackPanel Grid.Column="0"
+                                        Orientation="Vertical">
+                                <!--  Social post Content  -->
+                                <mtuc:Expander Margin="0 10 0 0"
+                                               HorizontalContentAlignment="Stretch"
+                                               ExpandDirection="Down"
+                                               IsExpanded="False"
+                                               Expanded="Expander_OnExpanded"
+                                               HeaderStyle="{StaticResource CustomExpanderHeaderStyle}"
+                                               Visibility="{x:Bind SocialPostContent, Converter={StaticResource NullToVisibilityConverter}}">
+                                    <WebView controls:WebExtensions.HtmlString="{x:Bind SocialPostContent}"
+                                             DefaultBackgroundColor="Transparent"
+                                             Height="100"/>
+                                </mtuc:Expander>
+
+                                <!--  Tags  -->
+                                <ItemsControl ItemsSource="{x:Bind Tags}"
+                                              Visibility="{x:Bind Tags, Converter={StaticResource EmptyCollectionToVisibilityConverter}}"
+                                              Margin="0 10 5 0">
+                                    <ItemsControl.Template>
+                                        <ControlTemplate>
+                                            <ScrollViewer HorizontalScrollMode="Auto"
+                                                          HorizontalScrollBarVisibility="Hidden"
+                                                          VerticalScrollMode="Disabled"
+                                                          VerticalScrollBarVisibility="Disabled"
+                                                          Padding="{TemplateBinding Padding}">
+                                                <ItemsPresenter />
+                                            </ScrollViewer>
+                                        </ControlTemplate>
+                                    </ItemsControl.Template>
+                                    <ItemsControl.ItemsPanel>
+                                        <ItemsPanelTemplate>
+                                            <StackPanel Orientation="Horizontal"/>
+                                        </ItemsPanelTemplate>
+                                    </ItemsControl.ItemsPanel>
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate x:DataType="vm:TagViewModel">
+                                            <Button UseLayoutRounding="True"
+                                                    Margin="0 0 5 0"
+                                                    Padding="3"
+                                                    Style="{ThemeResource ButtonRevealStyle}"
+                                                    FontSize="12">
+                                                <Button.Background>
+                                                    <AcrylicBrush TintColor="{ThemeResource SystemAccentColor}"
                                                               TintOpacity="0.7"/>
-                                            </Button.Background>
+                                                </Button.Background>
 
-                                            <StackPanel Orientation="Horizontal">
-                                                <FontIcon Glyph="&#xE8EC;"
-                                                          FontSize="12"
-                                                          FontWeight="Medium"
-                                                          Margin="0 0 5 0"/>
-                                                <TextBlock Text="{x:Bind Name}"
-                                                           FontSize="12"
-                                                           FontWeight="Medium"/>
-                                            </StackPanel>
-                                        </Button>
-                                    </DataTemplate>
-                                </ItemsControl.ItemTemplate>
-                            </ItemsControl>
-                        </StackPanel>
+                                                <StackPanel Orientation="Horizontal">
+                                                    <FontIcon Glyph="&#xE8EC;"
+                                                              FontSize="12"
+                                                              FontWeight="Medium"
+                                                              Margin="0 0 5 0"/>
+                                                    <TextBlock Text="{x:Bind Name}"
+                                                               FontSize="12"
+                                                               FontWeight="Medium"/>
+                                                </StackPanel>
+                                            </Button>
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
+                            </StackPanel>
 
-                        <!--  Open in browser button  -->
-                        <Button Grid.Column="2"
-                                x:Uid="ArticlePost_OpenInBrowser"
-                                Command="{x:Bind OpenFullArticleCommand}"
-                                Style="{ThemeResource ButtonRevealStyle}"
-                                Background="Transparent"
-                                Padding="10"
-                                Margin="5 5 0 0"
-                                VerticalAlignment="Bottom"
-                                HorizontalAlignment="Center">
-                            <FontIcon Glyph="&#xE8A7;"/>
-                        </Button>
-                    </Grid>
+                            <Button Grid.Column="1"
+                                    x:Uid="ArticlePost_ActionsButton"
+                                    Margin="5 0 0 0"
+                                    Padding="5 0"
+                                    Style="{ThemeResource ButtonRevealStyle}"
+                                    Background="Transparent"
+                                    FontSize="12"
+                                    VerticalAlignment="Bottom">
+                                <FontIcon Glyph="&#xE10C;"/>
+
+                                <Button.Flyout>
+                                    <MenuFlyout Placement="TopEdgeAlignedRight">
+                                        <MenuFlyoutItem x:Uid="ArticlePost_Actions_OpenInBrowserButton"
+                                                        Command="{x:Bind OpenFullArticleCommand}">
+                                            <MenuFlyoutItem.Icon>
+                                                <FontIcon Glyph="&#xE8A7;" />
+                                            </MenuFlyoutItem.Icon>
+                                        </MenuFlyoutItem>
+                                    </MenuFlyout>
+                                </Button.Flyout>
+                            </Button>
+                        </Grid>
+                    </StackPanel>
                 </DataTemplate>
             </GridView.ItemTemplate>
         </GridView>
@@ -250,8 +273,8 @@
 
         <!--  App Title  -->
         <Grid x:Name="NewsFeedTitleBar"
-              Background="{ThemeResource CustomAcrylicElementBrush}"
-              VerticalAlignment="Top">
+              VerticalAlignment="Top"
+              Background="{ThemeResource CustomAcrylicElementBrush}">
             <StackPanel Orientation="Horizontal">
                 <Image MaxWidth="60"
                        Margin="25 20 5 15"
@@ -304,28 +327,73 @@
                   Grid.ColumnSpan="3"
                   Background="Transparent"/>
 
-            <!--  Close Preview button  -->
-            <Button x:Uid="ImagePreview_CloseButton"
-                    Grid.Row="1"
-                    Grid.Column="0"
-                    Grid.ColumnSpan="3"
-                    Grid.RowSpan="3"
-                    HorizontalAlignment="Right"
-                    VerticalAlignment="Top"
-                    Margin="10 20 20 10"
-                    Padding="15"
-                    Background="Transparent"
-                    Style="{ThemeResource ButtonRevealStyle}"
-                    Click="CloseImagePreviewButton_OnClick">
-                <FontIcon Glyph="&#xE106;" />
-                <i:Interaction.Behaviors>
-                    <core:EventTriggerBehavior EventName="Click">
-                        <core:EventTriggerBehavior.Actions>
-                            <core:InvokeCommandAction Command="{x:Bind ViewModel.SelectedPost.HideImagePreviewCommand}" />
-                        </core:EventTriggerBehavior.Actions>
-                    </core:EventTriggerBehavior>
-                </i:Interaction.Behaviors>
-            </Button>
+            <!--  Close, Info and Open in browser buttons  -->
+            <StackPanel Grid.Row="1"
+                        Grid.Column="0"
+                        Grid.ColumnSpan="3"
+                        Grid.RowSpan="3"
+                        Orientation="Vertical"
+                        HorizontalAlignment="Right"
+                        VerticalAlignment="Top"
+                        Margin="10 20 20 10">
+                <!--  Close  -->
+                <Button x:Uid="ImagePreview_CloseButton"
+                        Padding="10"
+                        Style="{ThemeResource ButtonRevealStyle}"
+                        Background="Transparent"
+                        HorizontalAlignment="Right"
+                        Click="CloseImagePreviewButton_OnClick">
+                    <FontIcon Glyph="&#xE106;"
+                              FontSize="16"/>
+                    <i:Interaction.Behaviors>
+                        <core:EventTriggerBehavior EventName="Click">
+                            <core:EventTriggerBehavior.Actions>
+                                <core:InvokeCommandAction Command="{x:Bind ViewModel.SelectedPost.HideImagePreviewCommand}" />
+                            </core:EventTriggerBehavior.Actions>
+                        </core:EventTriggerBehavior>
+                    </i:Interaction.Behaviors>
+                </Button>
+
+                <!--  Open in browser  -->
+                <Button x:Uid="ImagePreview_OpenInBrowserButton"
+                        Command="{x:Bind ViewModel.SelectedPost.OpenImageInBrowserCommand}"
+                        Margin="0 5 0 0"
+                        Padding="10"
+                        Style="{ThemeResource ButtonRevealStyle}"
+                        Background="Transparent"
+                        HorizontalAlignment="Right">
+                    <FontIcon Glyph="&#xE8A7;"
+                              FontSize="16"/>
+                </Button>
+
+                <!--  Info  -->
+                <Button x:Uid="ImagePreview_ImageInfoButton"
+                        Margin="0 5 0 0"
+                        Padding="10"
+                        Style="{ThemeResource ButtonRevealStyle}"
+                        Background="Transparent"
+                        HorizontalAlignment="Right"
+                        Visibility="{x:Bind ViewModel.SelectedPost.Image.Title, Converter={StaticResource NullToVisibilityConverter}}">
+                    <FontIcon Glyph="&#xE946;"
+                              FontSize="16"/>
+                    <Button.Flyout>
+                        <Flyout Placement="Left"
+                                AreOpenCloseAnimationsEnabled="True">
+                            <Flyout.FlyoutPresenterStyle>
+                                <Style TargetType="FlyoutPresenter">
+                                    <Setter Property="ScrollViewer.HorizontalScrollMode" Value="Disabled" />
+                                    <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Disabled" />
+                                    <Setter Property="CornerRadius" Value="4"/>
+                                </Style>
+                            </Flyout.FlyoutPresenterStyle>
+
+                            <TextBlock Text="{x:Bind ViewModel.SelectedPost.Image.Title}"
+                                       TextWrapping="Wrap"
+                                       Margin="5"/>
+                        </Flyout>
+                    </Button.Flyout>
+                </Button>
+            </StackPanel>
 
             <!--  Image  -->
             <ScrollViewer x:Name="ZoomPanel" 

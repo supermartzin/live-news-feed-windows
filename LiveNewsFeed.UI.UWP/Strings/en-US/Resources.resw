@@ -117,7 +117,13 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="ArticlePost_OpenInBrowser.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
+  <data name="ArticlePost_ActionsButton.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
+    <value>Actions</value>
+  </data>
+  <data name="ArticlePost_Actions_OpenInBrowserButton.Text" xml:space="preserve">
+    <value>Open in Browser</value>
+  </data>
+  <data name="ArticlePost_Actions_OpenInBrowserButton.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
     <value>Open in Browser</value>
   </data>
   <data name="CategoryEnum_Arts" xml:space="preserve">
@@ -146,6 +152,12 @@
   </data>
   <data name="ImagePreview_CloseButton.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
     <value>Close preview</value>
+  </data>
+  <data name="ImagePreview_ImageInfoButton.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
+    <value>Show image info</value>
+  </data>
+  <data name="ImagePreview_OpenInBrowserButton.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
+    <value>Open in Browser</value>
   </data>
   <data name="NewsFeed_LoadingLabel.Text" xml:space="preserve">
     <value>Loading posts...</value>
