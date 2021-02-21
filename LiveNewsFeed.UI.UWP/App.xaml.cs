@@ -8,6 +8,7 @@ using Windows.ApplicationModel.Activation;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
+using Microsoft.Toolkit.Uwp.UI;
 using Microsoft.Extensions.DependencyInjection;
 
 using LiveNewsFeed.DataSource.Common;
@@ -36,6 +37,7 @@ namespace LiveNewsFeed.UI.UWP
             ServiceLocator.Initialize();
 
             CultureInfo.CurrentUICulture = CultureInfo.GetCultureInfo("sk-sk");
+            ImageCache.Instance.MaxMemoryCacheCount = 50;
 
             LoadDataSources();
 

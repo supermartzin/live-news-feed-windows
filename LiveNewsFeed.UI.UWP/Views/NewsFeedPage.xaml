@@ -35,7 +35,7 @@
         <GridView SelectionMode="None"
                   Padding="0 100 0 40"
                   Margin="0 0 0 5"
-                  Visibility="{x:Bind Path=ViewModel.PostsLoading,
+                  Visibility="{x:Bind Path=ViewModel.AllPostsLoading,
                                       Mode=TwoWay,
                                       Converter={StaticResource InverseBoolToVisibilityConverter}}"
                   ItemsSource="{Binding Source={StaticResource PostsViewSource}}">
@@ -175,6 +175,7 @@
                                                ExpandDirection="Down"
                                                IsExpanded="False"
                                                Expanded="Expander_OnExpanded"
+                                               Collapsed="Expander_OnCollapsed"
                                                HeaderStyle="{StaticResource CustomExpanderHeaderStyle}"
                                                Visibility="{x:Bind SocialPostContent, Converter={StaticResource NullToVisibilityConverter}}">
                                     <WebView controls:WebExtensions.HtmlString="{x:Bind SocialPostContent}"
@@ -258,7 +259,7 @@
 
         <!--  Loading placeholder  -->
         <StackPanel Orientation="Vertical"
-                    Visibility="{x:Bind Path=ViewModel.PostsLoading,
+                    Visibility="{x:Bind Path=ViewModel.AllPostsLoading,
                                         Mode=TwoWay,
                                         Converter={StaticResource BoolToVisibilityConverter}}"
                     VerticalAlignment="Center"
@@ -284,6 +285,12 @@
                            FontWeight="ExtraBold"
                            Margin="5 30 25 20" />
             </StackPanel>
+            <muxc:ProgressBar VerticalAlignment="Bottom"
+                              IsIndeterminate="True"
+                              Background="Transparent"
+                              Visibility="{x:Bind Path=ViewModel.NewPostsLoading,
+                                                  Mode=OneWay,
+                                                  Converter={StaticResource BoolToVisibilityConverter}}"/>
         </Grid>
 
         <!--  Bottom Menu bar  -->

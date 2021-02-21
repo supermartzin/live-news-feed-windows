@@ -2,11 +2,8 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using Windows.Data.Html;
-using Windows.UI.Xaml.Media;
+using System.Threading.Tasks;
 using GalaSoft.MvvmLight.Command;
-
-using LiveNewsFeed.Models;
 
 using LiveNewsFeed.UI.UWP.Common;
 using LiveNewsFeed.UI.UWP.Managers;
@@ -17,13 +14,26 @@ namespace LiveNewsFeed.UI.UWP.ViewModels
     {
         private readonly IDataSourcesManager _dataSourcesManager;
 
-        private bool _postsLoading;
-        public bool PostsLoading
+        private bool _allPostsLoading;
+        public bool AllPostsLoading
         {
-            get => _postsLoading;
+            get => _allPostsLoading;
             set
             {
-                var changed = Set(ref _postsLoading, value);
+                var changed = Set(ref _allPostsLoading, value);
+
+                if (changed)
+                    ReevaluateCommands();
+            }
+        }
+
+        private bool _newPostsLoading;
+        public bool NewPostsLoading
+        {
+            get => _newPostsLoading;
+            set
+            {
+                var changed = Set(ref _newPostsLoading, value);
 
                 if (changed)
                     ReevaluateCommands();
@@ -57,18 +67,20 @@ namespace LiveNewsFeed.UI.UWP.ViewModels
 
         private void LoadPosts()
         {
-            PostsLoading = true;
-
+            AllPostsLoading = true;
+            
             _dataSourcesManager.GetLatestPostsFromAllAsync()
                                .ContinueWith(task => InvokeOnUi(() =>
                                {
-                                   var posts = task.Result.Select(Helpers.ToViewModel).ToList();
+                                   var posts = task.Result
+                                                                              .Select(Helpers.ToViewModel)
+                                                                              .ToList();
 
                                    RegisterEvents(posts);
 
                                    ArticlePosts = new ObservableCollection<NewsArticlePostViewModel>(posts);
 
-                                   PostsLoading = false;
+                                   AllPostsLoading = false;
                                }));
         }
 
@@ -106,20 +118,27 @@ namespace LiveNewsFeed.UI.UWP.ViewModels
 
         private void ReloadArticlesManually()
         {
-            PostsLoading = true;
+            NewPostsLoading = true;
 
             _dataSourcesManager.GetLatestPostsSinceLastUpdateAsync()
-                .ContinueWith(task => InvokeOnUi(() =>
-                {
-                    foreach (var post in task.Result)
-                    {
-                        ArticlePosts.Add(Helpers.ToViewModel(post));
-                    }
+                               .ContinueWith(task => InvokeOnUi(() =>
+                               {
+                                   var newPosts = task.Result
+                                                                                 .Select(Helpers.ToViewModel)
+                                                                                 .OrderBy(post => post.PublishTime)
+                                                                                 .ToList();
 
-                    PostsLoading = false;
-                }));
+                                   RegisterEvents(newPosts);
+
+                                   foreach (var post in newPosts)
+                                   {
+                                       ArticlePosts.Insert(0, post);
+                                   }
+
+                                   NewPostsLoading = false;
+                               }));
         }
 
-        private bool CanReloadArticlesManually() => !PostsLoading;
+        private bool CanReloadArticlesManually() => !NewPostsLoading;
     }
 }

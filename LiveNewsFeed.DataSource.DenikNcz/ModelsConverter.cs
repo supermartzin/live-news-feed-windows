@@ -60,8 +60,8 @@ namespace LiveNewsFeed.DataSource.DenikNcz
         }
 
         public static Image? ToImage(ImageDTO? imageDto) => imageDto != null
-            ? new Image(HttpUtility.HtmlDecode(imageDto.Title),
-                        new Uri(imageDto.NormalSizeUrl),
+            ? new Image(new Uri(imageDto.NormalSizeUrl),
+                        HttpUtility.HtmlDecode(imageDto.Title),
                         imageDto.LargeSizeUrl != null ? new Uri(imageDto.LargeSizeUrl) : null)
             : default;
         

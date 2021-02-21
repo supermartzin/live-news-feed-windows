@@ -62,7 +62,9 @@ namespace LiveNewsFeed.UI.UWP.Common
                                       articlePost.Tags.Select(tag => new TagViewModel(tag.Name)));
 
         private static ImageViewModel? ToImageViewModel(Image? image) => image != null
-            ? new ImageViewModel(image.Url, image.Title, image.LargeSizeUrl)
+            ? new ImageViewModel(image.Url,
+                                 image.Title != null ? HtmlUtilities.ConvertToText(image.Title).Trim() : default,
+                                 image.LargeSizeUrl)
             : default;
 
         private static string? SanitizeSocialPostContent(string? socialPostContent) => socialPostContent != null

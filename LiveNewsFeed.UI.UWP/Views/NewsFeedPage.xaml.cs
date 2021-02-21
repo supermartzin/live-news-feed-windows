@@ -79,6 +79,16 @@ namespace LiveNewsFeed.UI.UWP.Views
             }
         }
 
+        private void Expander_OnCollapsed(object sender, EventArgs e)
+        {
+            var expander = sender as Expander;
+
+            if (expander?.Content is WebView webView)
+            {
+                webView.Refresh();
+            }
+        }
+
         private void SetTitleBarButtonColors()
         {
             // set buttons foreground

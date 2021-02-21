@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.Toolkit.Uwp.UI;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Media.Imaging;
 
@@ -10,22 +11,18 @@ using LiveNewsFeed.DataSource.Common;
 using LiveNewsFeed.Models;
 
 using LiveNewsFeed.UI.UWP.Common;
-using Microsoft.Toolkit.Uwp.UI;
 
 namespace LiveNewsFeed.UI.UWP.Managers
 {
     public class DataSourcesManager : IDataSourcesManager
     {
         private readonly Dictionary<string, NewsFeedDataSource> _dataSources;
+        private readonly Dictionary<string, DateTime> _dataSourcesLastPostPublishTimes;
         
-        private DateTime _lastUpdate;
-
         public DataSourcesManager()
         {
             _dataSources = new Dictionary<string, NewsFeedDataSource>();
-            _lastUpdate = DateTime.MinValue;
-
-            ImageCache.Instance.MaxMemoryCacheCount = 50;
+            _dataSourcesLastPostPublishTimes = new Dictionary<string, DateTime>();
         }
 
         public void RegisterDataSource(NewsFeedDataSource newsFeedDataSource)
@@ -61,28 +58,47 @@ namespace LiveNewsFeed.UI.UWP.Managers
             return _dataSources.ContainsKey(name) ? _dataSources[name] : default;
         }
 
-        public async Task<IList<NewsArticlePost>> GetLatestPostsFromAllAsync() => await GetPostsAsync().ConfigureAwait(false);
-
-        public async Task<IList<NewsArticlePost>> GetLatestPostsSinceLastUpdateAsync()
-        {
-            if (_lastUpdate == DateTime.MinValue)
-                return await GetLatestPostsFromAllAsync().ConfigureAwait(false);
-
-            return await GetPostsAsync(_lastUpdate).ConfigureAwait(false);
-        }
-        
-
-        private async Task<IList<NewsArticlePost>> GetPostsAsync(DateTime? after = null)
+        public async Task<IList<NewsArticlePost>> GetLatestPostsFromAllAsync()
         {
             var posts = new List<NewsArticlePost>();
 
             foreach (var dataSource in _dataSources.Values)
             {
-                posts.AddRange(await dataSource.NewsFeed.GetPostsAsync(after: after).ConfigureAwait(false));
+                var newPosts = await dataSource.NewsFeed.GetPostsAsync().ConfigureAwait(false);
+
+                // set last update time
+                var latestPost = newPosts.FirstOrDefault();
+                if (latestPost != null)
+                    _dataSourcesLastPostPublishTimes[dataSource.Name] = latestPost.PublishTime;
+
+                posts.AddRange(newPosts);
             }
 
-            _lastUpdate = DateTime.Now;
+            // order and return posts
+            return posts.OrderByDescending(post => post.PublishTime).ToList();
+        }
 
+        public async Task<IList<NewsArticlePost>> GetLatestPostsSinceLastUpdateAsync()
+        {
+            var posts = new List<NewsArticlePost>();
+
+            foreach (var dataSource in _dataSources.Values)
+            {
+                // get last update time
+                DateTime? lastPostPublishTime = _dataSourcesLastPostPublishTimes[dataSource.Name];
+                if (lastPostPublishTime == DateTime.MinValue)
+                    lastPostPublishTime = default;
+
+                var newPosts = await dataSource.NewsFeed.GetPostsAsync(after: lastPostPublishTime).ConfigureAwait(false);
+
+                // set last update time
+                var latestPost = newPosts.FirstOrDefault();
+                if (latestPost != null)
+                    _dataSourcesLastPostPublishTimes[dataSource.Name] = latestPost.PublishTime;
+
+                posts.AddRange(newPosts);
+            }
+            
             // order and return posts
             return posts.OrderByDescending(post => post.PublishTime).ToList();
         }
