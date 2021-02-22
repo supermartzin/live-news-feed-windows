@@ -177,4 +177,16 @@
   <data name="NewsFeed_RefreshFeedButton.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
     <value>Aktualizovať články</value>
   </data>
+  <data name="NewsFeed_Settings_NotificationsOff.Text" xml:space="preserve">
+    <value>Upozornenia | OFF</value>
+  </data>
+  <data name="NewsFeed_Settings_NotificationsOn.Text" xml:space="preserve">
+    <value>Upozornenia | ON</value>
+  </data>
+  <data name="NewsFeed_Settings_OnlyImportantOff.Text" xml:space="preserve">
+    <value>Iba dôležité | OFF</value>
+  </data>
+  <data name="NewsFeed_Settings_OnlyImportantOn.Text" xml:space="preserve">
+    <value>Iba dôležité | ON</value>
+  </data>
 </root>

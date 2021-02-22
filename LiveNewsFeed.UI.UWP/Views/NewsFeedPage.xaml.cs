@@ -16,10 +16,12 @@ namespace LiveNewsFeed.UI.UWP.Views
 {
     public sealed partial class NewsFeedPage : BasePage
     {
-        public NewsFeedPageViewModel ViewModel => ServiceLocator.Container.GetRequiredService<NewsFeedPageViewModel>();
+        public NewsFeedPageViewModel ViewModel { get; }
         
         public NewsFeedPage()
         {
+            ViewModel = ServiceLocator.Container.GetRequiredService<NewsFeedPageViewModel>();
+
             InitializeComponent();
 
             SetTitleBarProperties();

@@ -177,4 +177,16 @@
   <data name="NewsFeed_RefreshFeedButton.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
     <value>Refresh News Feed</value>
   </data>
+  <data name="NewsFeed_Settings_NotificationsOff.Text" xml:space="preserve">
+    <value>Notifications | OFF</value>
+  </data>
+  <data name="NewsFeed_Settings_NotificationsOn.Text" xml:space="preserve">
+    <value>Notifications | ON</value>
+  </data>
+  <data name="NewsFeed_Settings_OnlyImportantOff.Text" xml:space="preserve">
+    <value>Only important | OFF</value>
+  </data>
+  <data name="NewsFeed_Settings_OnlyImportantOn.Text" xml:space="preserve">
+    <value>Only important | ON</value>
+  </data>
 </root>

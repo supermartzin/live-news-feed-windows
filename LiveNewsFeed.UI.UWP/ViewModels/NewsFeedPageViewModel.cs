@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Threading.Tasks;
 using GalaSoft.MvvmLight.Command;
 
 using LiveNewsFeed.UI.UWP.Common;
@@ -39,6 +38,13 @@ namespace LiveNewsFeed.UI.UWP.ViewModels
                     ReevaluateCommands();
             }
         }
+        
+        private QuickSettingsViewModel _quickSettings;
+        public QuickSettingsViewModel QuickSettings
+        {
+            get => _quickSettings;
+            set => Set(ref _quickSettings, value);
+        }
 
         private ObservableCollection<NewsArticlePostViewModel> _articlePosts;
         public ObservableCollection<NewsArticlePostViewModel> ArticlePosts
@@ -56,9 +62,11 @@ namespace LiveNewsFeed.UI.UWP.ViewModels
 
         public RelayCommand RefreshNewsFeedCommand { get; private set; }
 
-        public NewsFeedPageViewModel(IDataSourcesManager dataSourcesManager)
+        public NewsFeedPageViewModel(IDataSourcesManager dataSourcesManager,
+                                     QuickSettingsViewModel quickSettingsViewModel)
         {
             _dataSourcesManager = dataSourcesManager ?? throw new ArgumentNullException(nameof(dataSourcesManager));
+            _quickSettings = quickSettingsViewModel ?? throw new ArgumentNullException(nameof(quickSettingsViewModel));
 
             InitializeCommands();
             LoadPosts();
@@ -125,15 +133,16 @@ namespace LiveNewsFeed.UI.UWP.ViewModels
                                {
                                    var newPosts = task.Result
                                                                                  .Select(Helpers.ToViewModel)
-                                                                                 .OrderBy(post => post.PublishTime)
                                                                                  .ToList();
-
+                                   
                                    RegisterEvents(newPosts);
 
                                    foreach (var post in newPosts)
                                    {
                                        ArticlePosts.Insert(0, post);
                                    }
+
+                                   ArticlePosts .SortDescending(post => post.PublishTime);
 
                                    NewPostsLoading = false;
                                }));
