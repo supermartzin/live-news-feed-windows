@@ -18,7 +18,7 @@ namespace LiveNewsFeed.UI.UWP.Common
 
         private static readonly Dictionary<string, ImageBrush> NewsFeedLogos = new();
         private static readonly Dictionary<Category, CategoryViewModel> CategoriesMap = new();
-
+        
         public static void CreateCategoriesMap()
         {
             CategoriesMap[Category.Local] = new CategoryViewModel(Category.Local, "CategoryLocalColor", "\uE10F", SegoeMdl2AssetsFontFamily);

@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Linq;
 using GalaSoft.MvvmLight.Command;
+using Microsoft.Toolkit.Uwp.UI;
 
 using LiveNewsFeed.UI.UWP.Common;
 using LiveNewsFeed.UI.UWP.Managers;
@@ -46,13 +46,6 @@ namespace LiveNewsFeed.UI.UWP.ViewModels
             set => Set(ref _quickSettings, value);
         }
 
-        private ObservableCollection<NewsArticlePostViewModel> _articlePosts;
-        public ObservableCollection<NewsArticlePostViewModel> ArticlePosts
-        {
-            get => _articlePosts;
-            set => Set(ref _articlePosts, value);
-        }
-
         private NewsArticlePostViewModel? _selectedPost;
         public NewsArticlePostViewModel? SelectedPost
         {
@@ -60,6 +53,8 @@ namespace LiveNewsFeed.UI.UWP.ViewModels
             set => Set(ref _selectedPost, value);
         }
 
+        public AdvancedCollectionView ArticlePosts { get; }
+        
         public RelayCommand RefreshNewsFeedCommand { get; private set; }
 
         public NewsFeedPageViewModel(IDataSourcesManager dataSourcesManager,
@@ -67,6 +62,9 @@ namespace LiveNewsFeed.UI.UWP.ViewModels
         {
             _dataSourcesManager = dataSourcesManager ?? throw new ArgumentNullException(nameof(dataSourcesManager));
             _quickSettings = quickSettingsViewModel ?? throw new ArgumentNullException(nameof(quickSettingsViewModel));
+
+            ArticlePosts = new AdvancedCollectionView(new List<NewsArticlePostViewModel>(), true);
+            ArticlePosts.SortDescriptions.Add(new SortDescription(nameof(NewsArticlePostViewModel.PublishTime), SortDirection.Descending));
 
             InitializeCommands();
             LoadPosts();
@@ -86,7 +84,13 @@ namespace LiveNewsFeed.UI.UWP.ViewModels
 
                                    RegisterEvents(posts);
 
-                                   ArticlePosts = new ObservableCollection<NewsArticlePostViewModel>(posts);
+                                   using (ArticlePosts.DeferRefresh())
+                                   {
+                                       foreach (var post in posts)
+                                       {
+                                           ArticlePosts.Add(post);
+                                       }
+                                   }
 
                                    AllPostsLoading = false;
                                }));
@@ -139,10 +143,8 @@ namespace LiveNewsFeed.UI.UWP.ViewModels
 
                                    foreach (var post in newPosts)
                                    {
-                                       ArticlePosts.Insert(0, post);
+                                       ArticlePosts.Add(post);
                                    }
-
-                                   ArticlePosts .SortDescending(post => post.PublishTime);
 
                                    NewPostsLoading = false;
                                }));

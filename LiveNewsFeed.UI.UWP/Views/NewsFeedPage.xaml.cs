@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using Windows.ApplicationModel.Core;
 using Windows.UI;
@@ -11,6 +12,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 using LiveNewsFeed.UI.UWP.Common;
 using LiveNewsFeed.UI.UWP.ViewModels;
+using Microsoft.Toolkit.Uwp.UI.Extensions;
 
 namespace LiveNewsFeed.UI.UWP.Views
 {
@@ -60,8 +62,23 @@ namespace LiveNewsFeed.UI.UWP.Views
             ZoomPanel.ChangeView(0, 0, 1);
         }
 
+        private void SetTitleBarButtonColors()
+        {
+            // set buttons foreground
+            var titleBar = ApplicationView.GetForCurrentView().TitleBar;
+            titleBar.ButtonForegroundColor = titleBar.ButtonHoverForegroundColor = (Color?)Application.Current.Resources["TitleBarButtonsForegroundColor"];
+        }
+
         #region Event handlers
-        
+
+        private void NewsFeed_OnScrollViewChanged(object sender, ScrollViewerViewChangedEventArgs e)
+        {
+            if (sender is ScrollViewer scrollViewer)
+            {
+                NewsFeed.SetValue(Controls.ScrollViewerExtensions.VerticalScrollOffsetProperty, scrollViewer.VerticalOffset);
+            }
+        }
+
         private async void Expander_OnExpanded(object sender, EventArgs e)
         {
             var expander = sender as Expander;
@@ -91,13 +108,6 @@ namespace LiveNewsFeed.UI.UWP.Views
             }
         }
 
-        private void SetTitleBarButtonColors()
-        {
-            // set buttons foreground
-            var titleBar = ApplicationView.GetForCurrentView().TitleBar;
-            titleBar.ButtonForegroundColor = titleBar.ButtonHoverForegroundColor = (Color?) Application.Current.Resources["TitleBarButtonsForegroundColor"];
-        }
-
         private void CloseImagePreviewButton_OnClick(object sender, RoutedEventArgs e)
         {
             ImagePreviewClosed();
@@ -111,6 +121,12 @@ namespace LiveNewsFeed.UI.UWP.Views
         private void ArticlePostImageThumbnail_OnPointerPressed(object sender, PointerRoutedEventArgs eventArgs)
         {
             ImagePreviewOpened();
+        }
+
+        private void BackToTopButton_OnClick(object sender, RoutedEventArgs e)
+        {
+            // scroll to top
+            NewsFeed.FindDescendant<ScrollViewer>()?.ChangeView(0, 0, 1);
         }
 
         #endregion

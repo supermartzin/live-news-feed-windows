@@ -159,6 +159,9 @@
   <data name="ImagePreview_OpenInBrowserButton.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
     <value>Open in Browser</value>
   </data>
+  <data name="NewsFeed_BackToTopButton.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
+    <value>Back to Top</value>
+  </data>
   <data name="NewsFeed_LoadingLabel.Text" xml:space="preserve">
     <value>Loading posts...</value>
   </data>

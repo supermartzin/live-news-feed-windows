@@ -135,10 +135,11 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Common\Extensions.cs" />
     <Compile Include="Common\Helpers.cs" />
     <Compile Include="Common\ServiceLocator.cs" />
-    <Compile Include="Common\ViewModelBase.cs" />
+    <Compile Include="Controls\CustomGridView.cs" />
+    <Compile Include="Controls\ScrollViewerExtensions.cs" />
+    <Compile Include="ViewModels\ViewModelBase.cs" />
     <Compile Include="Controls\WebExtensions.cs" />
     <Compile Include="Managers\DataSourcesManager.cs" />
     <Compile Include="Managers\IDataSourcesManager.cs" />
@@ -271,6 +272,9 @@
     <PackageReference Include="MvvmLightLibs">
       <Version>5.4.1.1</Version>
     </PackageReference>
+    <PackageReference Include="NLog.Extensions.Logging">
+      <Version>1.7.0</Version>
+    </PackageReference>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\LiveNewsFeed.DataSource.Common\LiveNewsFeed.DataSource.Common.csproj">
@@ -296,7 +300,11 @@
   <ItemGroup>
     <PRIResource Include="Strings\sk-SK\Resources.resw" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <None Include="NLog.config">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>
   </PropertyGroup>

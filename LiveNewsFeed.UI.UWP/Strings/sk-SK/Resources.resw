@@ -159,6 +159,9 @@
   <data name="ImagePreview_OpenInBrowserButton.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
     <value>Otvoriť v prehliadači</value>
   </data>
+  <data name="NewsFeed_BackToTopButton.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
+    <value>Späť na začiatok</value>
+  </data>
   <data name="NewsFeed_LoadingLabel.Text" xml:space="preserve">
     <value>Načítavam články...</value>
   </data>

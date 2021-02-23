@@ -6,7 +6,7 @@ using Windows.UI.Core;
 using Windows.UI.Xaml;
 using Microsoft.Toolkit.Uwp.UI.Helpers;
 
-namespace LiveNewsFeed.UI.UWP.Common
+namespace LiveNewsFeed.UI.UWP.ViewModels
 {
     public abstract class ViewModelBase : GalaSoft.MvvmLight.ViewModelBase
     {

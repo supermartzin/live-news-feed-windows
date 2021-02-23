@@ -3,7 +3,7 @@ using Windows.UI.Xaml.Controls;
 
 namespace LiveNewsFeed.UI.UWP.Controls
 {
-    public class WebExtensions
+    public class WebExtensions : DependencyObject
     {
         public static readonly DependencyProperty HtmlStringProperty = DependencyProperty.RegisterAttached("HtmlString", typeof(string), typeof(WebExtensions), new PropertyMetadata("", OnHtmlStringChanged));
 

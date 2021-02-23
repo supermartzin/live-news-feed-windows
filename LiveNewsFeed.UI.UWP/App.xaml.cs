@@ -18,6 +18,7 @@ using LiveNewsFeed.DataSource.DennikNsk;
 using LiveNewsFeed.UI.UWP.Common;
 using LiveNewsFeed.UI.UWP.Managers;
 using LiveNewsFeed.UI.UWP.Views;
+using Microsoft.Extensions.Logging;
 using UnhandledExceptionEventArgs = Windows.UI.Xaml.UnhandledExceptionEventArgs;
 
 namespace LiveNewsFeed.UI.UWP
@@ -125,10 +126,9 @@ namespace LiveNewsFeed.UI.UWP
         private static void LoadDataSources()
         {
             var manager = ServiceLocator.Container.GetRequiredService<IDataSourcesManager>();
-            var httpClient = ServiceLocator.Container.GetRequiredService<HttpClient>();
 
-            manager.RegisterDataSource(new NewsFeedDataSource(new DennikNskNewsFeed(httpClient), new Uri("ms-appx:///Assets/Logos/denniknsk-logo.png")));
-            manager.RegisterDataSource(new NewsFeedDataSource(new DenikNczNewsFeed(httpClient), new Uri("ms-appx:///Assets/Logos/denikncz-logo.jpg")));
+            manager.RegisterDataSource(new NewsFeedDataSource(ServiceLocator.Container.GetRequiredService<DennikNskNewsFeed>(), new Uri("ms-appx:///Assets/Logos/denniknsk-logo.png")));
+            manager.RegisterDataSource(new NewsFeedDataSource(ServiceLocator.Container.GetRequiredService<DenikNczNewsFeed>(), new Uri("ms-appx:///Assets/Logos/denikncz-logo.jpg")));
         }
     }
 }

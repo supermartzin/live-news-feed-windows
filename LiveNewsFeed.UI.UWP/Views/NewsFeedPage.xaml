@@ -16,6 +16,7 @@
                 mc:Ignorable="d"
                 Background="{ThemeResource CustomAcrylicBackgroundBrush}"
                 ext:TitleBarExtensions.ButtonBackgroundColor="Transparent"
+                NavigationCacheMode="Enabled"
                 DataContext="{x:Bind ViewModel}">
 
     <Page.Resources>
@@ -26,12 +27,6 @@
     </Page.Resources>
 
     <Grid>
-        <Grid.Resources>
-            <CollectionViewSource x:Key="PostsViewSource"
-                                  IsSourceGrouped="False"
-                                  Source="{x:Bind ViewModel.ArticlePosts, Mode=OneWay}"/>
-        </Grid.Resources>
-
         <VisualStateManager.VisualStateGroups>
             <VisualStateGroup>
                 <VisualState>
@@ -73,19 +68,38 @@
                     </VisualState.Setters>
                 </VisualState>
             </VisualStateGroup>
+            <VisualStateGroup>
+                <VisualState>
+                    <VisualState.StateTriggers>
+                        <triggers:CompareStateTrigger Value="{Binding Path=(controls:ScrollViewerExtensions.VerticalScrollOffset), ElementName=NewsFeed}" To="100" Comparison="LessThanOrEqual" />
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+                        <Setter Target="BackToTopButton.Visibility" Value="Collapsed" />
+                    </VisualState.Setters>
+                </VisualState>
+                <VisualState>
+                    <VisualState.StateTriggers>
+                        <triggers:CompareStateTrigger Value="{Binding Path=(controls:ScrollViewerExtensions.VerticalScrollOffset), ElementName=NewsFeed}" To="0" Comparison="GreaterThan" />
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+                        <Setter Target="BackToTopButton.Visibility" Value="Visible" />
+                    </VisualState.Setters>
+                </VisualState>
+            </VisualStateGroup>
         </VisualStateManager.VisualStateGroups>
 
         <!--  News Feed  -->
-        <GridView SelectionMode="None"
-                  Padding="0 100 0 40"
-                  Visibility="{x:Bind Path=ViewModel.AllPostsLoading,
-                                      Mode=TwoWay,
-                                      Converter={StaticResource InverseBoolToVisibilityConverter}}"
-                  ItemsSource="{Binding Source={StaticResource PostsViewSource}}">
+        <controls:CustomGridView x:Name="NewsFeed"
+                                 SelectionMode="None"
+                                 Padding="0 100 0 40"
+                                 Visibility="{x:Bind Path=ViewModel.AllPostsLoading,
+                                                     Mode=TwoWay,
+                                                     Converter={StaticResource InverseBoolToVisibilityConverter}}"
+                                 ItemsSource="{x:Bind ViewModel.ArticlePosts}"
+                                 ScrollViewChanged="NewsFeed_OnScrollViewChanged">
             <GridView.ItemsPanel>
                 <ItemsPanelTemplate>
-                    <ItemsStackPanel Orientation="Vertical"
-                                     ItemsUpdatingScrollMode="KeepItemsInView"/>
+                    <ItemsStackPanel Orientation="Vertical"/>
                 </ItemsPanelTemplate>
             </GridView.ItemsPanel>
 
@@ -305,7 +319,28 @@
                     </StackPanel>
                 </DataTemplate>
             </GridView.ItemTemplate>
-        </GridView>
+        </controls:CustomGridView>
+
+        <!--  'Back to Top' Button  -->
+        <Button x:Name="BackToTopButton"
+                x:Uid="NewsFeed_BackToTopButton"
+                CornerRadius="100"
+                HorizontalAlignment="Right"
+                VerticalAlignment="Bottom"                
+                UseLayoutRounding="True"
+                Padding="15"
+                Margin="0 0 25 60"
+                BorderThickness="2"
+                BorderBrush="{ThemeResource SystemControlBackgroundAccentBrush}"
+                Style="{ThemeResource AccentButtonStyle}"
+                Click="BackToTopButton_OnClick">
+            <Button.Background>
+                <AcrylicBrush BackgroundSource="Backdrop"
+                              TintOpacity="0.75"
+                              TintColor="{ThemeResource SystemAccentColor}"/>
+            </Button.Background>
+            <FontIcon Glyph="&#xE110;" />
+        </Button>
 
         <!--  Loading placeholder  -->
         <StackPanel Orientation="Vertical"
@@ -365,8 +400,8 @@
                               IsIndeterminate="True"
                               Background="Transparent"
                               Visibility="{x:Bind Path=ViewModel.NewPostsLoading,
-                                                              Mode=OneWay,
-                                                              Converter={StaticResource BoolToVisibilityConverter}}"/>
+                                                  Mode=OneWay,
+                                                  Converter={StaticResource BoolToVisibilityConverter}}"/>
         </Grid>
 
         <!--  Article Image preview overlay  -->
