@@ -11,6 +11,7 @@
                 xmlns:media="using:Microsoft.Toolkit.Uwp.UI.Media"
                 xmlns:triggers="using:Microsoft.Toolkit.Uwp.UI.Triggers"
                 xmlns:controls="using:LiveNewsFeed.UI.UWP.Controls"
+                xmlns:animations="using:Microsoft.Toolkit.Uwp.UI.Animations"
                 xmlns:core="using:Microsoft.Xaml.Interactions.Core"
                 xmlns:views="using:LiveNewsFeed.UI.UWP.Views"
                 mc:Ignorable="d"
@@ -340,6 +341,12 @@
                               TintColor="{ThemeResource SystemAccentColor}"/>
             </Button.Background>
             <FontIcon Glyph="&#xE110;" />
+            <animations:Implicit.ShowAnimations>
+                <animations:OpacityAnimation Duration="0:0:0.5" From="0" To="1" />
+            </animations:Implicit.ShowAnimations>
+            <animations:Implicit.HideAnimations>
+                <animations:OpacityAnimation Duration="0:0:0.5" From="1" To="0" />
+            </animations:Implicit.HideAnimations>
         </Button>
 
         <!--  Loading placeholder  -->
