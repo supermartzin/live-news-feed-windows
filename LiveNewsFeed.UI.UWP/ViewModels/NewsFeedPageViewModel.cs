@@ -141,9 +141,15 @@ namespace LiveNewsFeed.UI.UWP.ViewModels
                                    
                                    RegisterEvents(newPosts);
 
-                                   foreach (var post in newPosts)
+                                   if (newPosts.Count > 0)
                                    {
-                                       ArticlePosts.Add(post);
+                                       using (ArticlePosts.DeferRefresh())
+                                       {
+                                           foreach (var post in newPosts)
+                                           {
+                                               ArticlePosts.Add(post);
+                                           }
+                                       }
                                    }
 
                                    NewPostsLoading = false;

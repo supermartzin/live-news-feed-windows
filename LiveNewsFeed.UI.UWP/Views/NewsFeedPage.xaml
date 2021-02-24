@@ -96,8 +96,7 @@
                                  Visibility="{x:Bind Path=ViewModel.AllPostsLoading,
                                                      Mode=TwoWay,
                                                      Converter={StaticResource InverseBoolToVisibilityConverter}}"
-                                 ItemsSource="{x:Bind ViewModel.ArticlePosts}"
-                                 ScrollViewChanged="NewsFeed_OnScrollViewChanged">
+                                 ItemsSource="{x:Bind ViewModel.ArticlePosts}">
             <GridView.ItemsPanel>
                 <ItemsPanelTemplate>
                     <ItemsStackPanel Orientation="Vertical"/>
@@ -333,20 +332,28 @@
                 Margin="0 0 25 60"
                 BorderThickness="2"
                 BorderBrush="{ThemeResource SystemControlBackgroundAccentBrush}"
-                Style="{ThemeResource AccentButtonStyle}"
-                Click="BackToTopButton_OnClick">
+                Style="{ThemeResource AccentButtonStyle}">
             <Button.Background>
                 <AcrylicBrush BackgroundSource="Backdrop"
                               TintOpacity="0.75"
                               TintColor="{ThemeResource SystemAccentColor}"/>
             </Button.Background>
+            
             <FontIcon Glyph="&#xE110;" />
+
             <animations:Implicit.ShowAnimations>
                 <animations:OpacityAnimation Duration="0:0:0.5" From="0" To="1" />
             </animations:Implicit.ShowAnimations>
             <animations:Implicit.HideAnimations>
                 <animations:OpacityAnimation Duration="0:0:0.5" From="1" To="0" />
             </animations:Implicit.HideAnimations>
+
+            <i:Interaction.Behaviors>
+                <core:EventTriggerBehavior EventName="Click">
+                    <core:CallMethodAction TargetObject="{Binding ElementName=NewsFeed}"
+                                           MethodName="ScrollToTop" />
+                </core:EventTriggerBehavior>
+            </i:Interaction.Behaviors>
         </Button>
 
         <!--  Loading placeholder  -->

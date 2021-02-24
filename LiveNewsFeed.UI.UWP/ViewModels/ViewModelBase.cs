@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Threading.Tasks;
-using Windows.ApplicationModel.Core;
 using Windows.ApplicationModel.Resources;
-using Windows.UI.Core;
 using Windows.UI.Xaml;
+using Microsoft.Toolkit.Uwp.Helpers;
 using Microsoft.Toolkit.Uwp.UI.Helpers;
 
 namespace LiveNewsFeed.UI.UWP.ViewModels
@@ -23,9 +22,7 @@ namespace LiveNewsFeed.UI.UWP.ViewModels
             if (action == null)
                 throw new ArgumentNullException(nameof(action));
 
-            var dispatcher = Window.Current?.Dispatcher ?? CoreApplication.MainView.Dispatcher;
-
-            await dispatcher.RunAsync(CoreDispatcherPriority.Normal, action.Invoke);
+            await DispatcherHelper.ExecuteOnUIThreadAsync(action);
         }
 
         protected virtual string GetLocalizedString(string key)
