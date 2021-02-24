@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
+using Windows.ApplicationModel.DataTransfer;
 using Windows.System;
 using Windows.UI.Xaml.Media;
-using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 
 namespace LiveNewsFeed.UI.UWP.ViewModels
@@ -30,6 +30,8 @@ namespace LiveNewsFeed.UI.UWP.ViewModels
         public ObservableCollection<CategoryViewModel>? Categories { get; }
 
         public ICommand OpenFullArticleCommand { get; private set; }
+
+        public ICommand CopyArticleUrlToClipboardCommand { get; private set; }
 
         public ICommand OpenImageInBrowserCommand { get; private set; }
 
@@ -68,9 +70,18 @@ namespace LiveNewsFeed.UI.UWP.ViewModels
         private void InitializeCommands()
         {
             OpenFullArticleCommand = new RelayCommand(async () => await Launcher.LaunchUriAsync(ArticleUrl));
+            CopyArticleUrlToClipboardCommand = new RelayCommand(CopyArticleLinkToClipboard);
             OpenImageInBrowserCommand = new RelayCommand(async () => await Launcher.LaunchUriAsync(Image?.LargeImageUrl));
             ShowImagePreviewCommand = new RelayCommand(() => ShowImagePreviewRequested?.Invoke(this, EventArgs.Empty));
             HideImagePreviewCommand = new RelayCommand(() => HideImagePreviewRequested?.Invoke(this, EventArgs.Empty));
+        }
+
+        private void CopyArticleLinkToClipboard()
+        {
+            var dataPackage = new DataPackage();
+            dataPackage.SetText(ArticleUrl.AbsoluteUri);
+
+            Clipboard.SetContent(dataPackage);
         }
     }
 }

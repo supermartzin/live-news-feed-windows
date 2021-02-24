@@ -120,6 +120,18 @@
   <data name="ArticlePost_ActionsButton.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
     <value>Actions</value>
   </data>
+  <data name="ArticlePost_Actions_CopyLinkButton.Text" xml:space="preserve">
+    <value>Copy link</value>
+  </data>
+  <data name="ArticlePost_Actions_CopyLinkButton.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
+    <value>Copy link to Article</value>
+  </data>
+  <data name="ArticlePost_Actions_OpenArticlePreviewButton.Text" xml:space="preserve">
+    <value>Open Article preview</value>
+  </data>
+  <data name="ArticlePost_Actions_OpenArticlePreviewButton.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
+    <value>Open Article in-app preview</value>
+  </data>
   <data name="ArticlePost_Actions_OpenInBrowserButton.Text" xml:space="preserve">
     <value>Open in Browser</value>
   </data>

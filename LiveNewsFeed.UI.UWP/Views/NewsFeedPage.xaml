@@ -294,6 +294,7 @@
                                 </ItemsControl>
                             </StackPanel>
 
+                            <!--  Actions button  -->
                             <Button Grid.Column="1"
                                     x:Uid="ArticlePost_ActionsButton"
                                     Margin="5 0 0 0"
@@ -304,12 +305,25 @@
                                     VerticalAlignment="Bottom">
                                 <FontIcon Glyph="&#xE10C;"/>
 
+                                <!--  Actions button  -->
                                 <Button.Flyout>
                                     <MenuFlyout Placement="TopEdgeAlignedRight">
+                                        <MenuFlyoutItem x:Uid="ArticlePost_Actions_CopyLinkButton"
+                                                        Command="{x:Bind CopyArticleUrlToClipboardCommand}">
+                                            <MenuFlyoutItem.Icon>
+                                                <FontIcon Glyph="&#xE16F;" />
+                                            </MenuFlyoutItem.Icon>
+                                        </MenuFlyoutItem>
                                         <MenuFlyoutItem x:Uid="ArticlePost_Actions_OpenInBrowserButton"
                                                         Command="{x:Bind OpenFullArticleCommand}">
                                             <MenuFlyoutItem.Icon>
                                                 <FontIcon Glyph="&#xE8A7;" />
+                                            </MenuFlyoutItem.Icon>
+                                        </MenuFlyoutItem>
+                                        <MenuFlyoutSeparator />
+                                        <MenuFlyoutItem x:Uid="ArticlePost_Actions_OpenArticlePreviewButton">
+                                            <MenuFlyoutItem.Icon>
+                                                <FontIcon Glyph="&#xE12A;" />
                                             </MenuFlyoutItem.Icon>
                                         </MenuFlyoutItem>
                                     </MenuFlyout>
