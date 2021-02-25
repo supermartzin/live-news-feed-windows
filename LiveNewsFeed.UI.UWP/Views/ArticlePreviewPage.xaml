@@ -1,0 +1,126 @@
+﻿<views:BasePage x:Class="LiveNewsFeed.UI.UWP.Views.ArticlePreviewPage"
+                xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                xmlns:views="using:LiveNewsFeed.UI.UWP.Views"
+                xmlns:viewModels="using:LiveNewsFeed.UI.UWP.ViewModels"
+                mc:Ignorable="d"
+                Background="{ThemeResource CustomAcrylicBackgroundBrush}"
+                DataContext="{x:Bind ViewModel}">
+    <Page.Transitions>
+        <TransitionCollection>
+            <EntranceThemeTransition />
+        </TransitionCollection>
+    </Page.Transitions>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!--  Top bar  -->
+        <Grid Grid.Row="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="80" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+
+            <StackPanel Grid.Column="1"
+                        Orientation="Horizontal">
+                <!--  Logo  -->
+                <Border Width="40"
+                        Height="40"
+                        CornerRadius="4"
+                        Margin="0 20"
+                        BorderBrush="Transparent"
+                        BorderThickness="0"
+                        VerticalAlignment="Center"
+                        Background="{x:Bind ViewModel.NewsArticlePost.NewsFeedLogo}"/>
+
+                <!--  Title  -->
+                <TextBlock Text="{x:Bind ViewModel.NewsArticlePost.Title}"
+                           HorizontalTextAlignment="Left"
+                           TextLineBounds="Tight"
+                           VerticalAlignment="Center"
+                           FontWeight="Bold"
+                           FontSize="24"
+                           Margin="15 0 0 0"/>
+            </StackPanel>
+
+            <StackPanel Grid.Column="2"
+                        Orientation="Vertical"
+                        Margin="10 5 15 8"
+                        VerticalAlignment="Bottom">
+                <!--  Publish time  -->
+                <TextBlock HorizontalAlignment="Right"
+                           FontSize="14"
+                           FontWeight="SemiLight"
+                           Text="{x:Bind ViewModel.NewsArticlePost.PublishTime, Converter={StaticResource DateTimeFormatter}, ConverterParameter=T}"/>
+
+                <!--  Categories  -->
+                <ItemsControl ItemsSource="{x:Bind ViewModel.NewsArticlePost.Categories}">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <StackPanel Orientation="Horizontal"
+                                        HorizontalAlignment="Right"/>
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate x:DataType="viewModels:CategoryViewModel">
+                            <StackPanel Orientation="Horizontal"
+                                        UseLayoutRounding="True"
+                                        VerticalAlignment="Center"
+                                        Margin="10 3 0 0">
+                                <FontIcon Glyph="{x:Bind IconGlyph}"
+                                          FontFamily="{x:Bind FontFamily}"
+                                          FontSize="12"
+                                          Margin="0 0 4 0">
+                                    <FontIcon.Foreground>
+                                        <SolidColorBrush Color="{x:Bind Color, Mode=OneWay}" />
+                                    </FontIcon.Foreground>
+                                </FontIcon>
+                                <TextBlock Text="{x:Bind Name}"
+                                           FontSize="12">
+                                    <TextBlock.Foreground>
+                                        <SolidColorBrush Color="{x:Bind Color, Mode=OneWay}" />
+                                    </TextBlock.Foreground>
+                                </TextBlock>
+                            </StackPanel>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </StackPanel>
+
+            <Grid x:Name="ArticlePreviewTopBar"
+                  Grid.Column="0"
+                  Grid.ColumnSpan="3"
+                  Background="Transparent"/>
+
+            <!--  Back button  -->
+            <Button Grid.Column="0"
+                    x:Uid="ArticlePreview_BackToFeedButton"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    Padding="10"
+                    Style="{ThemeResource ButtonRevealStyle}"
+                    Background="Transparent"
+                    Command="{x:Bind ViewModel.ClosePreviewCommand}">
+                <FontIcon Glyph="&#xE112;"
+                          FontSize="18"/>
+            </Button>
+        </Grid>
+
+        <!--  Website  -->
+        <WebView Grid.Row="1" Source="{x:Bind ViewModel.NewsArticlePost.ArticleUrl}" />
+
+        <!--  Website  -->
+        <CommandBar Grid.Row="1"
+                    VerticalAlignment="Bottom"
+                    Background="{ThemeResource CustomAcrylicElementBrush}">
+
+        </CommandBar>
+    </Grid>
+</views:BasePage>

@@ -39,8 +39,11 @@ namespace LiveNewsFeed.UI.UWP.ViewModels
 
         public ICommand HideImagePreviewCommand { get; private set; }
 
+        public ICommand OpenArticlePreviewCommand { get; private set; }
+
         public event EventHandler ShowImagePreviewRequested;
         public event EventHandler HideImagePreviewRequested;
+        public event EventHandler OpenArticlePreviewRequested;
 
         public NewsArticlePostViewModel(string title,
                                         string content,
@@ -74,6 +77,7 @@ namespace LiveNewsFeed.UI.UWP.ViewModels
             OpenImageInBrowserCommand = new RelayCommand(async () => await Launcher.LaunchUriAsync(Image?.LargeImageUrl));
             ShowImagePreviewCommand = new RelayCommand(() => ShowImagePreviewRequested?.Invoke(this, EventArgs.Empty));
             HideImagePreviewCommand = new RelayCommand(() => HideImagePreviewRequested?.Invoke(this, EventArgs.Empty));
+            OpenArticlePreviewCommand = new RelayCommand(() => OpenArticlePreviewRequested?.Invoke(this, EventArgs.Empty));
         }
 
         private void CopyArticleLinkToClipboard()

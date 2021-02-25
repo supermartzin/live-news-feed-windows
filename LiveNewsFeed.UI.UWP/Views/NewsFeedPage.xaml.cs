@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Threading.Tasks;
-using Windows.ApplicationModel.Core;
 using Windows.UI;
 using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Input;
+using Windows.UI.Xaml.Navigation;
 using Microsoft.Toolkit.Uwp.UI.Controls;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -24,24 +24,21 @@ namespace LiveNewsFeed.UI.UWP.Views
 
             InitializeComponent();
 
-            SetTitleBarProperties();
+            SetTitleBarButtonColors();
         }
-        
+
+        protected override void OnNavigatedTo(NavigationEventArgs e)
+        {
+            Window.Current.SetTitleBar(NewsFeedTitleBar);
+
+            base.OnNavigatedTo(e);
+        }
+
         protected override void OnApplicationThemeChanged(ApplicationTheme theme)
         {
             SetTitleBarButtonColors();
         }
-
         
-        private void SetTitleBarProperties()
-        {
-            var coreTitleBar = CoreApplication.GetCurrentView().TitleBar;
-            coreTitleBar.ExtendViewIntoTitleBar = true;
-
-            Window.Current.SetTitleBar(NewsFeedTitleBar);
-
-            SetTitleBarButtonColors();
-        }
 
         private void ImagePreviewOpened()
         {
@@ -64,7 +61,7 @@ namespace LiveNewsFeed.UI.UWP.Views
         {
             // set buttons foreground
             var titleBar = ApplicationView.GetForCurrentView().TitleBar;
-            titleBar.ButtonForegroundColor = titleBar.ButtonHoverForegroundColor = (Color?)Application.Current.Resources["TitleBarButtonsForegroundColor"];
+            titleBar.ButtonForegroundColor = titleBar.ButtonHoverForegroundColor = (Color?) Application.Current.Resources["TitleBarButtonsForegroundColor"];
         }
 
         #region Event handlers

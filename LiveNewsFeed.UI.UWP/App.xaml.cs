@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Globalization;
-using System.Net.Http;
 using System.Threading.Tasks;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
+using Windows.ApplicationModel.Core;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
@@ -18,7 +18,6 @@ using LiveNewsFeed.DataSource.DennikNsk;
 using LiveNewsFeed.UI.UWP.Common;
 using LiveNewsFeed.UI.UWP.Managers;
 using LiveNewsFeed.UI.UWP.Views;
-using Microsoft.Extensions.Logging;
 using UnhandledExceptionEventArgs = Windows.UI.Xaml.UnhandledExceptionEventArgs;
 
 namespace LiveNewsFeed.UI.UWP
@@ -46,7 +45,7 @@ namespace LiveNewsFeed.UI.UWP
             UnhandledException += OnUnhandledException;
             TaskScheduler.UnobservedTaskException += OnUnobservedException;
         }
-
+        
         private void OnUnhandledException(object sender, UnhandledExceptionEventArgs e)
         {
             Debugger.Break();
@@ -95,6 +94,10 @@ namespace LiveNewsFeed.UI.UWP
 
             // Ensure the current window is active
             Window.Current.Activate();
+
+            // extend title bar
+            var coreTitleBar = CoreApplication.GetCurrentView().TitleBar;
+            coreTitleBar.ExtendViewIntoTitleBar = true;
 
             Helpers.CreateCategoriesMap();
         }

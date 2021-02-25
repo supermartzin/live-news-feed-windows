@@ -138,6 +138,9 @@
   <data name="ArticlePost_Actions_OpenInBrowserButton.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
     <value>Open in Browser</value>
   </data>
+  <data name="ArticlePreview_BackToFeedButton.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
+    <value>Back to News Feed</value>
+  </data>
   <data name="CategoryEnum_Arts" xml:space="preserve">
     <value>Arts</value>
   </data>

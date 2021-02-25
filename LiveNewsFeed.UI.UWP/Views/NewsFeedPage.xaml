@@ -294,7 +294,7 @@
                                 </ItemsControl>
                             </StackPanel>
 
-                            <!--  Actions button  -->
+                            <!--  Open Actions button  -->
                             <Button Grid.Column="1"
                                     x:Uid="ArticlePost_ActionsButton"
                                     Margin="5 0 0 0"
@@ -305,7 +305,7 @@
                                     VerticalAlignment="Bottom">
                                 <FontIcon Glyph="&#xE10C;"/>
 
-                                <!--  Actions button  -->
+                                <!--  Actions  -->
                                 <Button.Flyout>
                                     <MenuFlyout Placement="TopEdgeAlignedRight">
                                         <MenuFlyoutItem x:Uid="ArticlePost_Actions_CopyLinkButton"
@@ -321,7 +321,8 @@
                                             </MenuFlyoutItem.Icon>
                                         </MenuFlyoutItem>
                                         <MenuFlyoutSeparator />
-                                        <MenuFlyoutItem x:Uid="ArticlePost_Actions_OpenArticlePreviewButton">
+                                        <MenuFlyoutItem x:Uid="ArticlePost_Actions_OpenArticlePreviewButton"
+                                                        Command="{x:Bind OpenArticlePreviewCommand}">
                                             <MenuFlyoutItem.Icon>
                                                 <FontIcon Glyph="&#xE12A;" />
                                             </MenuFlyoutItem.Icon>

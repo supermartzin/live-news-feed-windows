@@ -2,16 +2,19 @@
 using System.Collections.Generic;
 using System.Linq;
 using GalaSoft.MvvmLight.Command;
+using GalaSoft.MvvmLight.Views;
 using Microsoft.Toolkit.Uwp.UI;
 
 using LiveNewsFeed.UI.UWP.Common;
 using LiveNewsFeed.UI.UWP.Managers;
+using LiveNewsFeed.UI.UWP.Views;
 
 namespace LiveNewsFeed.UI.UWP.ViewModels
 {
     public class NewsFeedPageViewModel : ViewModelBase
     {
         private readonly IDataSourcesManager _dataSourcesManager;
+        private readonly INavigationService _navigationService;
 
         private bool _allPostsLoading;
         public bool AllPostsLoading
@@ -58,9 +61,11 @@ namespace LiveNewsFeed.UI.UWP.ViewModels
         public RelayCommand RefreshNewsFeedCommand { get; private set; }
 
         public NewsFeedPageViewModel(IDataSourcesManager dataSourcesManager,
+                                     INavigationService navigationService,
                                      QuickSettingsViewModel quickSettingsViewModel)
         {
             _dataSourcesManager = dataSourcesManager ?? throw new ArgumentNullException(nameof(dataSourcesManager));
+            _navigationService = navigationService ?? throw new ArgumentNullException(nameof(navigationService));
             _quickSettings = quickSettingsViewModel ?? throw new ArgumentNullException(nameof(quickSettingsViewModel));
 
             ArticlePosts = new AdvancedCollectionView(new List<NewsArticlePostViewModel>(), true);
@@ -102,9 +107,10 @@ namespace LiveNewsFeed.UI.UWP.ViewModels
             {
                 post.ShowImagePreviewRequested += NewsArticlePost_OnShowImagePreviewRequested;
                 post.HideImagePreviewRequested += NewsArticlePost_OnHideImagePreviewRequested;
+                post.OpenArticlePreviewRequested += NewsArticlePost_OnOpenArticlePreviewRequested;
             }
         }
-        
+
         private void NewsArticlePost_OnShowImagePreviewRequested(object sender, EventArgs e)
         {
             if (sender is NewsArticlePostViewModel postViewModel)
@@ -116,6 +122,11 @@ namespace LiveNewsFeed.UI.UWP.ViewModels
         private void NewsArticlePost_OnHideImagePreviewRequested(object sender, EventArgs e)
         {
             SelectedPost = null;
+        }
+
+        private void NewsArticlePost_OnOpenArticlePreviewRequested(object sender, EventArgs e)
+        {
+            _navigationService.NavigateTo(nameof(ArticlePreviewPage), sender);
         }
 
         private void InitializeCommands()
