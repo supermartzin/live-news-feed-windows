@@ -308,6 +308,12 @@
                                 <!--  Actions  -->
                                 <Button.Flyout>
                                     <MenuFlyout Placement="TopEdgeAlignedRight">
+                                        <MenuFlyoutItem x:Uid="ArticlePost_Actions_ShareArticleButton"
+                                                        Command="{x:Bind ShareArticleCommand}">
+                                            <MenuFlyoutItem.Icon>
+                                                <FontIcon Glyph="&#xE72D;" />
+                                            </MenuFlyoutItem.Icon>
+                                        </MenuFlyoutItem>
                                         <MenuFlyoutItem x:Uid="ArticlePost_Actions_CopyLinkButton"
                                                         Command="{x:Bind CopyArticleUrlToClipboardCommand}">
                                             <MenuFlyoutItem.Icon>

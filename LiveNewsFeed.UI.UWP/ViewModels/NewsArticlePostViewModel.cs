@@ -1,9 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Windows.Input;
+using Windows.ApplicationModel;
 using Windows.ApplicationModel.DataTransfer;
 using Windows.System;
+using Windows.UI.Xaml;
 using Windows.UI.Xaml.Media;
 using GalaSoft.MvvmLight.Command;
 
@@ -32,6 +35,8 @@ namespace LiveNewsFeed.UI.UWP.ViewModels
         public ICommand OpenFullArticleCommand { get; private set; }
 
         public ICommand CopyArticleUrlToClipboardCommand { get; private set; }
+
+        public ICommand ShareArticleCommand { get; private set; }
 
         public ICommand OpenImageInBrowserCommand { get; private set; }
 
@@ -70,22 +75,42 @@ namespace LiveNewsFeed.UI.UWP.ViewModels
             InitializeCommands();
         }
 
+
         private void InitializeCommands()
         {
             OpenFullArticleCommand = new RelayCommand(async () => await Launcher.LaunchUriAsync(ArticleUrl));
             CopyArticleUrlToClipboardCommand = new RelayCommand(CopyArticleLinkToClipboard);
+            ShareArticleCommand = new RelayCommand(ShareArticle);
             OpenImageInBrowserCommand = new RelayCommand(async () => await Launcher.LaunchUriAsync(Image?.LargeImageUrl));
             ShowImagePreviewCommand = new RelayCommand(() => ShowImagePreviewRequested?.Invoke(this, EventArgs.Empty));
             HideImagePreviewCommand = new RelayCommand(() => HideImagePreviewRequested?.Invoke(this, EventArgs.Empty));
             OpenArticlePreviewCommand = new RelayCommand(() => OpenArticlePreviewRequested?.Invoke(this, EventArgs.Empty));
         }
-
+        
         private void CopyArticleLinkToClipboard()
         {
             var dataPackage = new DataPackage();
             dataPackage.SetText(ArticleUrl.AbsoluteUri);
 
             Clipboard.SetContent(dataPackage);
+        }
+
+        private void ShareArticle()
+        {
+            DataTransferManager.GetForCurrentView().DataRequested += DataTransferManager_OnDataRequested;
+            DataTransferManager.ShowShareUI();
+        }
+
+        private void DataTransferManager_OnDataRequested(DataTransferManager sender, DataRequestedEventArgs eventArgs)
+        {
+            DataTransferManager.GetForCurrentView().DataRequested -= DataTransferManager_OnDataRequested;
+
+            // set shared content
+            eventArgs.Request.Data.SetWebLink(ArticleUrl);
+            eventArgs.Request.Data.Properties.ContentSourceWebLink = ArticleUrl;
+            eventArgs.Request.Data.Properties.Title = Title;
+            eventArgs.Request.Data.Properties.Description = Content.Substring(0, 100) + "...";
+            eventArgs.Request.Data.Properties.ApplicationName = Package.Current.DisplayName;
         }
     }
 }

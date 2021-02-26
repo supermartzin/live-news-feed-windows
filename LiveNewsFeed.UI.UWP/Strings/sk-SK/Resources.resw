@@ -138,6 +138,12 @@
   <data name="ArticlePost_Actions_OpenInBrowserButton.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
     <value>Otvoriť v prehliadači</value>
   </data>
+  <data name="ArticlePost_Actions_ShareArticleButton.Text" xml:space="preserve">
+    <value>Zdieľať</value>
+  </data>
+  <data name="ArticlePost_Actions_ShareArticleButton.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
+    <value>Zdieľať článok</value>
+  </data>
   <data name="ArticlePreview_BackToFeedButton.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
     <value>Späť na zoznam správ</value>
   </data>
@@ -152,6 +158,12 @@
   </data>
   <data name="ArticlePreview_OpenInBrowserButton.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
     <value>Otvoriť v prehliadači</value>
+  </data>
+  <data name="ArticlePreview_ShareArticleButton.Label" xml:space="preserve">
+    <value>Zdieľať</value>
+  </data>
+  <data name="ArticlePreview_ShareArticleButton.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
+    <value>Zdieľať článok</value>
   </data>
   <data name="CategoryEnum_Arts" xml:space="preserve">
     <value>Kultúra</value>

@@ -121,6 +121,13 @@
                     VerticalAlignment="Bottom"
                     DefaultLabelPosition="Right"
                     Background="{ThemeResource CustomAcrylicElementBrush}">
+            <AppBarButton x:Uid="ArticlePreview_ShareArticleButton"
+                          Style="{ThemeResource AppBarButtonRevealStyle}"
+                          Command="{x:Bind ViewModel.NewsArticlePost.ShareArticleCommand}">
+                <AppBarButton.Icon>
+                    <FontIcon Glyph="&#xE72D;" />
+                </AppBarButton.Icon>
+            </AppBarButton>
             <AppBarButton x:Uid="ArticlePreview_CopyLinkButton"
                           Style="{ThemeResource AppBarButtonRevealStyle}"
                           Command="{x:Bind ViewModel.NewsArticlePost.CopyArticleUrlToClipboardCommand}">

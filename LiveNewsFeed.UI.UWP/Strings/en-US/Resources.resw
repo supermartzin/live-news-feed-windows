@@ -138,6 +138,12 @@
   <data name="ArticlePost_Actions_OpenInBrowserButton.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
     <value>Open in Browser</value>
   </data>
+  <data name="ArticlePost_Actions_ShareArticleButton.Text" xml:space="preserve">
+    <value>Share</value>
+  </data>
+  <data name="ArticlePost_Actions_ShareArticleButton.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
+    <value>Share Article</value>
+  </data>
   <data name="ArticlePreview_BackToFeedButton.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
     <value>Back to News Feed</value>
   </data>
@@ -152,6 +158,12 @@
   </data>
   <data name="ArticlePreview_OpenInBrowserButton.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
     <value>Open in Browser</value>
+  </data>
+  <data name="ArticlePreview_ShareArticleButton.Label" xml:space="preserve">
+    <value>Share</value>
+  </data>
+  <data name="ArticlePreview_ShareArticleButton.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
+    <value>Share Article</value>
   </data>
   <data name="CategoryEnum_Arts" xml:space="preserve">
     <value>Arts</value>
