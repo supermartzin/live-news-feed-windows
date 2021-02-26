@@ -276,7 +276,7 @@
                                                     FontSize="12">
                                                 <Button.Background>
                                                     <AcrylicBrush TintColor="{ThemeResource SystemAccentColor}"
-                                                              TintOpacity="0.7"/>
+                                                                  TintOpacity="0.7"/>
                                                 </Button.Background>
 
                                                 <StackPanel Orientation="Horizontal">

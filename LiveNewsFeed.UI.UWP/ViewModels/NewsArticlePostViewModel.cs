@@ -1,12 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
 using System.Windows.Input;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.DataTransfer;
 using Windows.System;
-using Windows.UI.Xaml;
 using Windows.UI.Xaml.Media;
 using GalaSoft.MvvmLight.Command;
 
@@ -109,8 +107,12 @@ namespace LiveNewsFeed.UI.UWP.ViewModels
             eventArgs.Request.Data.SetWebLink(ArticleUrl);
             eventArgs.Request.Data.Properties.ContentSourceWebLink = ArticleUrl;
             eventArgs.Request.Data.Properties.Title = Title;
-            eventArgs.Request.Data.Properties.Description = Content.Substring(0, 100) + "...";
+            eventArgs.Request.Data.Properties.Description = GetContentForSharing();
             eventArgs.Request.Data.Properties.ApplicationName = Package.Current.DisplayName;
         }
+
+        private string GetContentForSharing() => Content.Length > 100
+                                                    ? Content.Substring(0, 100) + "..."
+                                                    : Content;
     }
 }
