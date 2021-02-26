@@ -141,6 +141,18 @@
   <data name="ArticlePreview_BackToFeedButton.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
     <value>Späť na zoznam správ</value>
   </data>
+  <data name="ArticlePreview_CopyLinkButton.Label" xml:space="preserve">
+    <value>Kopírovať odkaz</value>
+  </data>
+  <data name="ArticlePreview_CopyLinkButton.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
+    <value>Kopírovať odkaz na článok</value>
+  </data>
+  <data name="ArticlePreview_OpenInBrowserButton.Label" xml:space="preserve">
+    <value>Otvoriť v prehliadači</value>
+  </data>
+  <data name="ArticlePreview_OpenInBrowserButton.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
+    <value>Otvoriť v prehliadači</value>
+  </data>
   <data name="CategoryEnum_Arts" xml:space="preserve">
     <value>Kultúra</value>
   </data>

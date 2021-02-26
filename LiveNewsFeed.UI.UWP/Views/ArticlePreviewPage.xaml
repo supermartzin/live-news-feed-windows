@@ -47,7 +47,7 @@
                            VerticalAlignment="Center"
                            FontWeight="Bold"
                            FontSize="24"
-                           Margin="15 0 0 0"/>
+                           Margin="10 0 0 0"/>
             </StackPanel>
 
             <StackPanel Grid.Column="2"
@@ -116,11 +116,25 @@
         <!--  Website  -->
         <WebView Grid.Row="1" Source="{x:Bind ViewModel.NewsArticlePost.ArticleUrl}" />
 
-        <!--  Website  -->
+        <!--  Actions bar  -->
         <CommandBar Grid.Row="1"
                     VerticalAlignment="Bottom"
+                    DefaultLabelPosition="Right"
                     Background="{ThemeResource CustomAcrylicElementBrush}">
-
+            <AppBarButton x:Uid="ArticlePreview_CopyLinkButton"
+                          Style="{ThemeResource AppBarButtonRevealStyle}"
+                          Command="{x:Bind ViewModel.NewsArticlePost.CopyArticleUrlToClipboardCommand}">
+                <AppBarButton.Icon>
+                    <FontIcon Glyph="&#xE16F;" />
+                </AppBarButton.Icon>
+            </AppBarButton>
+            <AppBarButton x:Uid="ArticlePreview_OpenInBrowserButton"
+                          Style="{ThemeResource AppBarButtonRevealStyle}"
+                          Command="{x:Bind ViewModel.NewsArticlePost.OpenFullArticleCommand}">
+                <AppBarButton.Icon>
+                    <FontIcon Glyph="&#xE8A7;" />
+                </AppBarButton.Icon>
+            </AppBarButton>
         </CommandBar>
     </Grid>
 </views:BasePage>

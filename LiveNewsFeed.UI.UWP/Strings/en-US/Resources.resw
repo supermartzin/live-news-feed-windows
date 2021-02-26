@@ -141,6 +141,18 @@
   <data name="ArticlePreview_BackToFeedButton.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
     <value>Back to News Feed</value>
   </data>
+  <data name="ArticlePreview_CopyLinkButton.Label" xml:space="preserve">
+    <value>Copy link</value>
+  </data>
+  <data name="ArticlePreview_CopyLinkButton.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
+    <value>Copy link to Article</value>
+  </data>
+  <data name="ArticlePreview_OpenInBrowserButton.Label" xml:space="preserve">
+    <value>Open in Browser</value>
+  </data>
+  <data name="ArticlePreview_OpenInBrowserButton.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
+    <value>Open in Browser</value>
+  </data>
   <data name="CategoryEnum_Arts" xml:space="preserve">
     <value>Arts</value>
   </data>
