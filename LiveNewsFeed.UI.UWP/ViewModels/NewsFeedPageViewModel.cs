@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Views;
+using LiveNewsFeed.Models;
 using Microsoft.Toolkit.Uwp.UI;
 
 using LiveNewsFeed.UI.UWP.Common;
@@ -71,10 +72,11 @@ namespace LiveNewsFeed.UI.UWP.ViewModels
             ArticlePosts = new AdvancedCollectionView(new List<NewsArticlePostViewModel>(), true);
             ArticlePosts.SortDescriptions.Add(new SortDescription(nameof(NewsArticlePostViewModel.PublishTime), SortDirection.Descending));
 
+            _dataSourcesManager.NewsArticlePostReceived += DataSourcesManager_OnNewsArticlePostReceived;
             InitializeCommands();
             LoadPosts();
         }
-
+        
 
         private void LoadPosts()
         {
@@ -87,12 +89,12 @@ namespace LiveNewsFeed.UI.UWP.ViewModels
                                                                               .Select(Helpers.ToViewModel)
                                                                               .ToList();
 
-                                   RegisterEvents(posts);
-
                                    using (ArticlePosts.DeferRefresh())
                                    {
                                        foreach (var post in posts)
                                        {
+                                           RegisterEvents(post);
+
                                            ArticlePosts.Add(post);
                                        }
                                    }
@@ -101,14 +103,11 @@ namespace LiveNewsFeed.UI.UWP.ViewModels
                                }));
         }
 
-        private void RegisterEvents(IEnumerable<NewsArticlePostViewModel> posts)
+        private void RegisterEvents(NewsArticlePostViewModel post)
         {
-            foreach (var post in posts)
-            {
-                post.ShowImagePreviewRequested += NewsArticlePost_OnShowImagePreviewRequested;
-                post.HideImagePreviewRequested += NewsArticlePost_OnHideImagePreviewRequested;
-                post.OpenArticlePreviewRequested += NewsArticlePost_OnOpenArticlePreviewRequested;
-            }
+            post.ShowImagePreviewRequested += NewsArticlePost_OnShowImagePreviewRequested;
+            post.HideImagePreviewRequested += NewsArticlePost_OnHideImagePreviewRequested;
+            post.OpenArticlePreviewRequested += NewsArticlePost_OnOpenArticlePreviewRequested;
         }
 
         private void NewsArticlePost_OnShowImagePreviewRequested(object sender, EventArgs e)
@@ -149,8 +148,6 @@ namespace LiveNewsFeed.UI.UWP.ViewModels
                                    var newPosts = task.Result
                                                                                  .Select(Helpers.ToViewModel)
                                                                                  .ToList();
-                                   
-                                   RegisterEvents(newPosts);
 
                                    if (newPosts.Count > 0)
                                    {
@@ -158,6 +155,8 @@ namespace LiveNewsFeed.UI.UWP.ViewModels
                                        {
                                            foreach (var post in newPosts)
                                            {
+                                               RegisterEvents(post);
+
                                                ArticlePosts.Add(post);
                                            }
                                        }
@@ -168,5 +167,14 @@ namespace LiveNewsFeed.UI.UWP.ViewModels
         }
 
         private bool CanReloadArticlesManually() => !NewPostsLoading;
+
+        private async void DataSourcesManager_OnNewsArticlePostReceived(object sender, NewsArticlePost newsArticlePost)
+        {
+            var viewModel = Helpers.ToViewModel(newsArticlePost);
+
+            RegisterEvents(viewModel);
+
+            await InvokeOnUi(() => ArticlePosts.Add(viewModel));
+        }
     }
 }

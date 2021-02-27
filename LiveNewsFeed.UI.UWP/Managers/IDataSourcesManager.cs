@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 using LiveNewsFeed.DataSource.Common;
@@ -8,14 +9,18 @@ namespace LiveNewsFeed.UI.UWP.Managers
 {
     public interface IDataSourcesManager
     {
+        event EventHandler<NewsArticlePost> NewsArticlePostReceived;
+        
         void RegisterDataSource(NewsFeedDataSource newsFeedDataSource);
 
         IList<NewsFeedDataSource> GetRegisteredDataSources();
 
         NewsFeedDataSource? GetDataSourceByName(string name);
 
-        Task<IList<NewsArticlePost>> GetLatestPostsFromAllAsync();
+        Task<IList<NewsArticlePost>> GetLatestPostsFromAllAsync(DataSourceUpdateOptions? options = default);
 
-        Task<IList<NewsArticlePost>> GetLatestPostsSinceLastUpdateAsync();
+        Task<IList<NewsArticlePost>> GetLatestPostsSinceLastUpdateAsync(DataSourceUpdateOptions? options = default);
+
+        Task LoadLatestPostsSinceLastUpdateAsync(DataSourceUpdateOptions? options = default);
     }
 }
