@@ -1,4 +1,5 @@
-﻿using Windows.UI.Xaml;
+﻿using System;
+using Windows.UI.Xaml;
 using Windows.UI.Xaml.Navigation;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -28,6 +29,31 @@ namespace LiveNewsFeed.UI.UWP.Views
             Window.Current.SetTitleBar(ArticlePreviewTopBar);
 
             base.OnNavigatedTo(eventArgs);
+        }
+
+        protected override void OnNavigatedFrom(NavigationEventArgs e)
+        {
+            StartDisposingWebView();
+
+            base.OnNavigatedFrom(e);
+        }
+
+
+        private void StartDisposingWebView()
+        {
+            var count = 0;
+            var timer = new DispatcherTimer { Interval = TimeSpan.FromMilliseconds(20) };
+            timer.Tick += (_, _) =>
+            {
+                if (count++ == 10)
+                {
+                    timer.Stop();
+                }
+
+                WebView.Source = new Uri("about:blank");
+            };
+
+            timer.Start();
         }
     }
 }

@@ -140,6 +140,7 @@
     <Compile Include="Controls\CustomGridView.cs" />
     <Compile Include="Controls\ScrollViewerExtensions.cs" />
     <Compile Include="Managers\DataSourceUpdateOptions.cs" />
+    <Compile Include="Managers\INotificationsManager.cs" />
     <Compile Include="ViewModels\ArticlePreviewPageViewModel.cs" />
     <Compile Include="ViewModels\ViewModelBase.cs" />
     <Compile Include="Controls\WebExtensions.cs" />

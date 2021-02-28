@@ -557,8 +557,11 @@
                                       IsMasked="True">
                     <Image Stretch="Uniform">
                         <Image.Source>
-                            <BitmapImage CreateOptions="IgnoreImageCache"
-                                         UriSource="{x:Bind ViewModel.SelectedPost.Image.LargeImageUrl}" />
+                            <BitmapImage x:Name="BitmapImage"
+                                         CreateOptions="IgnoreImageCache"
+                                         UriSource="{x:Bind ViewModel.SelectedPost.Image.LargeImageUrl}" 
+                                         ImageOpened="BitmapImage_OnImageOpened"
+                                         ImageFailed="BitmapImage_OnImageFailed"/>
                         </Image.Source>
                     </Image>
                 </mtuc:DropShadowPanel>

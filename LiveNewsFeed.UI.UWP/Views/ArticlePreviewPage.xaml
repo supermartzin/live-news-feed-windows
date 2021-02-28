@@ -114,7 +114,9 @@
         </Grid>
 
         <!--  Website  -->
-        <WebView Grid.Row="1" Source="{x:Bind ViewModel.NewsArticlePost.ArticleUrl}" />
+        <WebView Grid.Row="1"
+                 x:Name="WebView"
+                 Source="{x:Bind ViewModel.NewsArticlePost.ArticleUrl}" />
 
         <!--  Actions bar  -->
         <CommandBar Grid.Row="1"

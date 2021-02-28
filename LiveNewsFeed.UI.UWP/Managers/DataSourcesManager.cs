@@ -134,7 +134,7 @@ namespace LiveNewsFeed.UI.UWP.Managers
                 lock (_updateLock)
                 {
                     // set last update time
-                    var latestPost = posts.FirstOrDefault();
+                    var latestPost = newPosts.FirstOrDefault();
                     if (latestPost != null)
                         _dataSourcesLastPostPublishTimes[dataSource.Name] = latestPost.PublishTime;
                 }

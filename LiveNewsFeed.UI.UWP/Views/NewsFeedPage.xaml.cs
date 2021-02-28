@@ -7,6 +7,7 @@ using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Navigation;
 using Microsoft.Toolkit.Uwp.UI.Controls;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.DependencyInjection;
 
 using LiveNewsFeed.UI.UWP.Common;
@@ -16,6 +17,8 @@ namespace LiveNewsFeed.UI.UWP.Views
 {
     public sealed partial class NewsFeedPage : BasePage
     {
+        private const float DefaultImageZoomFactor = 0.9f;
+
         public NewsFeedPageViewModel ViewModel { get; }
         
         public NewsFeedPage()
@@ -47,14 +50,16 @@ namespace LiveNewsFeed.UI.UWP.Views
 
         private void ImagePreviewClosed()
         {
-            ResetImagePreviewZoom();
+            BitmapImage.UriSource = null;
+
+            SetImagePreviewZoom(DefaultImageZoomFactor);
 
             Window.Current.SetTitleBar(NewsFeedTitleBar);
         }
 
-        private void ResetImagePreviewZoom()
+        private void SetImagePreviewZoom(float zoomFactor)
         {
-            ZoomPanel.ChangeView(0, 0, 1);
+            ZoomPanel.ChangeView(0, 0, zoomFactor);
         }
 
         private void SetTitleBarButtonColors()
@@ -68,20 +73,9 @@ namespace LiveNewsFeed.UI.UWP.Views
         
         private async void Expander_OnExpanded(object sender, EventArgs e)
         {
-            var expander = sender as Expander;
-
-            if (expander?.Content is WebView webView)
+            if (sender is Expander expander && expander?.Content is WebView webView)
             {
-                await Task.Delay(400).ConfigureAwait(true);
-
-                var result = await webView.InvokeScriptAsync("eval", new[] { "document.body.scrollHeight.toString()" });
-
-                if (result != null && int.TryParse(result, out int height))
-                {
-                    webView.Height = height;
-                    webView.MaxHeight = height;
-                    webView.MinHeight = height;
-                }
+                await AdjustSocialPostElementHeight(webView).ConfigureAwait(true);
             }
         }
 
@@ -102,7 +96,7 @@ namespace LiveNewsFeed.UI.UWP.Views
         
         private void ZoomPanel_OnDoubleTapped(object sender, DoubleTappedRoutedEventArgs e)
         {
-            ResetImagePreviewZoom();
+            SetImagePreviewZoom(DefaultImageZoomFactor);
         }
 
         private void ArticlePostImageThumbnail_OnPointerPressed(object sender, PointerRoutedEventArgs eventArgs)
@@ -110,6 +104,32 @@ namespace LiveNewsFeed.UI.UWP.Views
             ImagePreviewOpened();
         }
 
+        private void BitmapImage_OnImageOpened(object sender, RoutedEventArgs e)
+        {
+            SetImagePreviewZoom(DefaultImageZoomFactor);
+        }
+
+        private void BitmapImage_OnImageFailed(object sender, ExceptionRoutedEventArgs e)
+        {
+            var logger = ServiceLocator.Container.GetService<ILogger<NewsFeedPage>>();
+            
+            logger.LogError($"Error loading Article image: {e.ErrorMessage}");
+        }
+
         #endregion
+        
+        private static async Task AdjustSocialPostElementHeight(WebView webView)
+        {
+            await Task.Delay(400).ConfigureAwait(true);
+
+            var result = await webView.InvokeScriptAsync("eval", new[] { "document.body.scrollHeight.toString()" });
+
+            if (result != null && int.TryParse(result, out var height))
+            {
+                webView.Height = height;
+                webView.MaxHeight = height;
+                webView.MinHeight = height;
+            }
+        }
     }
 }
