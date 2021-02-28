@@ -16,6 +16,7 @@ namespace LiveNewsFeed.UI.UWP.ViewModels
     {
         private readonly IDataSourcesManager _dataSourcesManager;
         private readonly INavigationService _navigationService;
+        private readonly INotificationsManager _notificationsManager;
 
         private bool _allPostsLoading;
         public bool AllPostsLoading
@@ -63,16 +64,20 @@ namespace LiveNewsFeed.UI.UWP.ViewModels
 
         public NewsFeedPageViewModel(IDataSourcesManager dataSourcesManager,
                                      INavigationService navigationService,
+                                     INotificationsManager notificationsManager,
                                      QuickSettingsViewModel quickSettingsViewModel)
         {
             _dataSourcesManager = dataSourcesManager ?? throw new ArgumentNullException(nameof(dataSourcesManager));
             _navigationService = navigationService ?? throw new ArgumentNullException(nameof(navigationService));
+            _notificationsManager = notificationsManager ?? throw new ArgumentNullException(nameof(notificationsManager));
             _quickSettings = quickSettingsViewModel ?? throw new ArgumentNullException(nameof(quickSettingsViewModel));
 
             ArticlePosts = new AdvancedCollectionView(new List<NewsArticlePostViewModel>(), true);
             ArticlePosts.SortDescriptions.Add(new SortDescription(nameof(NewsArticlePostViewModel.PublishTime), SortDirection.Descending));
 
             _dataSourcesManager.NewsArticlePostReceived += DataSourcesManager_OnNewsArticlePostReceived;
+            _notificationsManager.Settings.NotificationsAllowed = true;
+
             InitializeCommands();
             LoadPosts();
         }
@@ -83,24 +88,27 @@ namespace LiveNewsFeed.UI.UWP.ViewModels
             AllPostsLoading = true;
             
             _dataSourcesManager.GetLatestPostsFromAllAsync()
-                               .ContinueWith(task => InvokeOnUi(() =>
+                               .ContinueWith(task =>
                                {
-                                   var posts = task.Result
-                                                                              .Select(Helpers.ToViewModel)
-                                                                              .ToList();
+                                   var posts = task.Result;
 
-                                   using (ArticlePosts.DeferRefresh())
+                                   return InvokeOnUi(() =>
                                    {
-                                       foreach (var post in posts)
+                                       using (ArticlePosts.DeferRefresh())
                                        {
-                                           RegisterEvents(post);
+                                           foreach (var post in posts)
+                                           {
+                                               var viewModel = Helpers.ToViewModel(post);
 
-                                           ArticlePosts.Add(post);
+                                               RegisterEvents(viewModel);
+
+                                               ArticlePosts.Add(viewModel);
+                                           }
                                        }
-                                   }
 
-                                   AllPostsLoading = false;
-                               }));
+                                       AllPostsLoading = false;
+                                   });
+                               });
         }
 
         private void RegisterEvents(NewsArticlePostViewModel post)
@@ -141,29 +149,29 @@ namespace LiveNewsFeed.UI.UWP.ViewModels
         private void ReloadArticlesManually()
         {
             NewPostsLoading = true;
-
+            
             _dataSourcesManager.GetLatestPostsSinceLastUpdateAsync()
-                               .ContinueWith(task => InvokeOnUi(() =>
+                               .ContinueWith(task =>
                                {
-                                   var newPosts = task.Result
-                                                                                 .Select(Helpers.ToViewModel)
-                                                                                 .ToList();
+                                   var newPosts = task.Result;
 
-                                   if (newPosts.Count > 0)
+                                   return InvokeOnUi(() =>
                                    {
-                                       using (ArticlePosts.DeferRefresh())
+                                       foreach (var post in newPosts)
                                        {
-                                           foreach (var post in newPosts)
+                                           using (ArticlePosts.DeferRefresh())
                                            {
-                                               RegisterEvents(post);
+                                               var viewModel = Helpers.ToViewModel(post);
 
-                                               ArticlePosts.Add(post);
+                                               RegisterEvents(viewModel);
+
+                                               ArticlePosts.Add(viewModel);
                                            }
                                        }
-                                   }
 
-                                   NewPostsLoading = false;
-                               }));
+                                       NewPostsLoading = false;
+                                   });
+                               });
         }
 
         private bool CanReloadArticlesManually() => !NewPostsLoading;

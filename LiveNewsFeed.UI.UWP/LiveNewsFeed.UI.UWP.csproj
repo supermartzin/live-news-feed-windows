@@ -141,6 +141,8 @@
     <Compile Include="Controls\ScrollViewerExtensions.cs" />
     <Compile Include="Managers\DataSourceUpdateOptions.cs" />
     <Compile Include="Managers\INotificationsManager.cs" />
+    <Compile Include="Managers\NotificationSettings.cs" />
+    <Compile Include="Managers\NotificationsManager.cs" />
     <Compile Include="ViewModels\ArticlePreviewPageViewModel.cs" />
     <Compile Include="ViewModels\ViewModelBase.cs" />
     <Compile Include="Controls\WebExtensions.cs" />
@@ -264,6 +266,9 @@
     <PackageReference Include="Microsoft.NETCore.UniversalWindowsPlatform">
       <Version>6.2.12</Version>
     </PackageReference>
+    <PackageReference Include="Microsoft.Toolkit.Uwp.Notifications">
+      <Version>6.1.1</Version>
+    </PackageReference>
     <PackageReference Include="Microsoft.Toolkit.Uwp.UI">
       <Version>6.1.1</Version>
     </PackageReference>
@@ -283,7 +288,7 @@
       <Version>5.4.1.1</Version>
     </PackageReference>
     <PackageReference Include="NLog.Extensions.Logging">
-      <Version>1.7.0</Version>
+      <Version>1.7.1</Version>
     </PackageReference>
   </ItemGroup>
   <ItemGroup>

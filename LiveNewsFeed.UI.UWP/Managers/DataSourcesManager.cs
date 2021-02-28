@@ -4,7 +4,6 @@ using System.Collections.Immutable;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Toolkit.Uwp.UI;
-using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Media.Imaging;
 
 using LiveNewsFeed.DataSource.Common;
@@ -17,7 +16,7 @@ namespace LiveNewsFeed.UI.UWP.Managers
     public class DataSourcesManager : IDataSourcesManager
     {
         private readonly object _updateLock = new();
-
+        
         private readonly Dictionary<string, NewsFeedDataSource> _dataSources;
         private readonly Dictionary<string, DateTime> _dataSourcesLastPostPublishTimes;
 
@@ -40,16 +39,13 @@ namespace LiveNewsFeed.UI.UWP.Managers
             _dataSources[newsFeedDataSource.Name] = newsFeedDataSource;
 
             // register logo
-            Helpers.RegisterLogoForNewsFeed(newsFeedDataSource.Name, new ImageBrush
-            {
-                ImageSource = new BitmapImage(newsFeedDataSource.LogoUrl)
-            });
+            Helpers.RegisterLogoForNewsFeed(newsFeedDataSource.Name, new BitmapImage(newsFeedDataSource.LogoUrl));
 
             // cache logo in memory
             ImageCache.Instance.PreCacheAsync(newsFeedDataSource.LogoUrl, false, true);
         }
 
-        public IList<NewsFeedDataSource> GetRegisteredDataSources()
+        public IEnumerable<NewsFeedDataSource> GetRegisteredDataSources()
         {
             return _dataSources.Values.ToImmutableList();
         }
@@ -62,7 +58,7 @@ namespace LiveNewsFeed.UI.UWP.Managers
             return _dataSources.ContainsKey(name) ? _dataSources[name] : default;
         }
 
-        public async Task<IList<NewsArticlePost>> GetLatestPostsFromAllAsync(DataSourceUpdateOptions? options = default)
+        public async Task<IEnumerable<NewsArticlePost>> GetLatestPostsFromAllAsync(DataSourceUpdateOptions? options = default)
         {
             var posts = new List<NewsArticlePost>();
 
@@ -88,10 +84,10 @@ namespace LiveNewsFeed.UI.UWP.Managers
             }
 
             // order and return posts
-            return posts.OrderByDescending(post => post.PublishTime).ToList();
+            return posts.OrderByDescending(post => post.PublishTime);
         }
 
-        public async Task<IList<NewsArticlePost>> GetLatestPostsSinceLastUpdateAsync(DataSourceUpdateOptions? options = default)
+        public async Task<IEnumerable<NewsArticlePost>> GetLatestPostsSinceLastUpdateAsync(DataSourceUpdateOptions? options = default)
         {
             return await LatestPostsSinceLastUpdateAsync(options).ConfigureAwait(false);
         }
@@ -108,7 +104,7 @@ namespace LiveNewsFeed.UI.UWP.Managers
         }
 
 
-        private async Task<IList<NewsArticlePost>> LatestPostsSinceLastUpdateAsync(DataSourceUpdateOptions? options = default)
+        private async Task<IEnumerable<NewsArticlePost>> LatestPostsSinceLastUpdateAsync(DataSourceUpdateOptions? options = default)
         {
             var posts = new List<NewsArticlePost>();
 
@@ -143,7 +139,7 @@ namespace LiveNewsFeed.UI.UWP.Managers
             }
 
             // order and return posts
-            return posts.OrderByDescending(post => post.PublishTime).ToList();
+            return posts.OrderByDescending(post => post.PublishTime);
         }
     }
 }

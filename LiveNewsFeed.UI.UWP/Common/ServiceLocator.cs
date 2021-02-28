@@ -53,6 +53,8 @@ namespace LiveNewsFeed.UI.UWP.Common
             navigationService.Configure(nameof(NewsFeedPage), typeof(NewsFeedPage));
             navigationService.Configure(nameof(ArticlePreviewPage), typeof(ArticlePreviewPage));
             serviceCollection.AddSingleton<INavigationService>(navigationService);
+            
+            serviceCollection.AddSingleton<INotificationsManager, NotificationsManager>();
         }
 
         private static void AddViewModels(IServiceCollection serviceCollection)

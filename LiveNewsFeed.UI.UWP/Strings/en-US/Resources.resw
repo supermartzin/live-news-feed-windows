@@ -231,4 +231,10 @@
   <data name="NewsFeed_Settings_OnlyImportantOn.Text" xml:space="preserve">
     <value>Only important | ON</value>
   </data>
+  <data name="Notification_Buttons_Dismiss" xml:space="preserve">
+    <value>Dismiss</value>
+  </data>
+  <data name="Notification_Buttons_OpenInBrowser" xml:space="preserve">
+    <value>Open in Browser</value>
+  </data>
 </root>

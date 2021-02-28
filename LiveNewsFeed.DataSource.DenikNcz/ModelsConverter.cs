@@ -88,8 +88,16 @@ namespace LiveNewsFeed.DataSource.DenikNcz
             ? new HashSet<Tag>(tagDtos.Select(ToTag))
             : default;
 
-        private static ISet<Category>? ParseCategories(IEnumerable<CategoryDTO>? categoryDtos) => categoryDtos != null
-            ? new HashSet<Category>(categoryDtos.Select(ToCategory))
-            : default;
+        private static ISet<Category>? ParseCategories(IEnumerable<CategoryDTO>? categoryDtos)
+        {
+            if (categoryDtos == null)
+                return default;
+
+            var categories = new HashSet<Category>(categoryDtos.Select(ToCategory));
+
+            categories.RemoveWhere(category => category == Category.NotCategorized);
+
+            return categories;
+        }
     }
 }

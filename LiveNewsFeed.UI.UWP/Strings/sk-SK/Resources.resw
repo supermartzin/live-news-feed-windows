@@ -231,4 +231,10 @@
   <data name="NewsFeed_Settings_OnlyImportantOn.Text" xml:space="preserve">
     <value>Iba dôležité | ON</value>
   </data>
+  <data name="Notification_Buttons_Dismiss" xml:space="preserve">
+    <value>Zatvoriť</value>
+  </data>
+  <data name="Notification_Buttons_OpenInBrowser" xml:space="preserve">
+    <value>Otvoriť v prehliadači</value>
+  </data>
 </root>

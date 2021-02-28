@@ -16,7 +16,7 @@ namespace LiveNewsFeed.UI.UWP.Common
         private static readonly FontFamily SegoeUiSymbolFontFamily = new ("Segoe UI Symbol");
         private static readonly FontFamily SegoeMdl2AssetsFontFamily = new ("Segoe MDL2 Assets");
 
-        private static readonly Dictionary<string, ImageBrush> NewsFeedLogos = new();
+        private static readonly Dictionary<string, ImageSource> NewsFeedLogos = new();
         private static readonly Dictionary<Category, CategoryViewModel> CategoriesMap = new();
         
         public static void CreateCategoriesMap()
@@ -30,7 +30,7 @@ namespace LiveNewsFeed.UI.UWP.Common
             CategoriesMap[Category.Commentary] = new CategoryViewModel(Category.Commentary, "CategoryCommentaryColor", "\uE206", SegoeMdl2AssetsFontFamily);
         }
 
-        public static ImageBrush? GetLogoForNewsFeed(string newsFeedName)
+        public static ImageSource? GetLogoForNewsFeed(string newsFeedName)
         {
             if (newsFeedName == null)
                 throw new ArgumentNullException(nameof(newsFeedName));
@@ -38,12 +38,12 @@ namespace LiveNewsFeed.UI.UWP.Common
             return NewsFeedLogos.ContainsKey(newsFeedName) ? NewsFeedLogos[newsFeedName] : default;
         }
 
-        public static void RegisterLogoForNewsFeed(string newsFeedName, ImageBrush logo)
+        public static void RegisterLogoForNewsFeed(string newsFeedName, ImageSource logoSource)
         {
             if (newsFeedName == null)
                 throw new ArgumentNullException(nameof(newsFeedName));
 
-            NewsFeedLogos[newsFeedName] = logo ?? throw new ArgumentNullException(nameof(logo));
+            NewsFeedLogos[newsFeedName] = logoSource ?? throw new ArgumentNullException(nameof(logoSource));
         }
 
         public static CategoryViewModel GetCategoryViewModel(Category category) => CategoriesMap[category];
@@ -53,7 +53,7 @@ namespace LiveNewsFeed.UI.UWP.Common
                                       HtmlUtilities.ConvertToText(articlePost.Content).Trim(),
                                       articlePost.PublishTime,
                                       articlePost.FullArticleUrl,
-                                      GetLogoForNewsFeed(articlePost.NewsFeedName),
+                                      new ImageBrush { ImageSource = GetLogoForNewsFeed(articlePost.NewsFeedName) },
                                       ToImageViewModel(articlePost.Image),
                                       SanitizeSocialPostContent(articlePost.SocialPost?.Content),
                                       articlePost.Categories

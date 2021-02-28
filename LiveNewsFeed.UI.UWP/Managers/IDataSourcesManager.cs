@@ -13,13 +13,13 @@ namespace LiveNewsFeed.UI.UWP.Managers
         
         void RegisterDataSource(NewsFeedDataSource newsFeedDataSource);
 
-        IList<NewsFeedDataSource> GetRegisteredDataSources();
+        IEnumerable<NewsFeedDataSource> GetRegisteredDataSources();
 
         NewsFeedDataSource? GetDataSourceByName(string name);
 
-        Task<IList<NewsArticlePost>> GetLatestPostsFromAllAsync(DataSourceUpdateOptions? options = default);
+        Task<IEnumerable<NewsArticlePost>> GetLatestPostsFromAllAsync(DataSourceUpdateOptions? options = default);
 
-        Task<IList<NewsArticlePost>> GetLatestPostsSinceLastUpdateAsync(DataSourceUpdateOptions? options = default);
+        Task<IEnumerable<NewsArticlePost>> GetLatestPostsSinceLastUpdateAsync(DataSourceUpdateOptions? options = default);
 
         Task LoadLatestPostsSinceLastUpdateAsync(DataSourceUpdateOptions? options = default);
     }
