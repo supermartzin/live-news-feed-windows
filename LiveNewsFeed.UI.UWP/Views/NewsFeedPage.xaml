@@ -239,9 +239,9 @@
                                                Expanded="Expander_OnExpanded"
                                                Collapsed="Expander_OnCollapsed"
                                                HeaderStyle="{StaticResource CustomExpanderHeaderStyle}"
-                                               Visibility="{x:Bind SocialPostContent, Converter={StaticResource NullToVisibilityConverter}}"
+                                               Visibility="{x:Bind SocialPost, Converter={StaticResource NullToVisibilityConverter}}"
                                                x:Phase="3">
-                                    <WebView controls:WebExtensions.HtmlString="{x:Bind SocialPostContent}"
+                                    <WebView controls:WebExtensions.HtmlString="{x:Bind SocialPost.Content}"
                                              DefaultBackgroundColor="Transparent"
                                              Height="100"/>
                                 </mtuc:Expander>

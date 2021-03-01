@@ -231,10 +231,16 @@
   <data name="NewsFeed_Settings_OnlyImportantOn.Text" xml:space="preserve">
     <value>Only important | ON</value>
   </data>
+  <data name="Notification_Buttons_CopyLinkToClipboard" xml:space="preserve">
+    <value>Copy</value>
+  </data>
   <data name="Notification_Buttons_Dismiss" xml:space="preserve">
     <value>Dismiss</value>
   </data>
   <data name="Notification_Buttons_OpenInBrowser" xml:space="preserve">
-    <value>Open in Browser</value>
+    <value>Open</value>
+  </data>
+  <data name="Notification_Buttons_SharePost" xml:space="preserve">
+    <value>Share</value>
   </data>
 </root>

@@ -1,38 +1,28 @@
 ﻿using System;
-using GalaSoft.MvvmLight;
+using Windows.Data.Html;
+
+using LiveNewsFeed.Models;
 
 namespace LiveNewsFeed.UI.UWP.ViewModels
 {
     public class ImageViewModel : ViewModelBase
     {
-        private Uri _normalImageUrl;
-        public Uri NormalImageUrl
+        public Image OriginalImage { get; }
+
+        public Uri NormalImageUrl => OriginalImage.Url;
+
+        public Uri? LargeImageUrl => OriginalImage?.LargeSizeUrl;
+
+        public string? Title { get; }
+
+        public ImageViewModel(Image image)
         {
-            get => _normalImageUrl;
-            set => Set(ref _normalImageUrl, value);
+            OriginalImage = image ?? throw new ArgumentNullException(nameof(image));
+
+            Title = SanitizeTitleText(image.Title);
         }
 
-        private Uri? _largeImageUrl;
-        public Uri? LargeImageUrl
-        {
-            get => _largeImageUrl;
-            set => Set(ref _largeImageUrl, value);
-        }
-
-        private string? _title;
-        public string? Title
-        {
-            get => _title;
-            set => Set(ref _title, value);
-        }
-
-        public ImageViewModel(Uri normalImageUrl,
-                              string? title = null,
-                              Uri? largeImageUrl = null)
-        {
-            _normalImageUrl = normalImageUrl;
-            _title = title;
-            _largeImageUrl = largeImageUrl ?? normalImageUrl;
-        }
+        private static string? SanitizeTitleText(string? imageTitle) => imageTitle != null ? HtmlUtilities.ConvertToText(imageTitle).Trim() : default;
     }
+
 }

@@ -4,8 +4,6 @@ using Windows.UI.Xaml.Media;
 
 using LiveNewsFeed.Models;
 
-using LiveNewsFeed.UI.UWP.Common;
-
 namespace LiveNewsFeed.UI.UWP.ViewModels
 {
     public sealed class CategoryViewModel : ViewModelBase

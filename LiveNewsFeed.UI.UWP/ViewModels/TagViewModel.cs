@@ -1,14 +1,18 @@
-﻿using LiveNewsFeed.UI.UWP.Common;
+﻿using System;
+
+using LiveNewsFeed.Models;
 
 namespace LiveNewsFeed.UI.UWP.ViewModels
 {
     public class TagViewModel : ViewModelBase
     {
-        public string Name { get; }
+        public Tag OriginalTag { get; }
 
-        public TagViewModel(string name)
+        public string Name => OriginalTag.Name;
+
+        public TagViewModel(Tag tag)
         {
-            Name = name;
+            OriginalTag = tag ?? throw new ArgumentNullException(nameof(tag));
         }
     }
 }

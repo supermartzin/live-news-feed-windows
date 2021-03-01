@@ -102,6 +102,37 @@ namespace LiveNewsFeed.UI.UWP
             Helpers.CreateCategoriesMap();
         }
 
+        protected override void OnActivated(IActivatedEventArgs eventArgs)
+        {
+            if (eventArgs is ToastNotificationActivatedEventArgs notificationArgs)
+            {
+                var split = notificationArgs.Argument.Split('&');
+
+                // get parsed arguments
+                var action = split[0].Split('=')[1];
+                var notificationId = split[1].Split('=')[1];
+
+                var notificationsManager = ServiceLocator.Container.GetRequiredService<INotificationsManager>();
+
+                var articlePost = notificationsManager.NotifiedPosts[notificationId];
+
+                switch (action)
+                {
+                    case "copyLink":
+                        UiHelpers.ShareArticleLinkViaClipboard(articlePost);
+                        break;
+                    case "sharePost":
+                        UiHelpers.ShareArticleViaSystemUI(articlePost);
+                        break;
+                }
+            }
+        }
+
+        protected override void OnBackgroundActivated(BackgroundActivatedEventArgs args)
+        {
+            base.OnBackgroundActivated(args);
+        }
+
         /// <summary>
         /// Invoked when Navigation to a certain page fails
         /// </summary>

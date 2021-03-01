@@ -1,34 +1,44 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
+using System.Linq;
 using System.Windows.Input;
-using Windows.ApplicationModel;
-using Windows.ApplicationModel.DataTransfer;
+using Windows.Data.Html;
 using Windows.System;
 using Windows.UI.Xaml.Media;
 using GalaSoft.MvvmLight.Command;
+
+using LiveNewsFeed.Models;
+using LiveNewsFeed.UI.UWP.Common;
 
 namespace LiveNewsFeed.UI.UWP.ViewModels
 {
     public class NewsArticlePostViewModel : ViewModelBase
     {
-        public string Title { get; }
+        #region Properties
 
-        public string Content { get; }
+        public NewsArticlePost OriginalPost { get; }
 
-        public DateTime PublishTime { get; }
+        public string Title => OriginalPost.Title;
 
-        public Uri ArticleUrl { get; }
+        public string Content => HtmlUtilities.ConvertToText(OriginalPost.Content).Trim();
+
+        public DateTime PublishTime => OriginalPost.PublishTime;
+
+        public Uri ArticleUrl => OriginalPost.FullArticleUrl;
 
         public ImageViewModel? Image { get; }
 
-        public string? SocialPostContent { get; }
+        public SocialPostViewModel? SocialPost { get; }
 
         public ImageBrush? NewsFeedLogo { get; }
 
-        public ObservableCollection<TagViewModel>? Tags { get; }
+        public IList<TagViewModel>? Tags { get; }
 
-        public ObservableCollection<CategoryViewModel>? Categories { get; }
+        public IList<CategoryViewModel>? Categories { get; }
+
+        #endregion
+
+        #region Commands
 
         public ICommand OpenFullArticleCommand { get; private set; }
 
@@ -44,31 +54,30 @@ namespace LiveNewsFeed.UI.UWP.ViewModels
 
         public ICommand OpenArticlePreviewCommand { get; private set; }
 
+        #endregion
+
+        #region Events
+
         public event EventHandler ShowImagePreviewRequested;
         public event EventHandler HideImagePreviewRequested;
         public event EventHandler OpenArticlePreviewRequested;
 
-        public NewsArticlePostViewModel(string title,
-                                        string content,
-                                        DateTime publishTime,
-                                        Uri articleUrl,
-                                        ImageBrush? newsFeedLogo,
-                                        ImageViewModel? image = default,
-                                        string? socialPostContent = default,
-                                        IEnumerable<CategoryViewModel>? categories = default,
-                                        IEnumerable<TagViewModel>? tags = default)
+        #endregion
+
+        public NewsArticlePostViewModel(NewsArticlePost newsArticlePost)
         {
-            Title = title;
-            Content = content;
-            PublishTime = publishTime;
-            ArticleUrl = articleUrl;
-            NewsFeedLogo = newsFeedLogo;
-            Image = image;
-            SocialPostContent = socialPostContent;
-            if (categories != null)
-                Categories = new ObservableCollection<CategoryViewModel>(categories);
-            if (tags != null)
-                Tags = new ObservableCollection<TagViewModel>(tags);
+            OriginalPost = newsArticlePost ?? throw new ArgumentNullException(nameof(newsArticlePost));
+
+            Image = OriginalPost.Image != null ? new ImageViewModel(OriginalPost.Image) : default;
+            SocialPost = OriginalPost.SocialPost != null ? new SocialPostViewModel(OriginalPost.SocialPost) : default;
+            NewsFeedLogo = new ImageBrush {ImageSource = Helpers.GetLogoForNewsFeed(OriginalPost.NewsFeedName)};
+            Categories = OriginalPost.Categories
+                                      .Where(category => category != Category.NotCategorized)
+                                      .Select(Helpers.GetCategoryViewModel)
+                                      .ToList();
+            Tags = OriginalPost.Tags
+                                .Select(tag => new TagViewModel(tag))
+                                .ToList();
 
             InitializeCommands();
         }
@@ -77,42 +86,12 @@ namespace LiveNewsFeed.UI.UWP.ViewModels
         private void InitializeCommands()
         {
             OpenFullArticleCommand = new RelayCommand(async () => await Launcher.LaunchUriAsync(ArticleUrl));
-            CopyArticleUrlToClipboardCommand = new RelayCommand(CopyArticleLinkToClipboard);
-            ShareArticleCommand = new RelayCommand(ShareArticle);
+            CopyArticleUrlToClipboardCommand = new RelayCommand(() => UiHelpers.ShareArticleLinkViaClipboard(OriginalPost));
+            ShareArticleCommand = new RelayCommand(() => UiHelpers.ShareArticleViaSystemUI(OriginalPost));
             OpenImageInBrowserCommand = new RelayCommand(async () => await Launcher.LaunchUriAsync(Image?.LargeImageUrl));
             ShowImagePreviewCommand = new RelayCommand(() => ShowImagePreviewRequested?.Invoke(this, EventArgs.Empty));
             HideImagePreviewCommand = new RelayCommand(() => HideImagePreviewRequested?.Invoke(this, EventArgs.Empty));
             OpenArticlePreviewCommand = new RelayCommand(() => OpenArticlePreviewRequested?.Invoke(this, EventArgs.Empty));
         }
-        
-        private void CopyArticleLinkToClipboard()
-        {
-            var dataPackage = new DataPackage();
-            dataPackage.SetText(ArticleUrl.AbsoluteUri);
-
-            Clipboard.SetContent(dataPackage);
-        }
-
-        private void ShareArticle()
-        {
-            DataTransferManager.GetForCurrentView().DataRequested += DataTransferManager_OnDataRequested;
-            DataTransferManager.ShowShareUI();
-        }
-
-        private void DataTransferManager_OnDataRequested(DataTransferManager sender, DataRequestedEventArgs eventArgs)
-        {
-            DataTransferManager.GetForCurrentView().DataRequested -= DataTransferManager_OnDataRequested;
-
-            // set shared content
-            eventArgs.Request.Data.SetWebLink(ArticleUrl);
-            eventArgs.Request.Data.Properties.ContentSourceWebLink = ArticleUrl;
-            eventArgs.Request.Data.Properties.Title = Title;
-            eventArgs.Request.Data.Properties.Description = GetContentForSharing();
-            eventArgs.Request.Data.Properties.ApplicationName = Package.Current.DisplayName;
-        }
-
-        private string GetContentForSharing() => Content.Length > 100
-                                                    ? Content.Substring(0, 100) + "..."
-                                                    : Content;
     }
 }

@@ -1,0 +1,52 @@
+﻿using System;
+using Windows.ApplicationModel;
+using Windows.ApplicationModel.DataTransfer;
+using Windows.Data.Html;
+using Microsoft.Toolkit.Uwp.Helpers;
+
+using LiveNewsFeed.Models;
+
+namespace LiveNewsFeed.UI.UWP.Common
+{
+    public static class UiHelpers
+    {
+        public static void ShareArticleViaSystemUI(NewsArticlePost articlePost)
+        {
+            if (articlePost == null)
+                throw new ArgumentNullException(nameof(articlePost));
+
+            DispatcherHelper.ExecuteOnUIThreadAsync(() =>
+            {
+                DataTransferManager.GetForCurrentView().DataRequested += OnDataRequested;
+                DataTransferManager.ShowShareUI();
+            });
+
+            void OnDataRequested(DataTransferManager sender, DataRequestedEventArgs eventArgs)
+            {
+                DataTransferManager.GetForCurrentView().DataRequested -= OnDataRequested;
+
+                // set shared content
+                eventArgs.Request.Data.SetWebLink(articlePost.FullArticleUrl);
+                eventArgs.Request.Data.Properties.ContentSourceWebLink = articlePost.FullArticleUrl;
+                eventArgs.Request.Data.Properties.Title = articlePost.Title;
+                eventArgs.Request.Data.Properties.Description = GetContentForSharing(HtmlUtilities.ConvertToText(articlePost.Content).Trim());
+                eventArgs.Request.Data.Properties.ApplicationName = Package.Current.DisplayName;
+            }
+        }
+
+        public static void ShareArticleLinkViaClipboard(NewsArticlePost articlePost)
+        {
+            if (articlePost == null)
+                throw new ArgumentNullException(nameof(articlePost));
+
+            var dataPackage = new DataPackage();
+            dataPackage.SetText(articlePost.FullArticleUrl.AbsoluteUri);
+
+            DispatcherHelper.ExecuteOnUIThreadAsync(() => Clipboard.SetContent(dataPackage));
+        }
+
+        private static string GetContentForSharing(string content) => content.Length > 100
+            ? content.Substring(0, 100) + "..."
+            : content;
+    }
+}

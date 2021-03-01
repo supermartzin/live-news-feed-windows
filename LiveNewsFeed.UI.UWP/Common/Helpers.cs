@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using Windows.Data.Html;
 using Windows.UI.Xaml.Media;
 
 using LiveNewsFeed.Models;
@@ -47,28 +44,5 @@ namespace LiveNewsFeed.UI.UWP.Common
         }
 
         public static CategoryViewModel GetCategoryViewModel(Category category) => CategoriesMap[category];
-
-        public static NewsArticlePostViewModel ToViewModel(NewsArticlePost articlePost) =>
-            new(articlePost.Title,
-                                      HtmlUtilities.ConvertToText(articlePost.Content).Trim(),
-                                      articlePost.PublishTime,
-                                      articlePost.FullArticleUrl,
-                                      new ImageBrush { ImageSource = GetLogoForNewsFeed(articlePost.NewsFeedName) },
-                                      ToImageViewModel(articlePost.Image),
-                                      SanitizeSocialPostContent(articlePost.SocialPost?.Content),
-                                      articlePost.Categories
-                                                 .Where(category => category != Category.NotCategorized)
-                                                 .Select(GetCategoryViewModel),
-                                      articlePost.Tags.Select(tag => new TagViewModel(tag.Name)));
-
-        private static ImageViewModel? ToImageViewModel(Image? image) => image != null
-            ? new ImageViewModel(image.Url,
-                                 image.Title != null ? HtmlUtilities.ConvertToText(image.Title).Trim() : default,
-                                 image.LargeSizeUrl)
-            : default;
-
-        private static string? SanitizeSocialPostContent(string? socialPostContent) => socialPostContent != null
-            ? $"<!DOCTYPE html>{HttpUtility.HtmlDecode(socialPostContent)}</html>"
-            : default;
     }
 }

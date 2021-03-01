@@ -17,12 +17,20 @@ namespace LiveNewsFeed.UI.UWP.ViewModels
             ThemeListener.ThemeChanged += ThemeListener_OnThemeChanged;
         }
         
-        protected virtual async Task InvokeOnUi(Action action)
+        protected virtual async Task InvokeOnUiAsync(Action action)
         {
             if (action == null)
                 throw new ArgumentNullException(nameof(action));
 
             await DispatcherHelper.ExecuteOnUIThreadAsync(action);
+        }
+
+        protected virtual void InvokeOnUi(Action action)
+        {
+            if (action == null)
+                throw new ArgumentNullException(nameof(action));
+
+            DispatcherHelper.ExecuteOnUIThreadAsync(action);
         }
 
         protected virtual string GetLocalizedString(string key)

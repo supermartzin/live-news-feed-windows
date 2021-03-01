@@ -92,13 +92,15 @@ namespace LiveNewsFeed.UI.UWP.ViewModels
                                {
                                    var posts = task.Result;
 
-                                   return InvokeOnUi(() =>
+                                   InvokeOnUi(() =>
                                    {
+                                       _notificationsManager.ShowNotification(posts.First(post => post.Image != null));
+
                                        using (ArticlePosts.DeferRefresh())
                                        {
                                            foreach (var post in posts)
                                            {
-                                               var viewModel = Helpers.ToViewModel(post);
+                                               var viewModel = new NewsArticlePostViewModel(post);
 
                                                RegisterEvents(viewModel);
 
@@ -155,13 +157,13 @@ namespace LiveNewsFeed.UI.UWP.ViewModels
                                {
                                    var newPosts = task.Result;
 
-                                   return InvokeOnUi(() =>
+                                   InvokeOnUi(() =>
                                    {
                                        foreach (var post in newPosts)
                                        {
                                            using (ArticlePosts.DeferRefresh())
                                            {
-                                               var viewModel = Helpers.ToViewModel(post);
+                                               var viewModel = new NewsArticlePostViewModel(post);
 
                                                RegisterEvents(viewModel);
 
@@ -176,13 +178,13 @@ namespace LiveNewsFeed.UI.UWP.ViewModels
 
         private bool CanReloadArticlesManually() => !NewPostsLoading;
 
-        private async void DataSourcesManager_OnNewsArticlePostReceived(object sender, NewsArticlePost newsArticlePost)
+        private void DataSourcesManager_OnNewsArticlePostReceived(object sender, NewsArticlePost newsArticlePost)
         {
-            var viewModel = Helpers.ToViewModel(newsArticlePost);
+            var viewModel = new NewsArticlePostViewModel(newsArticlePost);
 
             RegisterEvents(viewModel);
 
-            await InvokeOnUi(() => ArticlePosts.Add(viewModel));
+            InvokeOnUi(() => ArticlePosts.Add(viewModel));
         }
     }
 }
