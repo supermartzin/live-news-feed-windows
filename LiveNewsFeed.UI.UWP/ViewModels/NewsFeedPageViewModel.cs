@@ -118,8 +118,9 @@ namespace LiveNewsFeed.UI.UWP.ViewModels
             post.ShowImagePreviewRequested += NewsArticlePost_OnShowImagePreviewRequested;
             post.HideImagePreviewRequested += NewsArticlePost_OnHideImagePreviewRequested;
             post.OpenArticlePreviewRequested += NewsArticlePost_OnOpenArticlePreviewRequested;
+            post.OpenSocialPostPreviewRequested += NewsArticlePost_OnOpenSocialPostPreviewRequested;
         }
-
+        
         private void NewsArticlePost_OnShowImagePreviewRequested(object sender, EventArgs e)
         {
             if (sender is NewsArticlePostViewModel postViewModel)
@@ -135,7 +136,20 @@ namespace LiveNewsFeed.UI.UWP.ViewModels
 
         private void NewsArticlePost_OnOpenArticlePreviewRequested(object sender, EventArgs e)
         {
-            _navigationService.NavigateTo(nameof(ArticlePreviewPage), sender);
+            _navigationService.NavigateTo(nameof(ArticlePreviewPage), new NavigationParameters(new Dictionary<string, object>
+            {
+                { "post", sender },
+                { "isSocialPost", false }
+            }));
+        }
+
+        private void NewsArticlePost_OnOpenSocialPostPreviewRequested(object sender, EventArgs e)
+        {
+            _navigationService.NavigateTo(nameof(ArticlePreviewPage), new NavigationParameters(new Dictionary<string, object>
+            {
+                { "post", sender },
+                { "isSocialPost", true }
+            }));
         }
 
         private void InitializeCommands()

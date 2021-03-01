@@ -138,6 +138,12 @@
   <data name="ArticlePost_Actions_OpenInBrowserButton.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
     <value>Open in Browser</value>
   </data>
+  <data name="ArticlePost_Actions_OpenSocialPostPreviewButton.Text" xml:space="preserve">
+    <value>Open Social post</value>
+  </data>
+  <data name="ArticlePost_Actions_OpenSocialPostPreviewButton.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
+    <value>Open Social post in-app preview</value>
+  </data>
   <data name="ArticlePost_Actions_ShareArticleButton.Text" xml:space="preserve">
     <value>Share</value>
   </data>
@@ -242,5 +248,29 @@
   </data>
   <data name="Notification_Buttons_SharePost" xml:space="preserve">
     <value>Share</value>
+  </data>
+  <data name="SocialPostType_ToolTip_AppleMusic" xml:space="preserve">
+    <value>Contains audio from Apple Music</value>
+  </data>
+  <data name="SocialPostType_ToolTip_Deezer" xml:space="preserve">
+    <value>Contains audio from Deezer</value>
+  </data>
+  <data name="SocialPostType_ToolTip_Facebook" xml:space="preserve">
+    <value>Contains post from Facebook</value>
+  </data>
+  <data name="SocialPostType_ToolTip_Instagram" xml:space="preserve">
+    <value>Contains post from Instagram</value>
+  </data>
+  <data name="SocialPostType_ToolTip_Other" xml:space="preserve">
+    <value>Contains post from social site</value>
+  </data>
+  <data name="SocialPostType_ToolTip_Spotify" xml:space="preserve">
+    <value>Contains audio from Spotify</value>
+  </data>
+  <data name="SocialPostType_ToolTip_Twitter" xml:space="preserve">
+    <value>Contains post from Twitter</value>
+  </data>
+  <data name="SocialPostType_ToolTip_YouTube" xml:space="preserve">
+    <value>Contains video from YouTube</value>
   </data>
 </root>

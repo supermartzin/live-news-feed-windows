@@ -138,6 +138,12 @@
   <data name="ArticlePost_Actions_OpenInBrowserButton.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
     <value>Otvoriť v prehliadači</value>
   </data>
+  <data name="ArticlePost_Actions_OpenSocialPostPreviewButton.Text" xml:space="preserve">
+    <value>Zobraziť príspevok soc. siete</value>
+  </data>
+  <data name="ArticlePost_Actions_OpenSocialPostPreviewButton.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
+    <value>Zobraziť náhľad príspevku v aplikácii</value>
+  </data>
   <data name="ArticlePost_Actions_ShareArticleButton.Text" xml:space="preserve">
     <value>Zdieľať</value>
   </data>
@@ -242,5 +248,29 @@
   </data>
   <data name="Notification_Buttons_SharePost" xml:space="preserve">
     <value>Zdieľať</value>
+  </data>
+  <data name="SocialPostType_ToolTip_AppleMusic" xml:space="preserve">
+    <value>Obsahuje audio z Apple Music</value>
+  </data>
+  <data name="SocialPostType_ToolTip_Deezer" xml:space="preserve">
+    <value>Obsahuje audio z Deezeru</value>
+  </data>
+  <data name="SocialPostType_ToolTip_Facebook" xml:space="preserve">
+    <value>Obsahuje príspevok z Facebooku</value>
+  </data>
+  <data name="SocialPostType_ToolTip_Instagram" xml:space="preserve">
+    <value>Obsahuje príspevok z Instagramu</value>
+  </data>
+  <data name="SocialPostType_ToolTip_Other" xml:space="preserve">
+    <value>Obsahuje príspevok zo sociálnej siete</value>
+  </data>
+  <data name="SocialPostType_ToolTip_Spotify" xml:space="preserve">
+    <value>Obsahuje audio zo Spotify</value>
+  </data>
+  <data name="SocialPostType_ToolTip_Twitter" xml:space="preserve">
+    <value>Obsahuje príspevok z Twitteru</value>
+  </data>
+  <data name="SocialPostType_ToolTip_YouTube" xml:space="preserve">
+    <value>Obsahuje video z YouTube</value>
   </data>
 </root>

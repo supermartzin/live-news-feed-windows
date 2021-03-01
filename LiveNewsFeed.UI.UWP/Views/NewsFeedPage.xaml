@@ -116,9 +116,10 @@
                     <StackPanel Orientation="Vertical"
                                 HorizontalAlignment="Stretch"
                                 Padding="10">
-                        <!--  Data source - Logo, Title, Categories and Publish time  -->
+                        <!--  Data source - Logo, Title, Social post logo, Categories and Publish time  -->
                         <Grid Margin="0 0 0 5">
                             <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
                                 <ColumnDefinition Width="Auto"/>
                                 <ColumnDefinition Width="*"/>
                                 <ColumnDefinition Width="Auto"/>
@@ -138,12 +139,23 @@
                                     CornerRadius="2"
                                     x:Phase="1"/>
                             <!--  Title  -->
-                            <TextBlock Grid.Column="1" Text="{x:Bind Title}"
+                            <TextBlock Grid.Column="1"
+                                       Text="{x:Bind Title}"
                                        HorizontalTextAlignment="Left"
                                        FontWeight="Bold"
                                        FontSize="14"/>
+                            <!--  Social post logo  -->
+                            <Image Grid.Column="2"
+                                   Source="{x:Bind SocialPost.SocialSiteLogo}"
+                                   Visibility="{x:Bind SocialPost, Converter={StaticResource NullToVisibilityConverter}}"
+                                   Height="20"
+                                   Width="20"
+                                   Margin="15 0"
+                                   x:Phase="1"
+                                   HorizontalAlignment="Left"
+                                   ToolTipService.ToolTip="{x:Bind SocialPost.ToolTip}"/>
                             <!--  Categories  -->
-                            <ItemsControl Grid.Column="2"
+                            <ItemsControl Grid.Column="3"
                                           ItemsSource="{x:Bind Categories}"
                                           x:Phase="1">
                                 <ItemsControl.ItemsPanel>
@@ -176,7 +188,7 @@
                                 </ItemsControl.ItemTemplate>
                             </ItemsControl>
                             <!--  Publish time  -->
-                            <TextBlock Grid.Column="3"
+                            <TextBlock Grid.Column="4"
                                        HorizontalAlignment="Right"
                                        VerticalAlignment="Center"
                                        FontSize="12"
@@ -222,7 +234,7 @@
                                        x:Phase="1"/>
                         </Grid>
 
-                        <!--  Social post Content, Tags & Actions button  -->
+                        <!--  Tags & Actions button  -->
                         <Grid>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*"/>
@@ -231,21 +243,6 @@
 
                             <StackPanel Grid.Column="0"
                                         Orientation="Vertical">
-                                <!--  Social post Content  -->
-                                <mtuc:Expander Margin="0 10 0 0"
-                                               HorizontalContentAlignment="Stretch"
-                                               ExpandDirection="Down"
-                                               IsExpanded="False"
-                                               Expanded="Expander_OnExpanded"
-                                               Collapsed="Expander_OnCollapsed"
-                                               HeaderStyle="{StaticResource CustomExpanderHeaderStyle}"
-                                               Visibility="{x:Bind SocialPost, Converter={StaticResource NullToVisibilityConverter}}"
-                                               x:Phase="3">
-                                    <WebView controls:WebExtensions.HtmlString="{x:Bind SocialPost.Content}"
-                                             DefaultBackgroundColor="Transparent"
-                                             Height="100"/>
-                                </mtuc:Expander>
-
                                 <!--  Tags  -->
                                 <ItemsControl ItemsSource="{x:Bind Tags}"
                                               Visibility="{x:Bind Tags, Converter={StaticResource EmptyCollectionToVisibilityConverter}}"
@@ -327,6 +324,13 @@
                                             </MenuFlyoutItem.Icon>
                                         </MenuFlyoutItem>
                                         <MenuFlyoutSeparator />
+                                        <MenuFlyoutItem x:Uid="ArticlePost_Actions_OpenSocialPostPreviewButton"
+                                                        Command="{x:Bind OpenSocialPostPreviewCommand}"
+                                                        Visibility="{x:Bind SocialPost, Converter={StaticResource NullToVisibilityConverter}}">
+                                            <MenuFlyoutItem.Icon>
+                                                <FontIcon Glyph="&#xE125;" />
+                                            </MenuFlyoutItem.Icon>
+                                        </MenuFlyoutItem>
                                         <MenuFlyoutItem x:Uid="ArticlePost_Actions_OpenArticlePreviewButton"
                                                         Command="{x:Bind OpenArticlePreviewCommand}">
                                             <MenuFlyoutItem.Icon>

@@ -119,7 +119,7 @@ namespace LiveNewsFeed.UI.UWP
                 switch (action)
                 {
                     case "copyLink":
-                        UiHelpers.ShareArticleLinkViaClipboard(articlePost);
+                        UiHelpers.ShareLinkViaClipboard(articlePost.FullArticleUrl);
                         break;
                     case "sharePost":
                         UiHelpers.ShareArticleViaSystemUI(articlePost);

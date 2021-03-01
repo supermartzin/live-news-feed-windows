@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.Toolkit.Uwp.UI;
-using Windows.UI.Xaml.Media.Imaging;
 
 using LiveNewsFeed.DataSource.Common;
 using LiveNewsFeed.Models;
@@ -39,10 +37,9 @@ namespace LiveNewsFeed.UI.UWP.Managers
             _dataSources[newsFeedDataSource.Name] = newsFeedDataSource;
 
             // register logo
-            Helpers.RegisterLogoForNewsFeed(newsFeedDataSource.Name, new BitmapImage(newsFeedDataSource.LogoUrl));
+            Helpers.RegisterLogoForNewsFeed(newsFeedDataSource.Name, newsFeedDataSource.LogoUrl);
 
-            // cache logo in memory
-            ImageCache.Instance.PreCacheAsync(newsFeedDataSource.LogoUrl, false, true);
+            
         }
 
         public IEnumerable<NewsFeedDataSource> GetRegisteredDataSources()

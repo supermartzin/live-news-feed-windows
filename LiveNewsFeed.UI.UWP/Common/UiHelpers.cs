@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Threading.Tasks;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.DataTransfer;
 using Windows.Data.Html;
+using Windows.System;
 using Microsoft.Toolkit.Uwp.Helpers;
 
 using LiveNewsFeed.Models;
@@ -34,16 +36,19 @@ namespace LiveNewsFeed.UI.UWP.Common
             }
         }
 
-        public static void ShareArticleLinkViaClipboard(NewsArticlePost articlePost)
+        public static void ShareLinkViaClipboard(Uri url)
         {
-            if (articlePost == null)
-                throw new ArgumentNullException(nameof(articlePost));
+            if (url == null)
+                throw new ArgumentNullException(nameof(url));
 
             var dataPackage = new DataPackage();
-            dataPackage.SetText(articlePost.FullArticleUrl.AbsoluteUri);
+            dataPackage.SetText(url.AbsoluteUri);
 
             DispatcherHelper.ExecuteOnUIThreadAsync(() => Clipboard.SetContent(dataPackage));
         }
+
+        public static async Task OpenInDefaultBrowser(Uri? uri) => await Launcher.LaunchUriAsync(uri);
+
 
         private static string GetContentForSharing(string content) => content.Length > 100
             ? content.Substring(0, 100) + "..."

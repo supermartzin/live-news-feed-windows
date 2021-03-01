@@ -4,6 +4,7 @@ using Windows.UI.Xaml.Navigation;
 using Microsoft.Extensions.DependencyInjection;
 
 using LiveNewsFeed.UI.UWP.Common;
+using LiveNewsFeed.UI.UWP.Managers;
 using LiveNewsFeed.UI.UWP.ViewModels;
 
 namespace LiveNewsFeed.UI.UWP.Views
@@ -21,9 +22,10 @@ namespace LiveNewsFeed.UI.UWP.Views
 
         protected override void OnNavigatedTo(NavigationEventArgs eventArgs)
         {
-            if (eventArgs.Parameter is NewsArticlePostViewModel post)
+            if (eventArgs.Parameter is NavigationParameters parameters)
             {
-                ViewModel.NewsArticlePost = post;
+                ViewModel.IsSocialPostPreview = parameters.GetValue<bool>("isSocialPost")!;
+                ViewModel.NewsArticlePost = parameters.GetValue<NewsArticlePostViewModel>("post")!;
             }
             
             Window.Current.SetTitleBar(ArticlePreviewTopBar);

@@ -116,7 +116,7 @@
         <!--  Website  -->
         <WebView Grid.Row="1"
                  x:Name="WebView"
-                 Source="{x:Bind ViewModel.NewsArticlePost.ArticleUrl}" />
+                 Source="{x:Bind ViewModel.PreviewUrl, Mode=OneWay}" />
 
         <!--  Actions bar  -->
         <CommandBar Grid.Row="1"
@@ -125,21 +125,24 @@
                     Background="{ThemeResource CustomAcrylicElementBrush}">
             <AppBarButton x:Uid="ArticlePreview_ShareArticleButton"
                           Style="{ThemeResource AppBarButtonRevealStyle}"
-                          Command="{x:Bind ViewModel.NewsArticlePost.ShareArticleCommand}">
+                          Command="{x:Bind ViewModel.NewsArticlePost.ShareArticleCommand}"
+                          Visibility="{x:Bind Path=ViewModel.IsSocialPostPreview,
+                                              Mode=OneWay,
+                                              Converter={StaticResource InverseBoolToVisibilityConverter}}">
                 <AppBarButton.Icon>
                     <FontIcon Glyph="&#xE72D;" />
                 </AppBarButton.Icon>
             </AppBarButton>
             <AppBarButton x:Uid="ArticlePreview_CopyLinkButton"
                           Style="{ThemeResource AppBarButtonRevealStyle}"
-                          Command="{x:Bind ViewModel.NewsArticlePost.CopyArticleUrlToClipboardCommand}">
+                          Command="{x:Bind ViewModel.CopyUrlToClipboardCommand}">
                 <AppBarButton.Icon>
                     <FontIcon Glyph="&#xE16F;" />
                 </AppBarButton.Icon>
             </AppBarButton>
             <AppBarButton x:Uid="ArticlePreview_OpenInBrowserButton"
                           Style="{ThemeResource AppBarButtonRevealStyle}"
-                          Command="{x:Bind ViewModel.NewsArticlePost.OpenFullArticleCommand}">
+                          Command="{x:Bind ViewModel.OpenInBrowserCommand}">
                 <AppBarButton.Icon>
                     <FontIcon Glyph="&#xE8A7;" />
                 </AppBarButton.Icon>

@@ -54,6 +54,8 @@ namespace LiveNewsFeed.UI.UWP.ViewModels
 
         public ICommand OpenArticlePreviewCommand { get; private set; }
 
+        public ICommand OpenSocialPostPreviewCommand { get; private set; }
+
         #endregion
 
         #region Events
@@ -61,6 +63,7 @@ namespace LiveNewsFeed.UI.UWP.ViewModels
         public event EventHandler ShowImagePreviewRequested;
         public event EventHandler HideImagePreviewRequested;
         public event EventHandler OpenArticlePreviewRequested;
+        public event EventHandler OpenSocialPostPreviewRequested;
 
         #endregion
 
@@ -85,13 +88,14 @@ namespace LiveNewsFeed.UI.UWP.ViewModels
 
         private void InitializeCommands()
         {
-            OpenFullArticleCommand = new RelayCommand(async () => await Launcher.LaunchUriAsync(ArticleUrl));
-            CopyArticleUrlToClipboardCommand = new RelayCommand(() => UiHelpers.ShareArticleLinkViaClipboard(OriginalPost));
+            OpenFullArticleCommand = new RelayCommand(async () => await UiHelpers.OpenInDefaultBrowser(ArticleUrl));
+            CopyArticleUrlToClipboardCommand = new RelayCommand(() => UiHelpers.ShareLinkViaClipboard(ArticleUrl));
             ShareArticleCommand = new RelayCommand(() => UiHelpers.ShareArticleViaSystemUI(OriginalPost));
-            OpenImageInBrowserCommand = new RelayCommand(async () => await Launcher.LaunchUriAsync(Image?.LargeImageUrl));
+            OpenImageInBrowserCommand = new RelayCommand(async () => await UiHelpers.OpenInDefaultBrowser(Image?.LargeImageUrl));
             ShowImagePreviewCommand = new RelayCommand(() => ShowImagePreviewRequested?.Invoke(this, EventArgs.Empty));
             HideImagePreviewCommand = new RelayCommand(() => HideImagePreviewRequested?.Invoke(this, EventArgs.Empty));
             OpenArticlePreviewCommand = new RelayCommand(() => OpenArticlePreviewRequested?.Invoke(this, EventArgs.Empty));
+            OpenSocialPostPreviewCommand = new RelayCommand(() => OpenSocialPostPreviewRequested?.Invoke(this, EventArgs.Empty));
         }
     }
 }

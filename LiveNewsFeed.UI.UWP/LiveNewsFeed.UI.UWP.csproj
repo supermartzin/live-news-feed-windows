@@ -142,6 +142,7 @@
     <Compile Include="Controls\ScrollViewerExtensions.cs" />
     <Compile Include="Managers\DataSourceUpdateOptions.cs" />
     <Compile Include="Managers\INotificationsManager.cs" />
+    <Compile Include="Managers\NavigationParameters.cs" />
     <Compile Include="Managers\NotificationSettings.cs" />
     <Compile Include="Managers\NotificationsManager.cs" />
     <Compile Include="ViewModels\ArticlePreviewPageViewModel.cs" />
@@ -182,8 +183,15 @@
     <Content Include="Assets\LargeTile.scale-200.png" />
     <Content Include="Assets\LargeTile.scale-400.png" />
     <Content Include="Assets\Logos\app-logo.png" />
+    <Content Include="Assets\Logos\apple-music-logo.png" />
+    <Content Include="Assets\Logos\deezer-logo.png" />
     <Content Include="Assets\Logos\denikncz-logo.jpg" />
     <Content Include="Assets\Logos\denniknsk-logo.png" />
+    <Content Include="Assets\Logos\facebook-logo.png" />
+    <Content Include="Assets\Logos\instagram.png" />
+    <Content Include="Assets\Logos\spotify-logo.png" />
+    <Content Include="Assets\Logos\twitter-logo.png" />
+    <Content Include="Assets\Logos\youtube-logo.png" />
     <Content Include="Assets\NotificationIcons\CopyIcon-Dark.png" />
     <Content Include="Assets\NotificationIcons\CopyIcon-Light.png" />
     <Content Include="Assets\NotificationIcons\DismissIcon-Dark.png" />
