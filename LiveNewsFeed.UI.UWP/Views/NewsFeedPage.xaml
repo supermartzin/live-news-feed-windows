@@ -117,6 +117,7 @@
                                 <ColumnDefinition Width="*"/>
                                 <ColumnDefinition Width="Auto"/>
                                 <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="Auto"/>
                             </Grid.ColumnDefinitions>
 
                             <!--  Logo  -->
@@ -183,8 +184,19 @@
                                     </DataTemplate>
                                 </ItemsControl.ItemTemplate>
                             </ItemsControl>
+                            <!--  Is Important flag  -->
+                            <TextBlock x:Name="IsPostImportantFlag"
+                                       x:Uid="ArticlePost_IsPostImportantFlag"
+                                       x:Load="{x:Bind IsImportant}"
+                                       Grid.Column="4"
+                                       Text="&#x2757;"
+                                       FontFamily="Segoe UI Emoji"
+                                       IsColorFontEnabled="True"
+                                       Margin="0 0 5 0"
+                                       HorizontalAlignment="Right"
+                                       VerticalAlignment="Center" />
                             <!--  Publish time  -->
-                            <TextBlock Grid.Column="4"
+                            <TextBlock Grid.Column="5"
                                        HorizontalAlignment="Right"
                                        VerticalAlignment="Center"
                                        FontSize="12"

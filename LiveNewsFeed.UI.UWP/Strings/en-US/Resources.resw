@@ -150,6 +150,9 @@
   <data name="ArticlePost_Actions_ShareArticleButton.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
     <value>Share Article</value>
   </data>
+  <data name="ArticlePost_IsPostImportantFlag.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
+    <value>Important</value>
+  </data>
   <data name="ArticlePreview_BackToFeedButton.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
     <value>Back to News Feed</value>
   </data>

@@ -40,6 +40,7 @@ namespace LiveNewsFeed.UI.UWP.Managers
             var notificationId = Guid.NewGuid().ToString();
 
             var notificationBuilder = new ToastContentBuilder().AddAppLogoOverride(GetNewsFeedLogo(articlePost))
+                                                               .AddToastActivationInfo($"action=showPost&notifId={notificationId}", ToastActivationType.Foreground)
                                                                .AddText(articlePost.Title)
                                                                .AddCustomTimeStamp(articlePost.PublishTime);
 

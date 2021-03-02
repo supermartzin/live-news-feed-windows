@@ -32,6 +32,8 @@ namespace LiveNewsFeed.UI.UWP.ViewModels
 
         public ImageBrush? NewsFeedLogo { get; }
 
+        public bool IsImportant => OriginalPost.IsImportant;
+
         public bool HasTags => Tags.Count > 0;
         
         public bool HasCategories => Categories.Count > 0;
@@ -83,8 +85,8 @@ namespace LiveNewsFeed.UI.UWP.ViewModels
                                       .Select(Helpers.GetCategoryViewModel)
                                       .ToList();
             Tags = OriginalPost.Tags
-                                .Select(tag => new TagViewModel(tag))
-                                .ToList();
+                               .Select(tag => new TagViewModel(tag))
+                               .ToList();
 
             InitializeCommands();
         }

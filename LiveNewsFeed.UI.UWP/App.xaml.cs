@@ -118,6 +118,9 @@ namespace LiveNewsFeed.UI.UWP
 
                 switch (action)
                 {
+                    case "showPost":
+                        // TODO show post in Feed
+                        break;
                     case "copyLink":
                         UiHelpers.ShareLinkViaClipboard(articlePost.FullArticleUrl);
                         break;
