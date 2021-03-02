@@ -3,6 +3,8 @@ using System.Windows.Input;
 using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Views;
 
+using LiveNewsFeed.Models;
+
 using LiveNewsFeed.UI.UWP.Common;
 
 namespace LiveNewsFeed.UI.UWP.ViewModels
@@ -20,9 +22,7 @@ namespace LiveNewsFeed.UI.UWP.ViewModels
                 var changed = Set(ref _newsArticlePost, value);
 
                 if (changed)
-                {
-                    PreviewUrl = IsSocialPostPreview ? _newsArticlePost.SocialPost!.Url : _newsArticlePost.ArticleUrl;
-                }
+                    SetPreviewProperties();
             }
         }
 
@@ -31,6 +31,13 @@ namespace LiveNewsFeed.UI.UWP.ViewModels
         {
             get => _previewUrl;
             set => Set(ref _previewUrl, value);
+        }
+
+        private string? _previewHtmlSource;
+        public string? PreviewHtmlSource
+        {
+            get => _previewHtmlSource;
+            set => Set(ref _previewHtmlSource, value);
         }
 
         public bool IsSocialPostPreview { get; set; }
@@ -55,9 +62,21 @@ namespace LiveNewsFeed.UI.UWP.ViewModels
             CopyUrlToClipboardCommand = new RelayCommand(() => UiHelpers.ShareLinkViaClipboard(PreviewUrl));
         }
 
-        private void SetNewsArticlePost(NewsArticlePostViewModel articlePost)
+        private void SetPreviewProperties()
         {
-            
+            if (IsSocialPostPreview)
+            {
+                if (_newsArticlePost.SocialPost!.PostType == SocialPostType.Spotify)
+                    PreviewHtmlSource = _newsArticlePost.SocialPost!.Content;
+                else
+                    PreviewUrl = _newsArticlePost.ArticleUrl;
+            }
+            else
+            {
+                PreviewUrl = _newsArticlePost.ArticleUrl;
+            }
+
+            PreviewUrl = IsSocialPostPreview ? _newsArticlePost.SocialPost!.Url : _newsArticlePost.ArticleUrl;
         }
     }
 }

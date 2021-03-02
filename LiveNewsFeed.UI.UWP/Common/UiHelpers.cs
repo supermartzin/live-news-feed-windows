@@ -1,4 +1,7 @@
 ﻿using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.DataTransfer;
@@ -48,6 +51,12 @@ namespace LiveNewsFeed.UI.UWP.Common
         }
 
         public static async Task OpenInDefaultBrowser(Uri? uri) => await Launcher.LaunchUriAsync(uri);
+
+        public static bool Not(bool? value) => value != true;
+
+        public static bool IsNull(object? value) => value is null;
+
+        public static bool IsNotNull(object? value) => value is not null;
 
 
         private static string GetContentForSharing(string content) => content.Length > 100

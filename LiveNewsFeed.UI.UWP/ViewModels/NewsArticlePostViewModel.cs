@@ -32,9 +32,13 @@ namespace LiveNewsFeed.UI.UWP.ViewModels
 
         public ImageBrush? NewsFeedLogo { get; }
 
-        public IList<TagViewModel>? Tags { get; }
+        public bool HasTags => Tags.Count > 0;
+        
+        public bool HasCategories => Categories.Count > 0;
+        
+        public IList<TagViewModel> Tags { get; }
 
-        public IList<CategoryViewModel>? Categories { get; }
+        public IList<CategoryViewModel> Categories { get; }
 
         #endregion
 

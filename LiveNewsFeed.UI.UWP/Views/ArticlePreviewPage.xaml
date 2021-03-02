@@ -5,6 +5,8 @@
                 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                 xmlns:views="using:LiveNewsFeed.UI.UWP.Views"
                 xmlns:viewModels="using:LiveNewsFeed.UI.UWP.ViewModels"
+                xmlns:common="using:LiveNewsFeed.UI.UWP.Common"
+                xmlns:controls="using:LiveNewsFeed.UI.UWP.Controls"
                 mc:Ignorable="d"
                 Background="{ThemeResource CustomAcrylicBackgroundBrush}"
                 DataContext="{x:Bind ViewModel}">
@@ -18,6 +20,7 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
         <!--  Top bar  -->
@@ -116,19 +119,19 @@
         <!--  Website  -->
         <WebView Grid.Row="1"
                  x:Name="WebView"
-                 Source="{x:Bind ViewModel.PreviewUrl, Mode=OneWay}" />
+                 Source="{x:Bind ViewModel.PreviewUrl, Mode=OneWay}"
+                 controls:WebExtensions.HtmlString="{x:Bind ViewModel.PreviewHtmlSource}"/>
 
         <!--  Actions bar  -->
-        <CommandBar Grid.Row="1"
+        <CommandBar Grid.Row="2"
                     VerticalAlignment="Bottom"
                     DefaultLabelPosition="Right"
-                    Background="{ThemeResource CustomAcrylicElementBrush}">
-            <AppBarButton x:Uid="ArticlePreview_ShareArticleButton"
-                          Style="{ThemeResource AppBarButtonRevealStyle}"
+                    Background="{ThemeResource CustomAcrylicBackgroundBrush}">
+            <AppBarButton Style="{ThemeResource AppBarButtonRevealStyle}"
                           Command="{x:Bind ViewModel.NewsArticlePost.ShareArticleCommand}"
-                          Visibility="{x:Bind Path=ViewModel.IsSocialPostPreview,
-                                              Mode=OneWay,
-                                              Converter={StaticResource InverseBoolToVisibilityConverter}}">
+                          x:Name="ShareArticleButton"
+                          x:Uid="ArticlePreview_ShareArticleButton"
+                          x:Load="{x:Bind common:UiHelpers.Not(ViewModel.IsSocialPostPreview), Mode=OneWay}">
                 <AppBarButton.Icon>
                     <FontIcon Glyph="&#xE72D;" />
                 </AppBarButton.Icon>
