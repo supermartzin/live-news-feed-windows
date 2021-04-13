@@ -5,6 +5,8 @@ using System.Threading.Tasks;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
 using Windows.ApplicationModel.Core;
+using Windows.ApplicationModel.Resources.Core;
+using Windows.Globalization;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
@@ -18,6 +20,7 @@ using LiveNewsFeed.DataSource.DennikNsk;
 using LiveNewsFeed.UI.UWP.Common;
 using LiveNewsFeed.UI.UWP.Managers;
 using LiveNewsFeed.UI.UWP.Views;
+using Sentry;
 using UnhandledExceptionEventArgs = Windows.UI.Xaml.UnhandledExceptionEventArgs;
 
 namespace LiveNewsFeed.UI.UWP
@@ -36,16 +39,20 @@ namespace LiveNewsFeed.UI.UWP
             InitializeComponent();
             ServiceLocator.Initialize();
 
-            CultureInfo.CurrentUICulture = CultureInfo.GetCultureInfo("sk-sk");
+            CultureInfo.CurrentUICulture = CultureInfo.GetCultureInfo("sk-SK");
             ImageCache.Instance.MaxMemoryCacheCount = 50;
 
+            InitializeSettings();
             LoadDataSources();
+
+            SentrySdk.Init("https://0f8a0d0187f9497ebc608603ec352c88@o504575.ingest.sentry.io/5709957");
 
             Suspending += OnSuspending;
             UnhandledException += OnUnhandledException;
             TaskScheduler.UnobservedTaskException += OnUnobservedException;
         }
         
+
         private void OnUnhandledException(object sender, UnhandledExceptionEventArgs e)
         {
             Debugger.Break();
@@ -84,6 +91,8 @@ namespace LiveNewsFeed.UI.UWP
             if (e.PrelaunchActivated)
                 return;
 
+            SetLanguage("sk");
+
             if (rootFrame.Content == null)
             {
                 // When the navigation stack isn't restored navigate to the first page,
@@ -101,7 +110,7 @@ namespace LiveNewsFeed.UI.UWP
 
             Helpers.CreateCategoriesMap();
         }
-
+        
         protected override void OnActivated(IActivatedEventArgs eventArgs)
         {
             if (eventArgs is ToastNotificationActivatedEventArgs notificationArgs)
@@ -158,6 +167,26 @@ namespace LiveNewsFeed.UI.UWP
             var deferral = e.SuspendingOperation.GetDeferral();
             //TODO: Save application state and stop any background activity
             deferral.Complete();
+        }
+
+
+        private static void SetLanguage(string languageCode)
+        {
+            ApplicationLanguages.PrimaryLanguageOverride = languageCode;
+            ResourceContext.GetForCurrentView().Reset();
+            ResourceContext.GetForViewIndependentUse().Reset();
+        }
+
+        private static void InitializeSettings()
+        {
+            var settingsManager = ServiceLocator.Container.GetRequiredService<ISettingsManager>();
+
+            settingsManager.LoadSettingsAsync().ContinueWith(_ =>
+            {
+                settingsManager.NotificationSettings!.NotificationsAllowed = true;
+                settingsManager.AutomaticUpdateSettings!.AutomaticUpdateAllowed = true;
+                settingsManager.AutomaticUpdateSettings!.UpdateInterval = TimeSpan.FromSeconds(60);
+            });
         }
 
         private static void LoadDataSources()

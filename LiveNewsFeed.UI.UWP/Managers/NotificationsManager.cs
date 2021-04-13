@@ -11,6 +11,7 @@ using Microsoft.Toolkit.Uwp.Notifications;
 using LiveNewsFeed.Models;
 
 using LiveNewsFeed.UI.UWP.Common;
+using LiveNewsFeed.UI.UWP.Managers.Settings;
 
 namespace LiveNewsFeed.UI.UWP.Managers
 {
@@ -18,12 +19,16 @@ namespace LiveNewsFeed.UI.UWP.Managers
     {
         private static readonly ResourceLoader Localization = ResourceLoader.GetForViewIndependentUse();
 
-        public NotificationSettings Settings { get; } = new();
+        private readonly ISettingsManager _settingsManager;
+
+        public NotificationSettings Settings => _settingsManager.NotificationSettings;
 
         public Dictionary<string, NewsArticlePost> NotifiedPosts { get; }
 
-        public NotificationsManager()
+        public NotificationsManager(ISettingsManager settingsManager)
         {
+            _settingsManager = settingsManager ?? throw new ArgumentNullException(nameof(settingsManager));
+            
             NotifiedPosts = new Dictionary<string, NewsArticlePost>();
         }
 
@@ -92,6 +97,7 @@ namespace LiveNewsFeed.UI.UWP.Managers
 
             ToastNotificationManager.CreateToastNotifier().Show(new ToastNotification(notification.GetXml()));
         }
+        
 
         private static Uri GetButtonIcon(string iconPath)
         {
@@ -100,8 +106,7 @@ namespace LiveNewsFeed.UI.UWP.Managers
 
             return new Uri(iconPath.Substring(0, index) + themeExtension + ".png", UriKind.Relative);
         }
-
-
+        
         private static Uri? GetNewsFeedLogo(NewsArticlePost articlePost)
         {
             var imageSource = (BitmapImage) Helpers.GetLogoForNewsFeed(articlePost.NewsFeedName)!;

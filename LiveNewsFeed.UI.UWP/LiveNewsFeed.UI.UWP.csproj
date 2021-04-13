@@ -9,7 +9,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>LiveNewsFeed.UI.UWP</RootNamespace>
     <AssemblyName>LiveNewsFeed.UI.UWP</AssemblyName>
-    <DefaultLanguage>sk-sk</DefaultLanguage>
+    <DefaultLanguage>sk-SK</DefaultLanguage>
     <TargetPlatformIdentifier>UAP</TargetPlatformIdentifier>
     <TargetPlatformVersion Condition=" '$(TargetPlatformVersion)' == '' ">10.0.19041.0</TargetPlatformVersion>
     <TargetPlatformMinVersion>10.0.17763.0</TargetPlatformMinVersion>
@@ -140,11 +140,19 @@
     <Compile Include="Common\UiHelpers.cs" />
     <Compile Include="Controls\CustomGridView.cs" />
     <Compile Include="Controls\ScrollViewerExtensions.cs" />
+    <Compile Include="Managers\AutomaticUpdater.cs" />
+    <Compile Include="Managers\IAutomaticUpdater.cs" />
+    <Compile Include="Managers\Settings\AutomaticUpdateSettings.cs" />
     <Compile Include="Managers\DataSourceUpdateOptions.cs" />
     <Compile Include="Managers\INotificationsManager.cs" />
+    <Compile Include="Managers\ISettingsManager.cs" />
     <Compile Include="Managers\NavigationParameters.cs" />
-    <Compile Include="Managers\NotificationSettings.cs" />
+    <Compile Include="Managers\Settings\NewsFeedDisplaySettings.cs" />
+    <Compile Include="Managers\Settings\NotificationSettings.cs" />
     <Compile Include="Managers\NotificationsManager.cs" />
+    <Compile Include="Managers\Settings\SettingChangedEventArgs.cs" />
+    <Compile Include="Managers\Settings\SettingsBase.cs" />
+    <Compile Include="Managers\UserFileSettingsManager.cs" />
     <Compile Include="ViewModels\ArticlePreviewPageViewModel.cs" />
     <Compile Include="ViewModels\SocialPostViewModel.cs" />
     <Compile Include="ViewModels\ViewModelBase.cs" />
@@ -276,28 +284,28 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.Extensions.DependencyInjection">
-      <Version>5.0.1</Version>
+      <Version>6.0.0-preview.2.21154.6</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.Extensions.Logging.Abstractions">
-      <Version>5.0.0</Version>
+      <Version>6.0.0-preview.2.21154.6</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.NETCore.UniversalWindowsPlatform">
       <Version>6.2.12</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.Toolkit.Uwp.Notifications">
-      <Version>6.1.1</Version>
+      <Version>7.0.1</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.Toolkit.Uwp.UI">
-      <Version>6.1.1</Version>
+      <Version>7.0.1</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.Toolkit.Uwp.UI.Controls">
-      <Version>6.1.1</Version>
+      <Version>7.0.1</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.Toolkit.Uwp.UI.Media">
-      <Version>6.1.1</Version>
+      <Version>7.0.1</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.UI.Xaml">
-      <Version>2.5.0</Version>
+      <Version>2.6.0-prerelease.210405001</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.Xaml.Behaviors.Uwp.Managed">
       <Version>2.0.1</Version>
@@ -306,7 +314,10 @@
       <Version>5.4.1.1</Version>
     </PackageReference>
     <PackageReference Include="NLog.Extensions.Logging">
-      <Version>1.7.1</Version>
+      <Version>1.7.2</Version>
+    </PackageReference>
+    <PackageReference Include="Sentry">
+      <Version>3.3.1</Version>
     </PackageReference>
   </ItemGroup>
   <ItemGroup>

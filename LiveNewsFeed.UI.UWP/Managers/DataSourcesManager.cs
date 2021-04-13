@@ -118,7 +118,7 @@ namespace LiveNewsFeed.UI.UWP.Managers
 
                 var newPosts = await dataSource.NewsFeed
                                                                     .GetPostsAsync(options?.Before,
-                                                                                   lastPostPublishTime,
+                                                                                   options?.After ?? lastPostPublishTime,
                                                                                    options?.Category,
                                                                                    options?.Tag,
                                                                                    options?.Important,

@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 
 using LiveNewsFeed.Models;
+using LiveNewsFeed.UI.UWP.Managers.Settings;
 
 namespace LiveNewsFeed.UI.UWP.Managers
 {

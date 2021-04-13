@@ -5,7 +5,7 @@
                 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                 xmlns:i="using:Microsoft.Xaml.Interactivity"
                 xmlns:vm="using:LiveNewsFeed.UI.UWP.ViewModels"
-                xmlns:ext="using:Microsoft.Toolkit.Uwp.UI.Extensions"
+                xmlns:ui="using:Microsoft.Toolkit.Uwp.UI"
                 xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
                 xmlns:mtuc="using:Microsoft.Toolkit.Uwp.UI.Controls"
                 xmlns:media="using:Microsoft.Toolkit.Uwp.UI.Media"
@@ -17,7 +17,7 @@
                 xmlns:views="using:LiveNewsFeed.UI.UWP.Views"
                 mc:Ignorable="d"
                 Background="{ThemeResource CustomAcrylicBackgroundBrush}"
-                ext:TitleBarExtensions.ButtonBackgroundColor="Transparent"
+                ui:TitleBarExtensions.ButtonBackgroundColor="Transparent"
                 NavigationCacheMode="Enabled"
                 DataContext="{x:Bind ViewModel}">
     <Grid>
