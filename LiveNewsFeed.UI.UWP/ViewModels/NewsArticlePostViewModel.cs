@@ -3,9 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Input;
 using Windows.Data.Html;
-using Windows.System;
 using Windows.UI.Xaml.Media;
-using GalaSoft.MvvmLight.Command;
+using Microsoft.Toolkit.Mvvm.Input;
 
 using LiveNewsFeed.Models;
 using LiveNewsFeed.UI.UWP.Common;
@@ -20,7 +19,7 @@ namespace LiveNewsFeed.UI.UWP.ViewModels
 
         public string Title => OriginalPost.Title;
 
-        public string Content => HtmlUtilities.ConvertToText(OriginalPost.Content).Trim();
+        public string Content => Helpers.SanitizeHtmlContent(OriginalPost.Content);
 
         public DateTime PublishTime => OriginalPost.PublishTime;
 

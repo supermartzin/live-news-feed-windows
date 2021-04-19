@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Windows.Data.Html;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Media.Imaging;
 using Microsoft.Toolkit.Uwp.UI;
@@ -55,6 +56,23 @@ namespace LiveNewsFeed.UI.UWP.Common
         }
 
         public static CategoryViewModel GetCategoryViewModel(Category category) => CategoriesMap[category];
+
+        public static string SanitizeHtmlContent(string htmlContent)
+        {
+            if (htmlContent == null)
+                throw new ArgumentNullException(nameof(htmlContent));
+            
+            // replace bullet list occurrences
+            var content = htmlContent.Replace("<li>", "<li> • ");
+
+            // replace newlines
+            content = content.Replace("\n", Environment.NewLine);
+
+            // remove HTML tags
+            content = HtmlUtilities.ConvertToText(content);
+
+            return content.Trim();
+        }
 
 
         private static Dictionary<SocialPostType, ImageSource> CreateSocialSiteLogos()

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace LiveNewsFeed.UI.UWP.Managers
+namespace LiveNewsFeed.UI.UWP.Services
 {
     public sealed class NavigationParameters
     {

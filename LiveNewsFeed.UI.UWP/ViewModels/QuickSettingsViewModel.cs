@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Windows.Input;
-using GalaSoft.MvvmLight.Command;
+using Microsoft.Toolkit.Mvvm.Input;
 
 using LiveNewsFeed.UI.UWP.Managers;
 using LiveNewsFeed.UI.UWP.Managers.Settings;
@@ -17,7 +17,7 @@ namespace LiveNewsFeed.UI.UWP.ViewModels
             get => _notificationsTurnedOn;
             set
             {
-                var changed = Set(ref _notificationsTurnedOn, value);
+                var changed = SetProperty(ref _notificationsTurnedOn, value);
                 if (changed)
                     _settingsManager.NotificationSettings.NotificationsAllowed = value;
             }
@@ -29,7 +29,7 @@ namespace LiveNewsFeed.UI.UWP.ViewModels
             get => _showOnlyImportantPosts;
             set
             {
-                var changed = Set(ref _showOnlyImportantPosts, value);
+                var changed = SetProperty(ref _showOnlyImportantPosts, value);
                 if (changed)
                     _settingsManager.NewsFeedDisplaySettings.ShowOnlyImportantPosts = value;
             }

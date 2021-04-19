@@ -1,7 +1,6 @@
 ﻿using System;
-using System.Diagnostics;
-using System.Globalization;
 using System.Threading.Tasks;
+using Sentry;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
 using Windows.ApplicationModel.Core;
@@ -12,6 +11,8 @@ using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
 using Microsoft.Toolkit.Uwp.UI;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
+using UnhandledExceptionEventArgs = Windows.UI.Xaml.UnhandledExceptionEventArgs;
 
 using LiveNewsFeed.DataSource.Common;
 using LiveNewsFeed.DataSource.DenikNcz;
@@ -20,8 +21,6 @@ using LiveNewsFeed.DataSource.DennikNsk;
 using LiveNewsFeed.UI.UWP.Common;
 using LiveNewsFeed.UI.UWP.Managers;
 using LiveNewsFeed.UI.UWP.Views;
-using Sentry;
-using UnhandledExceptionEventArgs = Windows.UI.Xaml.UnhandledExceptionEventArgs;
 
 namespace LiveNewsFeed.UI.UWP
 {
@@ -30,6 +29,8 @@ namespace LiveNewsFeed.UI.UWP
     /// </summary>
     public sealed partial class App : Application
     {
+        private static readonly ILogger Logger = ServiceLocator.Container.GetRequiredService<ILogger<App>>();
+
         /// <summary>
         /// Initializes the singleton application object.  This is the first line of authored code
         /// executed, and as such is the logical equivalent of main() or WinMain().
@@ -37,32 +38,12 @@ namespace LiveNewsFeed.UI.UWP
         public App()
         {
             InitializeComponent();
-            ServiceLocator.Initialize();
-
-            CultureInfo.CurrentUICulture = CultureInfo.GetCultureInfo("sk-SK");
-            ImageCache.Instance.MaxMemoryCacheCount = 50;
-
+            SetEventHandlers();
+            SetServices();
             InitializeSettings();
             LoadDataSources();
-
-            SentrySdk.Init("https://0f8a0d0187f9497ebc608603ec352c88@o504575.ingest.sentry.io/5709957");
-
-            Suspending += OnSuspending;
-            UnhandledException += OnUnhandledException;
-            TaskScheduler.UnobservedTaskException += OnUnobservedException;
         }
         
-
-        private void OnUnhandledException(object sender, UnhandledExceptionEventArgs e)
-        {
-            Debugger.Break();
-        }
-
-        private void OnUnobservedException(object sender, UnobservedTaskExceptionEventArgs e)
-        {
-            Debugger.Break();
-        }
-
         /// <summary>
         /// Invoked when the application is launched normally by the end user.  Other entry points
         /// will be used such as when the application is launched to open a specific file.
@@ -144,7 +125,7 @@ namespace LiveNewsFeed.UI.UWP
         {
             base.OnBackgroundActivated(args);
         }
-
+        
         /// <summary>
         /// Invoked when Navigation to a certain page fails
         /// </summary>
@@ -169,6 +150,30 @@ namespace LiveNewsFeed.UI.UWP
             deferral.Complete();
         }
 
+        private static void OnResuming(object sender, object e)
+        {
+            // TODO refresh news feeds
+        }
+
+
+        private void SetEventHandlers()
+        {
+            Suspending += OnSuspending;
+            Current.Resuming += OnResuming;
+
+            // unhandled exception
+            UnhandledException += OnUnhandledException;
+            TaskScheduler.UnobservedTaskException += OnUnobservedException;
+        }
+
+        private static void SetServices()
+        {
+            SentrySdk.Init("https://0f8a0d0187f9497ebc608603ec352c88@o504575.ingest.sentry.io/5709957");
+
+            ServiceLocator.Initialize();
+
+            ImageCache.Instance.MaxMemoryCacheCount = 50;
+        }
 
         private static void SetLanguage(string languageCode)
         {
@@ -195,6 +200,16 @@ namespace LiveNewsFeed.UI.UWP
 
             manager.RegisterDataSource(new NewsFeedDataSource(ServiceLocator.Container.GetRequiredService<DennikNskNewsFeed>(), new Uri("ms-appx:///Assets/Logos/denniknsk-logo.png")));
             manager.RegisterDataSource(new NewsFeedDataSource(ServiceLocator.Container.GetRequiredService<DenikNczNewsFeed>(), new Uri("ms-appx:///Assets/Logos/denikncz-logo.jpg")));
+        }
+
+        private static void OnUnhandledException(object sender, UnhandledExceptionEventArgs e)
+        {
+            Logger.LogCritical(e.Exception, "Unhandled exception occurred.");
+        }
+        
+        private static void OnUnobservedException(object sender, UnobservedTaskExceptionEventArgs e)
+        {
+            Logger.LogCritical(e.Exception, "Unhandled exception from background Task occurred.");
         }
     }
 }

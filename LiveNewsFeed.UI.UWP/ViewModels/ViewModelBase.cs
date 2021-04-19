@@ -1,19 +1,25 @@
 ﻿using System;
 using System.Threading.Tasks;
+using Windows.ApplicationModel.Core;
 using Windows.ApplicationModel.Resources;
-using Windows.System;
+using Windows.UI.Core;
 using Windows.UI.Xaml;
+using Microsoft.Toolkit.Mvvm.ComponentModel;
 using Microsoft.Toolkit.Uwp;
 using Microsoft.Toolkit.Uwp.UI.Helpers;
 
 namespace LiveNewsFeed.UI.UWP.ViewModels
 {
-    public abstract class ViewModelBase : GalaSoft.MvvmLight.ViewModelBase
+    public abstract class ViewModelBase : ObservableObject
     {
+        private readonly CoreDispatcher _dispatcher;
+
         protected readonly ThemeListener ThemeListener;
 
         protected ViewModelBase()
         {
+            _dispatcher = CoreWindow.GetForCurrentThread().Dispatcher;
+
             ThemeListener = new ThemeListener();
             ThemeListener.ThemeChanged += ThemeListener_OnThemeChanged;
         }
@@ -22,16 +28,20 @@ namespace LiveNewsFeed.UI.UWP.ViewModels
         {
             if (action == null)
                 throw new ArgumentNullException(nameof(action));
-            
-            await DispatcherQueue.GetForCurrentThread().EnqueueAsync(action);
+
+            await CoreApplication.MainView
+                                 .DispatcherQueue
+                                 .EnqueueAsync(action);
         }
 
         protected virtual void InvokeOnUi(Action action)
         {
             if (action == null)
                 throw new ArgumentNullException(nameof(action));
-
-            DispatcherQueue.GetForCurrentThread().EnqueueAsync(action);
+            
+            CoreApplication.MainView
+                           .DispatcherQueue
+                           .EnqueueAsync(action);
         }
 
         protected virtual string GetLocalizedString(string key)

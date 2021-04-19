@@ -2,11 +2,13 @@
 using System.Timers;
 
 using LiveNewsFeed.UI.UWP.Managers.Settings;
+using Microsoft.Extensions.Logging;
 
 namespace LiveNewsFeed.UI.UWP.Managers
 {
     public class AutomaticUpdater : IAutomaticUpdater
     {
+        private readonly ILogger<AutomaticUpdater>? _logger;
         private readonly ISettingsManager _settingsManager;
         
         private Timer _periodicTimer;
@@ -15,9 +17,11 @@ namespace LiveNewsFeed.UI.UWP.Managers
 
         public event EventHandler? AutomaticUpdateRequested;
 
-        public AutomaticUpdater(ISettingsManager settingsManager)
+        public AutomaticUpdater(ISettingsManager settingsManager,
+                                ILogger<AutomaticUpdater>? logger = default)
         {
             _settingsManager = settingsManager ?? throw new ArgumentNullException(nameof(settingsManager));
+            _logger = logger;
 
             if (!_settingsManager.AreSettingsLoaded)
                 _settingsManager.SettingsLoaded += (_, _) => Start();
@@ -40,6 +44,8 @@ namespace LiveNewsFeed.UI.UWP.Managers
             _periodicTimer.Elapsed += (_, _) => AutomaticUpdateRequested?.Invoke(this, EventArgs.Empty);
 
             _periodicTimer.Start();
+
+            _logger?.LogInformation($"Automatic updates started with {Settings.UpdateInterval.Seconds} seconds update interval.");
         }
 
         public void Stop()
@@ -48,6 +54,8 @@ namespace LiveNewsFeed.UI.UWP.Managers
                 return;
 
             _periodicTimer.Stop();
+
+            _logger?.LogInformation("Automatic updates stopped.");
         }
     }
 }

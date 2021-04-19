@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Windows.Input;
-using GalaSoft.MvvmLight.Command;
-using GalaSoft.MvvmLight.Views;
+using Microsoft.Toolkit.Mvvm.Input;
 
 using LiveNewsFeed.Models;
 
 using LiveNewsFeed.UI.UWP.Common;
+using LiveNewsFeed.UI.UWP.Services;
 
 namespace LiveNewsFeed.UI.UWP.ViewModels
 {
@@ -19,7 +19,7 @@ namespace LiveNewsFeed.UI.UWP.ViewModels
             get => _newsArticlePost;
             set
             {
-                var changed = Set(ref _newsArticlePost, value);
+                var changed = SetProperty(ref _newsArticlePost, value);
 
                 if (changed)
                     SetPreviewProperties();
@@ -30,19 +30,19 @@ namespace LiveNewsFeed.UI.UWP.ViewModels
         public Uri PreviewUrl
         {
             get => _previewUrl;
-            set => Set(ref _previewUrl, value);
+            set => SetProperty(ref _previewUrl, value);
         }
 
         private string? _previewHtmlSource;
         public string? PreviewHtmlSource
         {
             get => _previewHtmlSource;
-            set => Set(ref _previewHtmlSource, value);
+            set => SetProperty(ref _previewHtmlSource, value);
         }
 
         public bool IsSocialPostPreview { get; set; }
 
-        public ICommand OpenInBrowserCommand { get; private set; }
+        public IAsyncRelayCommand OpenInBrowserCommand { get; private set; }
         
         public ICommand ClosePreviewCommand { get; private set; }
 
@@ -57,8 +57,8 @@ namespace LiveNewsFeed.UI.UWP.ViewModels
 
         private void InitializeCommands()
         {
-            OpenInBrowserCommand = new RelayCommand(async () => await UiHelpers.OpenInDefaultBrowser(PreviewUrl));
-            ClosePreviewCommand = new RelayCommand(() => _navigationService.GoBack());
+            OpenInBrowserCommand = new AsyncRelayCommand(async () => await UiHelpers.OpenInDefaultBrowser(PreviewUrl));
+            ClosePreviewCommand = new RelayCommand(_navigationService.GoBack, () => _navigationService.CanGoBack);
             CopyUrlToClipboardCommand = new RelayCommand(() => UiHelpers.ShareLinkViaClipboard(PreviewUrl));
         }
 

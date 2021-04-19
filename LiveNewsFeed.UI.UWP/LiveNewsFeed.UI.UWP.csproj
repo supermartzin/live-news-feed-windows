@@ -146,13 +146,15 @@
     <Compile Include="Managers\DataSourceUpdateOptions.cs" />
     <Compile Include="Managers\INotificationsManager.cs" />
     <Compile Include="Managers\ISettingsManager.cs" />
-    <Compile Include="Managers\NavigationParameters.cs" />
+    <Compile Include="Services\NavigationParameters.cs" />
     <Compile Include="Managers\Settings\NewsFeedDisplaySettings.cs" />
     <Compile Include="Managers\Settings\NotificationSettings.cs" />
     <Compile Include="Managers\NotificationsManager.cs" />
     <Compile Include="Managers\Settings\SettingChangedEventArgs.cs" />
     <Compile Include="Managers\Settings\SettingsBase.cs" />
     <Compile Include="Managers\UserFileSettingsManager.cs" />
+    <Compile Include="Services\INavigationService.cs" />
+    <Compile Include="Services\NavigationService.cs" />
     <Compile Include="ViewModels\ArticlePreviewPageViewModel.cs" />
     <Compile Include="ViewModels\SocialPostViewModel.cs" />
     <Compile Include="ViewModels\ViewModelBase.cs" />
@@ -292,6 +294,9 @@
     <PackageReference Include="Microsoft.NETCore.UniversalWindowsPlatform">
       <Version>6.2.12</Version>
     </PackageReference>
+    <PackageReference Include="Microsoft.Toolkit.Mvvm">
+      <Version>7.0.1</Version>
+    </PackageReference>
     <PackageReference Include="Microsoft.Toolkit.Uwp.Notifications">
       <Version>7.0.1</Version>
     </PackageReference>
@@ -309,9 +314,6 @@
     </PackageReference>
     <PackageReference Include="Microsoft.Xaml.Behaviors.Uwp.Managed">
       <Version>2.0.1</Version>
-    </PackageReference>
-    <PackageReference Include="MvvmLightLibs">
-      <Version>5.4.1.1</Version>
     </PackageReference>
     <PackageReference Include="NLog.Extensions.Logging">
       <Version>1.7.2</Version>

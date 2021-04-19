@@ -1,21 +1,24 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using GalaSoft.MvvmLight.Command;
-using GalaSoft.MvvmLight.Views;
-using LiveNewsFeed.Models;
+using System.Threading.Tasks;
 using Microsoft.Toolkit.Uwp.UI;
+using Microsoft.Toolkit.Mvvm.Input;
 
-using LiveNewsFeed.UI.UWP.Common;
+using LiveNewsFeed.Models;
+
 using LiveNewsFeed.UI.UWP.Managers;
+using LiveNewsFeed.UI.UWP.Services;
 using LiveNewsFeed.UI.UWP.Views;
+using Microsoft.Extensions.Logging;
 
 namespace LiveNewsFeed.UI.UWP.ViewModels
 {
     public class NewsFeedPageViewModel : ViewModelBase
     {
+        private readonly ILogger<NewsFeedPageViewModel>? _logger;
+
         private readonly IDataSourcesManager _dataSourcesManager;
         private readonly INavigationService _navigationService;
         private readonly INotificationsManager _notificationsManager;
@@ -29,7 +32,7 @@ namespace LiveNewsFeed.UI.UWP.ViewModels
             get => _allPostsLoading;
             set
             {
-                var changed = Set(ref _allPostsLoading, value);
+                var changed = SetProperty(ref _allPostsLoading, value);
 
                 if (changed)
                     ReevaluateCommands();
@@ -42,7 +45,7 @@ namespace LiveNewsFeed.UI.UWP.ViewModels
             get => _newPostsLoading;
             set
             {
-                var changed = Set(ref _newPostsLoading, value);
+                var changed = SetProperty(ref _newPostsLoading, value);
 
                 if (changed)
                     ReevaluateCommands();
@@ -55,24 +58,26 @@ namespace LiveNewsFeed.UI.UWP.ViewModels
         public NewsArticlePostViewModel? SelectedPost
         {
             get => _selectedPost;
-            set => Set(ref _selectedPost, value);
+            set => SetProperty(ref _selectedPost, value);
         }
 
         public AdvancedCollectionView ArticlePosts { get; }
         
-        public RelayCommand RefreshNewsFeedCommand { get; private set; }
+        public IAsyncRelayCommand RefreshNewsFeedCommand { get; private set; }
 
         public NewsFeedPageViewModel(IDataSourcesManager dataSourcesManager,
                                      INavigationService navigationService,
                                      INotificationsManager notificationsManager,
                                      IAutomaticUpdater automaticUpdater,
-                                     QuickSettingsViewModel quickSettingsViewModel)
+                                     QuickSettingsViewModel quickSettingsViewModel,
+                                     ILogger<NewsFeedPageViewModel>? logger = default)
         {
             _dataSourcesManager = dataSourcesManager ?? throw new ArgumentNullException(nameof(dataSourcesManager));
             _navigationService = navigationService ?? throw new ArgumentNullException(nameof(navigationService));
             _notificationsManager = notificationsManager ?? throw new ArgumentNullException(nameof(notificationsManager));
             _automaticUpdater = automaticUpdater ?? throw new ArgumentNullException(nameof(automaticUpdater));
             QuickSettings = quickSettingsViewModel ?? throw new ArgumentNullException(nameof(quickSettingsViewModel));
+            _logger = logger;
 
             _articlePosts = new ObservableCollection<NewsArticlePostViewModel>();
             ArticlePosts = new AdvancedCollectionView(_articlePosts);
@@ -86,42 +91,35 @@ namespace LiveNewsFeed.UI.UWP.ViewModels
         }
         
 
-        private void LoadPosts()
+        private async Task LoadPosts()
         {
             AllPostsLoading = true;
-            
-            _dataSourcesManager.GetLatestPostsFromAllAsync()
-                               .ContinueWith(task =>
-                               {
-                                   var posts = task.Result;
 
-                                   InvokeOnUi(() =>
-                                   {
-                                       using (ArticlePosts.DeferRefresh())
-                                       {
-                                           foreach (var post in posts)
-                                           {
-                                               var viewModel = new NewsArticlePostViewModel(post);
+            var posts = await _dataSourcesManager.GetLatestPostsFromAllAsync();
 
-                                               RegisterEvents(viewModel);
+            using (ArticlePosts.DeferRefresh())
+            {
+                foreach (var post in posts)
+                {
+                    var viewModel = new NewsArticlePostViewModel(post);
 
-                                               _articlePosts.Add(viewModel);
-                                           }
-                                       }
+                    RegisterEvents(viewModel);
 
-                                       AllPostsLoading = false;
-                                   });
-                               });
+                    _articlePosts.Add(viewModel);
+                }
+            }
+
+            AllPostsLoading = false;
         }
 
         private void StartUpdater()
         {
-            _automaticUpdater.AutomaticUpdateRequested +=
-                (_, _) =>
-                {
-                    _dataSourcesManager.LoadLatestPostsSinceLastUpdateAsync();
-                };
+            _automaticUpdater.AutomaticUpdateRequested += (_, _) =>
+            {
+                _logger?.LogDebug($"Automatic news feeds update initiated...");
 
+                _dataSourcesManager.LoadLatestPostsSinceLastUpdateAsync();
+            };
             _automaticUpdater.Start();
         }
 
@@ -148,7 +146,7 @@ namespace LiveNewsFeed.UI.UWP.ViewModels
 
         private void NewsArticlePost_OnOpenArticlePreviewRequested(object sender, EventArgs e)
         {
-            _navigationService.NavigateTo(nameof(ArticlePreviewPage), new NavigationParameters(new Dictionary<string, object>
+            _navigationService.NavigateTo<ArticlePreviewPage>(new NavigationParameters(new Dictionary<string, object>
             {
                 { "post", sender },
                 { "isSocialPost", false }
@@ -157,7 +155,7 @@ namespace LiveNewsFeed.UI.UWP.ViewModels
 
         private void NewsArticlePost_OnOpenSocialPostPreviewRequested(object sender, EventArgs e)
         {
-            _navigationService.NavigateTo(nameof(ArticlePreviewPage), new NavigationParameters(new Dictionary<string, object>
+            _navigationService.NavigateTo<ArticlePreviewPage>(new NavigationParameters(new Dictionary<string, object>
             {
                 { "post", sender },
                 { "isSocialPost", true }
@@ -166,42 +164,28 @@ namespace LiveNewsFeed.UI.UWP.ViewModels
 
         private void InitializeCommands()
         {
-            RefreshNewsFeedCommand = new RelayCommand(ReloadArticlesManually, CanReloadArticlesManually);
+            RefreshNewsFeedCommand = new AsyncRelayCommand(ReloadArticlesManually, CanReloadArticlesManually);
         }
 
         private void ReevaluateCommands()
         {
-            RefreshNewsFeedCommand.RaiseCanExecuteChanged();
+            RefreshNewsFeedCommand.NotifyCanExecuteChanged();
         }
 
-        private void ReloadArticlesManually()
+        private async Task ReloadArticlesManually()
         {
             NewPostsLoading = true;
-            
-            _dataSourcesManager.GetLatestPostsSinceLastUpdateAsync()
-                               .ContinueWith(task =>
-                               {
-                                   var newPosts = task.Result;
-                                   var posts = new List<NewsArticlePost>(newPosts);
 
-                                   if (posts.Count == 0)
-                                       return;
+            var posts = await _dataSourcesManager.GetLatestPostsSinceLastUpdateAsync();
 
-                                   InvokeOnUi(() =>
-                                   {
-                                       using (ArticlePosts.DeferRefresh())
-                                       {
-                                           foreach (var viewModel in posts.Select(post => new NewsArticlePostViewModel(post)))
-                                           {
-                                               RegisterEvents(viewModel);
+            foreach (var viewModel in posts.Select(post => new NewsArticlePostViewModel(post)))
+            {
+                RegisterEvents(viewModel);
 
-                                               _articlePosts.Add(viewModel);
-                                           }
-                                       }
+                _articlePosts.Add(viewModel);
+            }
 
-                                       NewPostsLoading = false;
-                                   });
-                               });
+            NewPostsLoading = false;
         }
 
         private bool CanReloadArticlesManually() => !NewPostsLoading;

@@ -32,7 +32,7 @@ namespace LiveNewsFeed.UI.UWP.ViewModels
         protected override void OnApplicationThemeChanged(ApplicationTheme theme)
         {
             // force reevaluation of Color property
-            RaisePropertyChanged(nameof(Color));
+            OnPropertyChanged(nameof(Color));
         }
     }
 }

@@ -4,7 +4,7 @@ using Windows.UI.Xaml.Navigation;
 using Microsoft.Extensions.DependencyInjection;
 
 using LiveNewsFeed.UI.UWP.Common;
-using LiveNewsFeed.UI.UWP.Managers;
+using LiveNewsFeed.UI.UWP.Services;
 using LiveNewsFeed.UI.UWP.ViewModels;
 
 namespace LiveNewsFeed.UI.UWP.Views
