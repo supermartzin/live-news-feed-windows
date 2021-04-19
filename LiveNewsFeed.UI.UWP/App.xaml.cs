@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Threading.Tasks;
-using Sentry;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
 using Windows.ApplicationModel.Core;
@@ -183,8 +182,6 @@ namespace LiveNewsFeed.UI.UWP
 
         private static void SetServices()
         {
-            SentrySdk.Init("https://0f8a0d0187f9497ebc608603ec352c88@o504575.ingest.sentry.io/5709957");
-
             ServiceLocator.Initialize();
 
             ImageCache.Instance.MaxMemoryCacheCount = 50;

@@ -67,6 +67,12 @@ namespace LiveNewsFeed.UI.UWP.Common
             serviceCollection.AddLogging(builder =>
             {
                 builder.AddNLog();
+                builder.AddSentry(options =>
+                {
+                    options.Dsn = "https://0f8a0d0187f9497ebc608603ec352c88@o504575.ingest.sentry.io/5709957";
+                    options.MinimumEventLevel = LogLevel.Warning;
+                    options.InitializeSdk = true;
+                });
 
                 // set Minimum log level based on variable in NLog.config --> default == INFO
                 var minLevelVariable = LogManager.Configuration.Variables["minLogLevel"].OriginalText;
