@@ -146,13 +146,28 @@ namespace LiveNewsFeed.UI.UWP
         private void OnSuspending(object sender, SuspendingEventArgs e)
         {
             var deferral = e.SuspendingOperation.GetDeferral();
+
+            Logger.LogDebug("Application is being suspended.");
+
+            // stop automatic updates
+            var updater = ServiceLocator.Container.GetRequiredService<IAutomaticUpdater>();
+            updater.Stop();
+
             //TODO: Save application state and stop any background activity
             deferral.Complete();
         }
 
         private static void OnResuming(object sender, object e)
         {
-            // TODO refresh news feeds
+            Logger.LogDebug("Application is being resumed.");
+
+            // manually refresh news feeds
+            var dataSourcesManager = ServiceLocator.Container.GetRequiredService<IDataSourcesManager>();
+            dataSourcesManager.LoadLatestPostsSinceLastUpdateAsync();
+
+            // re-start automatic updates
+            var updater = ServiceLocator.Container.GetRequiredService<IAutomaticUpdater>();
+            updater.Start();
         }
 
 

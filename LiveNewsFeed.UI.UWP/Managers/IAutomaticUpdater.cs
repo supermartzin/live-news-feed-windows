@@ -1,4 +1,5 @@
 ﻿using System;
+
 using LiveNewsFeed.UI.UWP.Managers.Settings;
 
 namespace LiveNewsFeed.UI.UWP.Managers

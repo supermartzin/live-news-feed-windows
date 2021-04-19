@@ -116,7 +116,7 @@ namespace LiveNewsFeed.UI.UWP.ViewModels
         {
             _automaticUpdater.AutomaticUpdateRequested += (_, _) =>
             {
-                _logger?.LogDebug($"Automatic news feeds update initiated...");
+                _logger?.LogDebug("Automatic news feeds update initiated...");
 
                 _dataSourcesManager.LoadLatestPostsSinceLastUpdateAsync();
             };

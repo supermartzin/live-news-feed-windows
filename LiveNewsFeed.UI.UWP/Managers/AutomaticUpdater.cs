@@ -45,7 +45,7 @@ namespace LiveNewsFeed.UI.UWP.Managers
 
             _periodicTimer.Start();
 
-            _logger?.LogInformation($"Automatic updates started with {Settings.UpdateInterval.Seconds} seconds update interval.");
+            _logger?.LogInformation($"Automatic updates started with {Settings.UpdateInterval.TotalSeconds} seconds update interval.");
         }
 
         public void Stop()
