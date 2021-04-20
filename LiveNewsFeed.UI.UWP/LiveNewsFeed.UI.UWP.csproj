@@ -152,7 +152,7 @@
     <Compile Include="Managers\NotificationsManager.cs" />
     <Compile Include="Managers\Settings\SettingChangedEventArgs.cs" />
     <Compile Include="Managers\Settings\SettingsBase.cs" />
-    <Compile Include="Managers\UserFileSettingsManager.cs" />
+    <Compile Include="Managers\LocalSettingsManager.cs" />
     <Compile Include="Services\INavigationService.cs" />
     <Compile Include="Services\NavigationService.cs" />
     <Compile Include="ViewModels\ArticlePreviewPageViewModel.cs" />

@@ -39,7 +39,7 @@ namespace LiveNewsFeed.UI.UWP.Managers
 
             if (!Settings.NotificationsAllowed)
                 return;
-            if (Settings.OnlyImportantPosts && !articlePost.IsImportant)
+            if (Settings.NotifyOnlyOnImportantPosts && !articlePost.IsImportant)
                 return;
 
             var notificationId = Guid.NewGuid().ToString();

@@ -18,5 +18,7 @@ namespace LiveNewsFeed.UI.UWP.Managers
         event EventHandler? SettingsLoaded;
 
         Task LoadSettingsAsync();
+
+        Task SaveSettingsAsync();
     }
 }

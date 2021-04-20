@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Timers;
+using Microsoft.Extensions.Logging;
 
 using LiveNewsFeed.UI.UWP.Managers.Settings;
-using Microsoft.Extensions.Logging;
 
 namespace LiveNewsFeed.UI.UWP.Managers
 {
@@ -11,7 +11,7 @@ namespace LiveNewsFeed.UI.UWP.Managers
         private readonly ILogger<AutomaticUpdater>? _logger;
         private readonly ISettingsManager _settingsManager;
         
-        private Timer _periodicTimer;
+        private Timer? _periodicTimer;
 
         public AutomaticUpdateSettings Settings => _settingsManager.AutomaticUpdateSettings;
 
@@ -24,9 +24,19 @@ namespace LiveNewsFeed.UI.UWP.Managers
             _logger = logger;
 
             if (!_settingsManager.AreSettingsLoaded)
-                _settingsManager.SettingsLoaded += (_, _) => Start();
+            {
+                _settingsManager.SettingsLoaded += (_, _) =>
+                {
+                    _settingsManager.AutomaticUpdateSettings.SettingChanged += OnSettingsChanged;
+                    Start();
+                };
+            }
+            else
+            {
+                _settingsManager.AutomaticUpdateSettings.SettingChanged += OnSettingsChanged;
+            }
         }
-
+        
         public void Start()
         {
             if (!_settingsManager.AreSettingsLoaded)
@@ -50,12 +60,35 @@ namespace LiveNewsFeed.UI.UWP.Managers
 
         public void Stop()
         {
-            if (!_periodicTimer.Enabled)
+            if (_periodicTimer is not {Enabled: true})
                 return;
 
             _periodicTimer.Stop();
 
             _logger?.LogInformation("Automatic updates stopped.");
+        }
+
+
+        private void OnSettingsChanged(object sender, SettingChangedEventArgs eventArgs)
+        {
+            switch (eventArgs.SettingName)
+            {
+                case nameof(AutomaticUpdateSettings.AutomaticUpdateAllowed):
+                    if (eventArgs.NewValue is true)
+                        Start();
+                    if (eventArgs.NewValue is false)
+                        Stop();
+                    break;
+
+                case nameof(AutomaticUpdateSettings.UpdateInterval):
+                    if (_periodicTimer != null && eventArgs.NewValue is TimeSpan newInterval)
+                    {
+                        _periodicTimer.Interval = newInterval.TotalMilliseconds;
+
+                        _logger?.LogInformation($"Automatic updates interval changed to {newInterval.TotalSeconds} seconds.");
+                    }
+                    break;
+            }
         }
     }
 }

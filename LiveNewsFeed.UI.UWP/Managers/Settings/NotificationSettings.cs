@@ -9,11 +9,11 @@
             set => Set(ref _notificationAllowed, value);
         }
 
-        private bool _onlyImportantPosts;
-        public bool OnlyImportantPosts
+        private bool _notifyOnlyOnImportantPosts;
+        public bool NotifyOnlyOnImportantPosts
         {
-            get => _onlyImportantPosts;
-            set => Set(ref _onlyImportantPosts, value);
+            get => _notifyOnlyOnImportantPosts;
+            set => Set(ref _notifyOnlyOnImportantPosts, value);
         }
     }
 }

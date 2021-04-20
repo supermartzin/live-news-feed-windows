@@ -198,12 +198,7 @@ namespace LiveNewsFeed.UI.UWP
         {
             var settingsManager = ServiceLocator.Container.GetRequiredService<ISettingsManager>();
 
-            settingsManager.LoadSettingsAsync().ContinueWith(_ =>
-            {
-                settingsManager.NotificationSettings!.NotificationsAllowed = true;
-                settingsManager.AutomaticUpdateSettings!.AutomaticUpdateAllowed = true;
-                settingsManager.AutomaticUpdateSettings!.UpdateInterval = TimeSpan.FromSeconds(60);
-            });
+            settingsManager.LoadSettingsAsync();
         }
 
         private static void LoadDataSources()
