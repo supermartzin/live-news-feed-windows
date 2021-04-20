@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Logging;
 
 using LiveNewsFeed.DataSource.Common;
 using LiveNewsFeed.Models;
@@ -13,17 +14,20 @@ namespace LiveNewsFeed.UI.UWP.Managers
 {
     public class DataSourcesManager : IDataSourcesManager
     {
+        private readonly ILogger<DataSourcesManager>? _logger;
+
         private readonly object _updateLock = new();
         
         private readonly Dictionary<string, NewsFeedDataSource> _dataSources;
         private readonly Dictionary<string, DateTime> _dataSourcesLastPostPublishTimes;
 
-        public event EventHandler<NewsArticlePost> NewsArticlePostReceived;
+        public event EventHandler<NewsArticlePost>? NewsArticlePostReceived;
 
-        public DataSourcesManager()
+        public DataSourcesManager(ILogger<DataSourcesManager>? logger = null)
         {
             _dataSources = new Dictionary<string, NewsFeedDataSource>();
             _dataSourcesLastPostPublishTimes = new Dictionary<string, DateTime>();
+            _logger = logger;
         }
 
         public void RegisterDataSource(NewsFeedDataSource newsFeedDataSource)
@@ -32,14 +36,14 @@ namespace LiveNewsFeed.UI.UWP.Managers
                 throw new ArgumentNullException(nameof(newsFeedDataSource));
 
             if (_dataSources.ContainsKey(newsFeedDataSource.Name))
-                throw new ArgumentException("Data source already registered.", nameof(newsFeedDataSource));
+                throw new ArgumentException(@"Data source already registered.", nameof(newsFeedDataSource));
 
             _dataSources[newsFeedDataSource.Name] = newsFeedDataSource;
 
+            _logger.LogInformation($"Registered News Feed data source '{newsFeedDataSource.Name}'.");
+
             // register logo
             Helpers.RegisterLogoForNewsFeed(newsFeedDataSource.Name, newsFeedDataSource.LogoUrl);
-
-            
         }
 
         public IEnumerable<NewsFeedDataSource> GetRegisteredDataSources()
