@@ -7,7 +7,7 @@ using LiveNewsFeed.UI.UWP.Managers.Settings;
 
 namespace LiveNewsFeed.UI.UWP.ViewModels
 {
-    public class QuickSettingsViewModel : ViewModelBase
+    public class QuickPanelSettingsViewModel : ViewModelBase
     {
         private readonly ISettingsManager _settingsManager;
 
@@ -39,7 +39,7 @@ namespace LiveNewsFeed.UI.UWP.ViewModels
 
         public ICommand ShowOnlyImportantPostsCommand { get; private set; }
 
-        public QuickSettingsViewModel(ISettingsManager settingsManager)
+        public QuickPanelSettingsViewModel(ISettingsManager settingsManager)
         {
             _settingsManager = settingsManager ?? throw new ArgumentNullException(nameof(settingsManager));
             if (!_settingsManager.AreSettingsLoaded)
@@ -59,10 +59,9 @@ namespace LiveNewsFeed.UI.UWP.ViewModels
         {
             _notificationsTurnedOn = _settingsManager.NotificationSettings.NotificationsAllowed;
             _showOnlyImportantPosts = _settingsManager.NewsFeedDisplaySettings.ShowOnlyImportantPosts;
-
-            _settingsManager.AutomaticUpdateSettings.SettingChanged += AutomaticUpdateSettings_OnChanged;
+            
             _settingsManager.NewsFeedDisplaySettings.SettingChanged += NewsFeedDisplaySettings_OnChanged;
-            _settingsManager.NotificationSettings.SettingChanged += NotificationSettings_OnSettingChanged;
+            _settingsManager.NotificationSettings.SettingChanged += NotificationSettings_OnChanged;
         }
 
         private void InitializeCommands()
@@ -71,16 +70,22 @@ namespace LiveNewsFeed.UI.UWP.ViewModels
             ShowOnlyImportantPostsCommand = new RelayCommand(() => ShowOnlyImportantPosts = !ShowOnlyImportantPosts);
         }
 
-        private void AutomaticUpdateSettings_OnChanged(object sender, SettingChangedEventArgs e)
+        private void NewsFeedDisplaySettings_OnChanged(object sender, SettingChangedEventArgs eventArgs)
         {
+            if (eventArgs.SettingName == nameof(NewsFeedDisplaySettings.ShowOnlyImportantPosts))
+            {
+                if (eventArgs.TryGetNewValue<bool>(out var showOnlyImportantPosts) && ShowOnlyImportantPosts != showOnlyImportantPosts)
+                    ShowOnlyImportantPosts = showOnlyImportantPosts;
+            }
         }
 
-        private void NewsFeedDisplaySettings_OnChanged(object sender, SettingChangedEventArgs e)
+        private void NotificationSettings_OnChanged(object sender, SettingChangedEventArgs eventArgs)
         {
-        }
-
-        private void NotificationSettings_OnSettingChanged(object sender, SettingChangedEventArgs e)
-        {
+            if (eventArgs.SettingName == nameof(NotificationSettings.NotificationsAllowed))
+            {
+                if (eventArgs.TryGetNewValue<bool>(out var notificationsAllowed) && NotificationsTurnedOn != notificationsAllowed)
+                    NotificationsTurnedOn = notificationsAllowed;
+            }
         }
     }
 }

@@ -81,7 +81,7 @@ namespace LiveNewsFeed.UI.UWP.Managers
                     break;
 
                 case nameof(AutomaticUpdateSettings.UpdateInterval):
-                    if (_periodicTimer != null && eventArgs.NewValue is TimeSpan newInterval)
+                    if (_periodicTimer != null && eventArgs.TryGetNewValue<TimeSpan>(out var newInterval))
                     {
                         _periodicTimer.Interval = newInterval.TotalMilliseconds;
 

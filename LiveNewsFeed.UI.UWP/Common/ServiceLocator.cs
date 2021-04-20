@@ -58,7 +58,8 @@ namespace LiveNewsFeed.UI.UWP.Common
         private static void AddViewModels(IServiceCollection serviceCollection)
         {
             serviceCollection.AddTransient<NewsFeedPageViewModel>();
-            serviceCollection.AddTransient<QuickSettingsViewModel>();
+            serviceCollection.AddTransient<QuickPanelSettingsViewModel>();
+            serviceCollection.AddTransient<SettingsMenuViewModel>();
             serviceCollection.AddTransient<ArticlePreviewPageViewModel>();
         }
 

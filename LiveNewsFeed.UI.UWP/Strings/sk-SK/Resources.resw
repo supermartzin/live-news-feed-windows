@@ -198,6 +198,18 @@
   <data name="CategoryEnum_World" xml:space="preserve">
     <value>Svet</value>
   </data>
+  <data name="General_Minute" xml:space="preserve">
+    <value>minúta</value>
+  </data>
+  <data name="General_Minutes" xml:space="preserve">
+    <value>minút</value>
+  </data>
+  <data name="General_Seconds" xml:space="preserve">
+    <value>sekúnd</value>
+  </data>
+  <data name="General_TwoToFourMinutes" xml:space="preserve">
+    <value>minúty</value>
+  </data>
   <data name="ImagePreview_CloseButton.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
     <value>Zatvoriť náhľad</value>
   </data>
@@ -251,6 +263,18 @@
   </data>
   <data name="Notification_Buttons_SharePost" xml:space="preserve">
     <value>Zdieľať</value>
+  </data>
+  <data name="SettingsMenu_AutomaticUpdatesInterval.Header" xml:space="preserve">
+    <value>Interval aktualizácie</value>
+  </data>
+  <data name="SettingsMenu_AutomaticUpdatesSwitch.Header" xml:space="preserve">
+    <value>Automatická aktualizácia</value>
+  </data>
+  <data name="SettingsMenu_AutomaticUpdatesSwitch.OffContent" xml:space="preserve">
+    <value>Vypnutá</value>
+  </data>
+  <data name="SettingsMenu_AutomaticUpdatesSwitch.OnContent" xml:space="preserve">
+    <value>Zapnutá</value>
   </data>
   <data name="SocialPostType_ToolTip_AppleMusic" xml:space="preserve">
     <value>Obsahuje audio z Apple Music</value>

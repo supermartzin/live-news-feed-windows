@@ -198,6 +198,18 @@
   <data name="CategoryEnum_World" xml:space="preserve">
     <value>World</value>
   </data>
+  <data name="General_Minute" xml:space="preserve">
+    <value>minute</value>
+  </data>
+  <data name="General_Minutes" xml:space="preserve">
+    <value>minutes</value>
+  </data>
+  <data name="General_Seconds" xml:space="preserve">
+    <value>seconds</value>
+  </data>
+  <data name="General_TwoToFourMinutes" xml:space="preserve">
+    <value>minutes</value>
+  </data>
   <data name="ImagePreview_CloseButton.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
     <value>Close preview</value>
   </data>
@@ -251,6 +263,18 @@
   </data>
   <data name="Notification_Buttons_SharePost" xml:space="preserve">
     <value>Share</value>
+  </data>
+  <data name="SettingsMenu_AutomaticUpdatesInterval.Header" xml:space="preserve">
+    <value>Update Interval</value>
+  </data>
+  <data name="SettingsMenu_AutomaticUpdatesSwitch.Header" xml:space="preserve">
+    <value>Automatic Updates</value>
+  </data>
+  <data name="SettingsMenu_AutomaticUpdatesSwitch.OffContent" xml:space="preserve">
+    <value>Off</value>
+  </data>
+  <data name="SettingsMenu_AutomaticUpdatesSwitch.OnContent" xml:space="preserve">
+    <value>On</value>
   </data>
   <data name="SocialPostType_ToolTip_AppleMusic" xml:space="preserve">
     <value>Contains audio from Apple Music</value>

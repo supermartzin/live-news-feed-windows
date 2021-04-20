@@ -25,7 +25,7 @@
             <VisualStateGroup>
                 <VisualState>
                     <VisualState.StateTriggers>
-                        <triggers:IsEqualStateTrigger Value="{x:Bind ViewModel.QuickSettings.NotificationsTurnedOn, Mode=OneWay}" To="True" />
+                        <triggers:IsEqualStateTrigger Value="{x:Bind ViewModel.QuickPanelSettings.NotificationsTurnedOn, Mode=OneWay}" To="True" />
                     </VisualState.StateTriggers>
                     <VisualState.Setters>
                         <Setter Target="NotificationsToggleButton.Label" Value="{Binding Path=Text, ElementName=NotificationsOn}" />
@@ -34,7 +34,7 @@
                 </VisualState>
                 <VisualState>
                     <VisualState.StateTriggers>
-                        <triggers:IsEqualStateTrigger Value="{x:Bind ViewModel.QuickSettings.NotificationsTurnedOn, Mode=OneWay}" To="False" />
+                        <triggers:IsEqualStateTrigger Value="{x:Bind ViewModel.QuickPanelSettings.NotificationsTurnedOn, Mode=OneWay}" To="False" />
                     </VisualState.StateTriggers>
                     <VisualState.Setters>
                         <Setter Target="NotificationsToggleButton.Label" Value="{Binding Path=Text, ElementName=NotificationsOff}" />
@@ -45,7 +45,7 @@
             <VisualStateGroup>
                 <VisualState>
                     <VisualState.StateTriggers>
-                        <triggers:IsEqualStateTrigger Value="{x:Bind ViewModel.QuickSettings.ShowOnlyImportantPosts, Mode=OneWay}" To="True" />
+                        <triggers:IsEqualStateTrigger Value="{x:Bind ViewModel.QuickPanelSettings.ShowOnlyImportantPosts, Mode=OneWay}" To="True" />
                     </VisualState.StateTriggers>
                     <VisualState.Setters>
                         <Setter Target="OnlyImportantPostsToggleButton.Label" Value="{Binding Path=Text, ElementName=OnlyImportantOn}" />
@@ -54,7 +54,7 @@
                 </VisualState>
                 <VisualState>
                     <VisualState.StateTriggers>
-                        <triggers:IsEqualStateTrigger Value="{x:Bind ViewModel.QuickSettings.ShowOnlyImportantPosts, Mode=OneWay}" To="False" />
+                        <triggers:IsEqualStateTrigger Value="{x:Bind ViewModel.QuickPanelSettings.ShowOnlyImportantPosts, Mode=OneWay}" To="False" />
                     </VisualState.StateTriggers>
                     <VisualState.Setters>
                         <Setter Target="OnlyImportantPostsToggleButton.Label" Value="{Binding Path=Text, ElementName=OnlyImportantOff}" />
@@ -414,18 +414,61 @@
                     DefaultLabelPosition="Right">
             <AppBarButton x:Name="OnlyImportantPostsToggleButton"
                           Style="{ThemeResource AppBarButtonRevealStyle}"
-                          Command="{x:Bind ViewModel.QuickSettings.ShowOnlyImportantPostsCommand}">
+                          Command="{x:Bind ViewModel.QuickPanelSettings.ShowOnlyImportantPostsCommand}">
                 <FontIcon Glyph="&#xE730;"/>
             </AppBarButton>
             <AppBarButton x:Name="NotificationsToggleButton"
                           Style="{ThemeResource AppBarButtonRevealStyle}"
-                          Command="{x:Bind ViewModel.QuickSettings.TurnOnNotificationsCommand}">
+                          Command="{x:Bind ViewModel.QuickPanelSettings.TurnOnNotificationsCommand}">
                 <FontIcon Glyph="&#xEA8F;"/>
             </AppBarButton>
             <AppBarButton x:Uid="NewsFeed_OpenSettingsButton"
                           Style="{ThemeResource AppBarButtonRevealStyle}"
                           Icon="Setting"
-                          IsEnabled="False" />
+                          AllowFocusOnInteraction="True">
+                <AppBarButton.Flyout>
+                    <Flyout AllowFocusOnInteraction="True">
+                        <StackPanel Orientation="Vertical"
+                                    Margin="10">
+                            <ToggleSwitch x:Uid="SettingsMenu_AutomaticUpdatesSwitch"
+                                          IsOn="{x:Bind ViewModel.SettingsMenu.AutomaticUpdates, Mode=TwoWay}"
+                                          Margin="0 0 0 10">
+                                <ToggleSwitch.HeaderTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding}"
+                                                   FontWeight="SemiBold"/>
+                                    </DataTemplate>
+                                </ToggleSwitch.HeaderTemplate>
+                            </ToggleSwitch>
+
+                            <StackPanel Orientation="Horizontal">
+                                <ComboBox x:Uid="SettingsMenu_AutomaticUpdatesInterval"
+                                          SelectedItem="{x:Bind ViewModel.SettingsMenu.AutomaticUpdatesInterval, Mode=TwoWay}">
+                                    <ComboBox.HeaderTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding}"
+                                                       FontWeight="SemiBold"/>
+                                        </DataTemplate>
+                                    </ComboBox.HeaderTemplate>
+                                    <ComboBox.ItemTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding Converter={StaticResource AutomaticUpdatesIntervalValueConverter}}"/>
+                                        </DataTemplate>
+                                    </ComboBox.ItemTemplate>
+
+                                    <x:Double>30</x:Double>
+                                    <x:Double>60</x:Double>
+                                    <x:Double>120</x:Double>
+                                    <x:Double>300</x:Double>
+                                    <x:Double>600</x:Double>
+                                    <x:Double>900</x:Double>
+                                    <x:Double>1800</x:Double>
+                                </ComboBox>
+                            </StackPanel>
+                        </StackPanel>
+                    </Flyout>
+                </AppBarButton.Flyout>
+            </AppBarButton>
             <AppBarButton x:Uid="NewsFeed_RefreshFeedButton"
                           Style="{ThemeResource AppBarButtonRevealStyle}"
                           Icon="Refresh"

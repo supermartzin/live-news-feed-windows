@@ -52,7 +52,9 @@ namespace LiveNewsFeed.UI.UWP.ViewModels
             }
         }
         
-        public QuickSettingsViewModel QuickSettings { get; }
+        public QuickPanelSettingsViewModel QuickPanelSettings { get; }
+
+        public SettingsMenuViewModel SettingsMenu { get; }
 
         private NewsArticlePostViewModel? _selectedPost;
         public NewsArticlePostViewModel? SelectedPost
@@ -69,14 +71,16 @@ namespace LiveNewsFeed.UI.UWP.ViewModels
                                      INavigationService navigationService,
                                      INotificationsManager notificationsManager,
                                      IAutomaticUpdater automaticUpdater,
-                                     QuickSettingsViewModel quickSettingsViewModel,
+                                     QuickPanelSettingsViewModel quickPanelSettingsViewModel,
+                                     SettingsMenuViewModel settingsMenuViewModel,
                                      ILogger<NewsFeedPageViewModel>? logger = default)
         {
             _dataSourcesManager = dataSourcesManager ?? throw new ArgumentNullException(nameof(dataSourcesManager));
             _navigationService = navigationService ?? throw new ArgumentNullException(nameof(navigationService));
             _notificationsManager = notificationsManager ?? throw new ArgumentNullException(nameof(notificationsManager));
             _automaticUpdater = automaticUpdater ?? throw new ArgumentNullException(nameof(automaticUpdater));
-            QuickSettings = quickSettingsViewModel ?? throw new ArgumentNullException(nameof(quickSettingsViewModel));
+            QuickPanelSettings = quickPanelSettingsViewModel ?? throw new ArgumentNullException(nameof(quickPanelSettingsViewModel));
+            SettingsMenu = settingsMenuViewModel ?? throw new ArgumentNullException(nameof(settingsMenuViewModel));
             _logger = logger;
 
             _articlePosts = new ObservableCollection<NewsArticlePostViewModel>();

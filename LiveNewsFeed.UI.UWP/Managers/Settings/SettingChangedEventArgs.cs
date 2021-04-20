@@ -6,15 +6,46 @@ namespace LiveNewsFeed.UI.UWP.Managers.Settings
     {
         public string SettingName { get; }
 
-        public object? OldValue { get; }
+        private object? _oldValue;
+        public object? OldValue => _oldValue;
 
-        public object? NewValue { get; }
+        private object? _newValue;
+        public object? NewValue => _newValue;
 
         public SettingChangedEventArgs(string settingName, object? oldValue, object? newValue)
         {
             SettingName = settingName;
-            OldValue = oldValue;
-            NewValue = newValue;
+            _oldValue = oldValue;
+            _newValue = newValue;
+        }
+
+        public T? GetNewValue<T>() => GetValue<T>(ref _newValue);
+
+        public T? GetOldValue<T>() => GetValue<T>(ref _oldValue);
+
+        public bool TryGetNewValue<T>(out T? value) => TryGetValue(out value, ref _newValue);
+        
+        public bool TryGetOldValue<T>(out T? value) => TryGetValue(out value, ref _oldValue);
+
+
+        private static T? GetValue<T>(ref object? value)
+        {
+            if (value is T castValue)
+                return castValue;
+
+            return default;
+        }
+
+        private static bool TryGetValue<T>(out T? value, ref object? backingValue)
+        {
+            if (backingValue is T valueToReturn)
+            {
+                value = valueToReturn;
+                return true;
+            }
+
+            value = default;
+            return false;
         }
     }
 }
