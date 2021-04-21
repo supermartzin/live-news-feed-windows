@@ -58,6 +58,16 @@ namespace LiveNewsFeed.DataSource.DennikNsk
                                  .ToList();
                 }
 
+                // API workaround for important posts
+                if (important is true && after is not null)
+                {
+                    posts = posts.Where(post => post.PublishTime > after).ToList();
+                }
+                if (important is true && before is not null)
+                {
+                    posts = posts.Where(post => post.PublishTime < before).ToList();
+                }
+
                 return posts;
             }
             catch (HttpRequestException hrEx)
@@ -85,13 +95,13 @@ namespace LiveNewsFeed.DataSource.DennikNsk
         {
             var parameters = "";
 
-            if (before.HasValue)
+            if (before.HasValue && important is false)
                 parameters += $"before={Uri.EscapeDataString(before.Value.ToUniversalTime().ToString(Constants.DateTimeFormat))}&";
-            if (after.HasValue)
+            if (after.HasValue && important is false)
                 parameters += $"after={Uri.EscapeDataString(after.Value.ToUniversalTime().ToString(Constants.DateTimeFormat))}&";
             if (category.HasValue)
                 parameters += $"cat={ModelsConverter.ToCode(category.Value)}&";
-            if (important.HasValue && important == true)
+            if (important is true)
                 parameters += "important=1&";
             if (tag != null)
             {
