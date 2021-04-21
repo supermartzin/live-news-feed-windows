@@ -83,45 +83,52 @@
         </VisualStateManager.VisualStateGroups>
 
         <!--  News Feed  -->
-        <controls:CustomGridView x:Name="NewsFeed"
-                                 SelectionMode="None"
-                                 Padding="0 100 0 40"
-                                 Visibility="{x:Bind Path=ViewModel.AllPostsLoading,
+        <RefreshContainer VerticalAlignment="Center"
+                          HorizontalAlignment="Center">
+            <i:Interaction.Behaviors>
+                <core:EventTriggerBehavior EventName="RefreshRequested">
+                    <core:InvokeCommandAction Command="{x:Bind ViewModel.RefreshNewsFeedCommand}"/>
+                </core:EventTriggerBehavior>
+            </i:Interaction.Behaviors>
+            <controls:CustomGridView x:Name="NewsFeed"
+                                     SelectionMode="None"
+                                     Padding="0 100 0 40"
+                                     Visibility="{x:Bind Path=ViewModel.AllPostsLoading,
                                                      Mode=TwoWay,
                                                      Converter={StaticResource InverseBoolToVisibilityConverter}}"
-                                 ItemsSource="{x:Bind ViewModel.ArticlePosts}">
-            <GridView.ItemsPanel>
-                <ItemsPanelTemplate>
-                    <ItemsStackPanel Orientation="Vertical"/>
-                </ItemsPanelTemplate>
-            </GridView.ItemsPanel>
+                                     ItemsSource="{x:Bind ViewModel.ArticlePosts}">
+                <GridView.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <ItemsStackPanel Orientation="Vertical"/>
+                    </ItemsPanelTemplate>
+                </GridView.ItemsPanel>
 
-            <GridView.ItemContainerStyle>
-                <Style TargetType="GridViewItem">
-                    <Setter Property="Margin" Value="25 5"/>
-                    <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
-                </Style>
-            </GridView.ItemContainerStyle>
+                <GridView.ItemContainerStyle>
+                    <Style TargetType="GridViewItem">
+                        <Setter Property="Margin" Value="25 5"/>
+                        <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                    </Style>
+                </GridView.ItemContainerStyle>
 
-            <GridView.ItemTemplate>
-                <DataTemplate x:DataType="vm:NewsArticlePostViewModel">
-                    <!--  Article post  -->
-                    <StackPanel Orientation="Vertical"
+                <GridView.ItemTemplate>
+                    <DataTemplate x:DataType="vm:NewsArticlePostViewModel">
+                        <!--  Article post  -->
+                        <StackPanel Orientation="Vertical"
                                 HorizontalAlignment="Stretch"
                                 Padding="10">
-                        <!--  Data source - Logo, Title, Social post logo, Categories and Publish time  -->
-                        <Grid Margin="0 0 0 5">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="Auto"/>
-                                <ColumnDefinition Width="Auto"/>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="Auto"/>
-                                <ColumnDefinition Width="Auto"/>
-                                <ColumnDefinition Width="Auto"/>
-                            </Grid.ColumnDefinitions>
+                            <!--  Data source - Logo, Title, Social post logo, Categories and Publish time  -->
+                            <Grid Margin="0 0 0 5">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
 
-                            <!--  Logo  -->
-                            <Border Grid.Column="0"
+                                <!--  Logo  -->
+                                <Border Grid.Column="0"
                                     Height="20"
                                     Width="20"
                                     Margin="0 0 5 0"
@@ -132,14 +139,14 @@
                                     BorderThickness="0"
                                     CornerRadius="2"
                                     x:Phase="1"/>
-                            <!--  Title  -->
-                            <TextBlock Grid.Column="1"
+                                <!--  Title  -->
+                                <TextBlock Grid.Column="1"
                                        Text="{x:Bind Title}"
                                        HorizontalTextAlignment="Left"
                                        FontWeight="Bold"
                                        FontSize="14"/>
-                            <!--  Social post logo  -->
-                            <Image Grid.Column="2"
+                                <!--  Social post logo  -->
+                                <Image Grid.Column="2"
                                    x:Name="SocialPostLogo"
                                    x:Load="{x:Bind common:UiHelpers.IsNotNull(SocialPost)}"
                                    x:Phase="1"
@@ -149,43 +156,43 @@
                                    Margin="15 0"
                                    HorizontalAlignment="Left"
                                    ToolTipService.ToolTip="{x:Bind SocialPost.ToolTip}"/>
-                            <!--  Categories  -->
-                            <ItemsControl Grid.Column="3"
+                                <!--  Categories  -->
+                                <ItemsControl Grid.Column="3"
                                           x:Name="CategoriesPanel"
                                           x:Load="{x:Bind HasCategories}"
                                           x:Phase="1"
                                           ItemsSource="{x:Bind Categories}">
-                                <ItemsControl.ItemsPanel>
-                                    <ItemsPanelTemplate>
-                                        <StackPanel Orientation="Horizontal"/>
-                                    </ItemsPanelTemplate>
-                                </ItemsControl.ItemsPanel>
-                                <ItemsControl.ItemTemplate>
-                                    <DataTemplate x:DataType="vm:CategoryViewModel">
-                                        <StackPanel Orientation="Horizontal"
+                                    <ItemsControl.ItemsPanel>
+                                        <ItemsPanelTemplate>
+                                            <StackPanel Orientation="Horizontal"/>
+                                        </ItemsPanelTemplate>
+                                    </ItemsControl.ItemsPanel>
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate x:DataType="vm:CategoryViewModel">
+                                            <StackPanel Orientation="Horizontal"
                                                     UseLayoutRounding="True"
                                                     VerticalAlignment="Center"
                                                     Margin="0 0 10 0">
-                                            <FontIcon Glyph="{x:Bind IconGlyph}"
+                                                <FontIcon Glyph="{x:Bind IconGlyph}"
                                                       FontFamily="{x:Bind FontFamily}"
                                                       FontSize="12"
                                                       Margin="0 0 3 0">
-                                                <FontIcon.Foreground>
-                                                    <SolidColorBrush Color="{x:Bind Color, Mode=OneWay}" />
-                                                </FontIcon.Foreground>
-                                            </FontIcon>
-                                            <TextBlock Text="{x:Bind Name}"
+                                                    <FontIcon.Foreground>
+                                                        <SolidColorBrush Color="{x:Bind Color, Mode=OneWay}" />
+                                                    </FontIcon.Foreground>
+                                                </FontIcon>
+                                                <TextBlock Text="{x:Bind Name}"
                                                        FontSize="12">
-                                                <TextBlock.Foreground>
-                                                    <SolidColorBrush Color="{x:Bind Color, Mode=OneWay}" />
-                                                </TextBlock.Foreground>
-                                            </TextBlock>
-                                        </StackPanel>
-                                    </DataTemplate>
-                                </ItemsControl.ItemTemplate>
-                            </ItemsControl>
-                            <!--  Is Important flag  -->
-                            <TextBlock x:Name="IsPostImportantFlag"
+                                                    <TextBlock.Foreground>
+                                                        <SolidColorBrush Color="{x:Bind Color, Mode=OneWay}" />
+                                                    </TextBlock.Foreground>
+                                                </TextBlock>
+                                            </StackPanel>
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
+                                <!--  Is Important flag  -->
+                                <TextBlock x:Name="IsPostImportantFlag"
                                        x:Uid="ArticlePost_IsPostImportantFlag"
                                        x:Load="{x:Bind IsImportant}"
                                        Grid.Column="4"
@@ -195,24 +202,24 @@
                                        Margin="0 0 5 0"
                                        HorizontalAlignment="Right"
                                        VerticalAlignment="Center" />
-                            <!--  Publish time  -->
-                            <TextBlock Grid.Column="5"
+                                <!--  Publish time  -->
+                                <TextBlock Grid.Column="5"
                                        HorizontalAlignment="Right"
                                        VerticalAlignment="Center"
                                        FontSize="12"
                                        FontWeight="Light"
                                        Text="{x:Bind PublishTime, Converter={StaticResource DateTimeFormatter}, ConverterParameter=T}"/>
-                        </Grid>
+                            </Grid>
 
-                        <!--  Article post image % content  -->
-                        <Grid Margin="0 5 0 0">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="Auto"/>
-                                <ColumnDefinition Width="*"/>
-                            </Grid.ColumnDefinitions>
+                            <!--  Article post image % content  -->
+                            <Grid Margin="0 5 0 0">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
 
-                            <!--  Article post image  -->
-                            <Image Grid.Column="0"
+                                <!--  Article post image  -->
+                                <Image Grid.Column="0"
                                    x:Name="ArticlePostImage"
                                    x:Load="{x:Bind common:UiHelpers.IsNotNull(Image)}"
                                    x:Phase="2"
@@ -221,88 +228,88 @@
                                    VerticalAlignment="Top"
                                    ToolTipService.ToolTip="{x:Bind Image.Title}"
                                    PointerPressed="ArticlePostImageThumbnail_OnPointerPressed">
-                                <Image.Source>
-                                    <BitmapImage DecodePixelWidth="180"
+                                    <Image.Source>
+                                        <BitmapImage DecodePixelWidth="180"
                                                  UriSource="{x:Bind Image.NormalImageUrl}"/>
-                                </Image.Source>
-                                <i:Interaction.Behaviors>
-                                    <core:EventTriggerBehavior EventName="PointerPressed">
-                                        <core:EventTriggerBehavior.Actions>
-                                            <core:InvokeCommandAction Command="{x:Bind ShowImagePreviewCommand}"/>
-                                        </core:EventTriggerBehavior.Actions>
-                                    </core:EventTriggerBehavior>
-                                </i:Interaction.Behaviors>
-                            </Image>
+                                    </Image.Source>
+                                    <i:Interaction.Behaviors>
+                                        <core:EventTriggerBehavior EventName="PointerPressed">
+                                            <core:EventTriggerBehavior.Actions>
+                                                <core:InvokeCommandAction Command="{x:Bind ShowImagePreviewCommand}"/>
+                                            </core:EventTriggerBehavior.Actions>
+                                        </core:EventTriggerBehavior>
+                                    </i:Interaction.Behaviors>
+                                </Image>
 
-                            <!--  Article post Content  -->
-                            <TextBlock Grid.Column="1"
+                                <!--  Article post Content  -->
+                                <TextBlock Grid.Column="1"
                                        Text="{x:Bind Content}"
                                        TextWrapping="Wrap"
                                        TextAlignment="Justify"
                                        IsTextSelectionEnabled="True"
                                        x:Phase="1"/>
-                        </Grid>
+                            </Grid>
 
-                        <!--  Tags & Actions button  -->
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="Auto"/>
-                            </Grid.ColumnDefinitions>
+                            <!--  Tags & Actions button  -->
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
 
-                            <StackPanel Grid.Column="0"
+                                <StackPanel Grid.Column="0"
                                         Orientation="Vertical"
                                         x:Name="TagsPanel"
                                         x:Load="{x:Bind HasTags}">
-                                <!--  Tags  -->
-                                <ItemsControl ItemsSource="{x:Bind Tags}"
+                                    <!--  Tags  -->
+                                    <ItemsControl ItemsSource="{x:Bind Tags}"
                                               Margin="0 10 5 0"
                                               x:Phase="1">
-                                    <ItemsControl.Template>
-                                        <ControlTemplate>
-                                            <ScrollViewer HorizontalScrollMode="Auto"
+                                        <ItemsControl.Template>
+                                            <ControlTemplate>
+                                                <ScrollViewer HorizontalScrollMode="Auto"
                                                           HorizontalScrollBarVisibility="Hidden"
                                                           VerticalScrollMode="Disabled"
                                                           VerticalScrollBarVisibility="Disabled"
                                                           Padding="{TemplateBinding Padding}">
-                                                <ItemsPresenter />
-                                            </ScrollViewer>
-                                        </ControlTemplate>
-                                    </ItemsControl.Template>
-                                    <ItemsControl.ItemsPanel>
-                                        <ItemsPanelTemplate>
-                                            <StackPanel Orientation="Horizontal"/>
-                                        </ItemsPanelTemplate>
-                                    </ItemsControl.ItemsPanel>
-                                    <ItemsControl.ItemTemplate>
-                                        <DataTemplate x:DataType="vm:TagViewModel">
-                                            <Button UseLayoutRounding="True"
+                                                    <ItemsPresenter />
+                                                </ScrollViewer>
+                                            </ControlTemplate>
+                                        </ItemsControl.Template>
+                                        <ItemsControl.ItemsPanel>
+                                            <ItemsPanelTemplate>
+                                                <StackPanel Orientation="Horizontal"/>
+                                            </ItemsPanelTemplate>
+                                        </ItemsControl.ItemsPanel>
+                                        <ItemsControl.ItemTemplate>
+                                            <DataTemplate x:DataType="vm:TagViewModel">
+                                                <Button UseLayoutRounding="True"
                                                     Margin="0 0 5 0"
                                                     Padding="3"
                                                     Style="{ThemeResource ButtonRevealStyle}"
                                                     FontSize="12">
-                                                <Button.Background>
-                                                    <AcrylicBrush TintColor="{ThemeResource SystemAccentColor}"
+                                                    <Button.Background>
+                                                        <AcrylicBrush TintColor="{ThemeResource SystemAccentColor}"
                                                                   TintOpacity="0.7"/>
-                                                </Button.Background>
+                                                    </Button.Background>
 
-                                                <StackPanel Orientation="Horizontal">
-                                                    <FontIcon Glyph="&#xE8EC;"
+                                                    <StackPanel Orientation="Horizontal">
+                                                        <FontIcon Glyph="&#xE8EC;"
                                                               FontSize="12"
                                                               FontWeight="Medium"
                                                               Margin="0 0 5 0"/>
-                                                    <TextBlock Text="{x:Bind Name}"
+                                                        <TextBlock Text="{x:Bind Name}"
                                                                FontSize="12"
                                                                FontWeight="Medium"/>
-                                                </StackPanel>
-                                            </Button>
-                                        </DataTemplate>
-                                    </ItemsControl.ItemTemplate>
-                                </ItemsControl>
-                            </StackPanel>
+                                                    </StackPanel>
+                                                </Button>
+                                            </DataTemplate>
+                                        </ItemsControl.ItemTemplate>
+                                    </ItemsControl>
+                                </StackPanel>
 
-                            <!--  Open Actions button  -->
-                            <Button Grid.Column="1"
+                                <!--  Open Actions button  -->
+                                <Button Grid.Column="1"
                                     x:Uid="ArticlePost_ActionsButton"
                                     Margin="5 0 0 0"
                                     Padding="5 0"
@@ -310,52 +317,53 @@
                                     Background="Transparent"
                                     FontSize="12"
                                     VerticalAlignment="Bottom">
-                                <FontIcon Glyph="&#xE10C;"/>
+                                    <FontIcon Glyph="&#xE10C;"/>
 
-                                <!--  Actions  -->
-                                <Button.Flyout>
-                                    <MenuFlyout Placement="TopEdgeAlignedRight">
-                                        <MenuFlyoutItem x:Uid="ArticlePost_Actions_ShareArticleButton"
+                                    <!--  Actions  -->
+                                    <Button.Flyout>
+                                        <MenuFlyout Placement="TopEdgeAlignedRight">
+                                            <MenuFlyoutItem x:Uid="ArticlePost_Actions_ShareArticleButton"
                                                         Command="{x:Bind ShareArticleCommand}">
-                                            <MenuFlyoutItem.Icon>
-                                                <FontIcon Glyph="&#xE72D;" />
-                                            </MenuFlyoutItem.Icon>
-                                        </MenuFlyoutItem>
-                                        <MenuFlyoutItem x:Uid="ArticlePost_Actions_CopyLinkButton"
+                                                <MenuFlyoutItem.Icon>
+                                                    <FontIcon Glyph="&#xE72D;" />
+                                                </MenuFlyoutItem.Icon>
+                                            </MenuFlyoutItem>
+                                            <MenuFlyoutItem x:Uid="ArticlePost_Actions_CopyLinkButton"
                                                         Command="{x:Bind CopyArticleUrlToClipboardCommand}">
-                                            <MenuFlyoutItem.Icon>
-                                                <FontIcon Glyph="&#xE16F;" />
-                                            </MenuFlyoutItem.Icon>
-                                        </MenuFlyoutItem>
-                                        <MenuFlyoutItem x:Uid="ArticlePost_Actions_OpenInBrowserButton"
+                                                <MenuFlyoutItem.Icon>
+                                                    <FontIcon Glyph="&#xE16F;" />
+                                                </MenuFlyoutItem.Icon>
+                                            </MenuFlyoutItem>
+                                            <MenuFlyoutItem x:Uid="ArticlePost_Actions_OpenInBrowserButton"
                                                         Command="{x:Bind OpenFullArticleCommand}">
-                                            <MenuFlyoutItem.Icon>
-                                                <FontIcon Glyph="&#xE8A7;" />
-                                            </MenuFlyoutItem.Icon>
-                                        </MenuFlyoutItem>
-                                        <MenuFlyoutSeparator />
-                                        <MenuFlyoutItem x:Name="OpenSocialPostPreviewButton"
+                                                <MenuFlyoutItem.Icon>
+                                                    <FontIcon Glyph="&#xE8A7;" />
+                                                </MenuFlyoutItem.Icon>
+                                            </MenuFlyoutItem>
+                                            <MenuFlyoutSeparator />
+                                            <MenuFlyoutItem x:Name="OpenSocialPostPreviewButton"
                                                         x:Uid="ArticlePost_Actions_OpenSocialPostPreviewButton"
                                                         x:Load="{x:Bind common:UiHelpers.IsNotNull(SocialPost)}"
                                                         Command="{x:Bind OpenSocialPostPreviewCommand}">
-                                            <MenuFlyoutItem.Icon>
-                                                <FontIcon Glyph="&#xE125;" />
-                                            </MenuFlyoutItem.Icon>
-                                        </MenuFlyoutItem>
-                                        <MenuFlyoutItem x:Uid="ArticlePost_Actions_OpenArticlePreviewButton"
+                                                <MenuFlyoutItem.Icon>
+                                                    <FontIcon Glyph="&#xE125;" />
+                                                </MenuFlyoutItem.Icon>
+                                            </MenuFlyoutItem>
+                                            <MenuFlyoutItem x:Uid="ArticlePost_Actions_OpenArticlePreviewButton"
                                                         Command="{x:Bind OpenArticlePreviewCommand}">
-                                            <MenuFlyoutItem.Icon>
-                                                <FontIcon Glyph="&#xE12A;" />
-                                            </MenuFlyoutItem.Icon>
-                                        </MenuFlyoutItem>
-                                    </MenuFlyout>
-                                </Button.Flyout>
-                            </Button>
-                        </Grid>
-                    </StackPanel>
-                </DataTemplate>
-            </GridView.ItemTemplate>
-        </controls:CustomGridView>
+                                                <MenuFlyoutItem.Icon>
+                                                    <FontIcon Glyph="&#xE12A;" />
+                                                </MenuFlyoutItem.Icon>
+                                            </MenuFlyoutItem>
+                                        </MenuFlyout>
+                                    </Button.Flyout>
+                                </Button>
+                            </Grid>
+                        </StackPanel>
+                    </DataTemplate>
+                </GridView.ItemTemplate>
+            </controls:CustomGridView>
+        </RefreshContainer>
 
         <!--  'Back to Top' Button  -->
         <Button x:Name="BackToTopButton"

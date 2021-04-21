@@ -178,6 +178,8 @@ namespace LiveNewsFeed.UI.UWP.ViewModels
 
         private async Task ReloadArticlesManually()
         {
+            _logger?.LogDebug("Manual News Feed refresh requested.");
+
             NewPostsLoading = true;
 
             var posts = await _dataSourcesManager.GetLatestPostsSinceLastUpdateAsync();
