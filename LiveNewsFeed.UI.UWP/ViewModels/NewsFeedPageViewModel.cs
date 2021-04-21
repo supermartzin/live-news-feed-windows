@@ -3,15 +3,17 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
+using Windows.UI.Notifications;
 using Microsoft.Toolkit.Uwp.UI;
 using Microsoft.Toolkit.Mvvm.Input;
 using Microsoft.Extensions.Logging;
 
 using LiveNewsFeed.Models;
-
+using LiveNewsFeed.UI.UWP.Common;
 using LiveNewsFeed.UI.UWP.Managers;
 using LiveNewsFeed.UI.UWP.Services;
 using LiveNewsFeed.UI.UWP.Views;
+using Microsoft.Toolkit.Uwp.Notifications;
 
 namespace LiveNewsFeed.UI.UWP.ViewModels
 {
@@ -21,6 +23,7 @@ namespace LiveNewsFeed.UI.UWP.ViewModels
 
         private readonly IDataSourcesManager _dataSourcesManager;
         private readonly INavigationService _navigationService;
+        private readonly ILiveTileService _liveTileService;
         private readonly INotificationsManager _notificationsManager;
         private readonly IAutomaticUpdater _automaticUpdater;
 
@@ -70,6 +73,7 @@ namespace LiveNewsFeed.UI.UWP.ViewModels
         public NewsFeedPageViewModel(IDataSourcesManager dataSourcesManager,
                                      INavigationService navigationService,
                                      INotificationsManager notificationsManager,
+                                     ILiveTileService liveTileService,
                                      IAutomaticUpdater automaticUpdater,
                                      QuickPanelSettingsViewModel quickPanelSettingsViewModel,
                                      SettingsMenuViewModel settingsMenuViewModel,
@@ -78,6 +82,7 @@ namespace LiveNewsFeed.UI.UWP.ViewModels
             _dataSourcesManager = dataSourcesManager ?? throw new ArgumentNullException(nameof(dataSourcesManager));
             _navigationService = navigationService ?? throw new ArgumentNullException(nameof(navigationService));
             _notificationsManager = notificationsManager ?? throw new ArgumentNullException(nameof(notificationsManager));
+            _liveTileService = liveTileService ?? throw new ArgumentNullException(nameof(liveTileService));
             _automaticUpdater = automaticUpdater ?? throw new ArgumentNullException(nameof(automaticUpdater));
             QuickPanelSettings = quickPanelSettingsViewModel ?? throw new ArgumentNullException(nameof(quickPanelSettingsViewModel));
             SettingsMenu = settingsMenuViewModel ?? throw new ArgumentNullException(nameof(settingsMenuViewModel));
@@ -110,6 +115,9 @@ namespace LiveNewsFeed.UI.UWP.ViewModels
                     RegisterEvents(viewModel);
 
                     _articlePosts.Add(viewModel);
+                    
+                    if (post.Image != null)
+                        _liveTileService.UpdateLiveTile(post, true);
                 }
             }
 
@@ -210,6 +218,9 @@ namespace LiveNewsFeed.UI.UWP.ViewModels
                 _notificationsManager.ShowNotification(newsArticlePost);
             });
 
+            // update live tile
+            if (newsArticlePost.Image != null)
+                _liveTileService.UpdateLiveTile(newsArticlePost);
         }
     }
 }

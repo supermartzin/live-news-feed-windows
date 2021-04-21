@@ -147,6 +147,8 @@
     <Compile Include="Managers\DataSourceUpdateOptions.cs" />
     <Compile Include="Managers\INotificationsManager.cs" />
     <Compile Include="Managers\ISettingsManager.cs" />
+    <Compile Include="Services\ILiveTileService.cs" />
+    <Compile Include="Services\LiveTileService.cs" />
     <Compile Include="Services\NavigationParameters.cs" />
     <Compile Include="Managers\Settings\NewsFeedDisplaySettings.cs" />
     <Compile Include="Managers\Settings\NotificationSettings.cs" />
