@@ -83,19 +83,24 @@
         </VisualStateManager.VisualStateGroups>
 
         <!--  News Feed  -->
-        <RefreshContainer VerticalAlignment="Center"
-                          HorizontalAlignment="Center">
+        <RefreshContainer Visibility="{x:Bind Path=ViewModel.AllPostsLoading,
+                                              Mode=TwoWay,
+                                              Converter={StaticResource InverseBoolToVisibilityConverter}}">
             <i:Interaction.Behaviors>
                 <core:EventTriggerBehavior EventName="RefreshRequested">
                     <core:InvokeCommandAction Command="{x:Bind ViewModel.RefreshNewsFeedCommand}"/>
                 </core:EventTriggerBehavior>
             </i:Interaction.Behaviors>
+            <RefreshContainer.Visualizer>
+                <RefreshVisualizer>
+                    <RefreshVisualizer.Content>
+                        <SymbolIcon Symbol="Refresh" />
+                    </RefreshVisualizer.Content>
+                </RefreshVisualizer>
+            </RefreshContainer.Visualizer>
             <controls:CustomGridView x:Name="NewsFeed"
                                      SelectionMode="None"
                                      Padding="0 100 0 40"
-                                     Visibility="{x:Bind Path=ViewModel.AllPostsLoading,
-                                                     Mode=TwoWay,
-                                                     Converter={StaticResource InverseBoolToVisibilityConverter}}"
                                      ItemsSource="{x:Bind ViewModel.ArticlePosts}">
                 <GridView.ItemsPanel>
                     <ItemsPanelTemplate>
