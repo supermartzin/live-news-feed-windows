@@ -622,10 +622,11 @@
                                       Color="{ThemeResource SystemBaseHighColor}"
                                       VerticalAlignment="Center"
                                       HorizontalAlignment="Center"
-                                      Width="{Binding Path=ActualWidth, Mode=OneTime, ElementName=ZoomPanel}"
-                                      Height="{Binding Path=ActualHeight, Mode=OneTime, ElementName=ZoomPanel}"
+                                      Width="{Binding Path=ActualWidth, Mode=OneWay, ElementName=ZoomPanel}"
+                                      Height="{Binding Path=ActualHeight, Mode=OneWay, ElementName=ZoomPanel}"
                                       IsMasked="True">
-                    <Image Stretch="Uniform">
+                    <Image Stretch="Uniform"
+                           x:Name="ImageContainer">
                         <Image.Source>
                             <BitmapImage x:Name="BitmapImage"
                                          CreateOptions="IgnoreImageCache"

@@ -1,12 +1,8 @@
-﻿using System;
-using System.Threading.Tasks;
-using Windows.UI;
+﻿using Windows.UI;
 using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
-using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Navigation;
-using Microsoft.Toolkit.Uwp.UI.Controls;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -18,7 +14,7 @@ namespace LiveNewsFeed.UI.UWP.Views
     public sealed partial class NewsFeedPage : BasePage
     {
         private const float DefaultImageZoomFactor = 0.9f;
-
+        
         public NewsFeedPageViewModel ViewModel { get; }
         
         public NewsFeedPage()
@@ -71,24 +67,6 @@ namespace LiveNewsFeed.UI.UWP.Views
 
         #region Event handlers
         
-        private async void Expander_OnExpanded(object sender, EventArgs e)
-        {
-            if (sender is Expander expander && expander?.Content is WebView webView)
-            {
-                await AdjustSocialPostElementHeight(webView).ConfigureAwait(true);
-            }
-        }
-
-        private void Expander_OnCollapsed(object sender, EventArgs e)
-        {
-            var expander = sender as Expander;
-
-            if (expander?.Content is WebView webView)
-            {
-                webView.Refresh();
-            }
-        }
-
         private void CloseImagePreviewButton_OnClick(object sender, RoutedEventArgs e)
         {
             ImagePreviewClosed();
@@ -113,23 +91,9 @@ namespace LiveNewsFeed.UI.UWP.Views
         {
             var logger = ServiceLocator.Container.GetService<ILogger<NewsFeedPage>>();
             
-            logger.LogError($"Error loading Article image: {e.ErrorMessage}");
+            logger?.LogError($"Error loading Article image: {e.ErrorMessage}");
         }
 
         #endregion
-        
-        private static async Task AdjustSocialPostElementHeight(WebView webView)
-        {
-            await Task.Delay(400).ConfigureAwait(true);
-
-            var result = await webView.InvokeScriptAsync("eval", new[] { "document.body.scrollHeight.toString()" });
-
-            if (result != null && int.TryParse(result, out var height))
-            {
-                webView.Height = height;
-                webView.MaxHeight = height;
-                webView.MinHeight = height;
-            }
-        }
     }
 }

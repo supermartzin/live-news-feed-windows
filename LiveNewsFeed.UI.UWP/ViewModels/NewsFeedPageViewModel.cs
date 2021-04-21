@@ -5,13 +5,13 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Toolkit.Uwp.UI;
 using Microsoft.Toolkit.Mvvm.Input;
+using Microsoft.Extensions.Logging;
 
 using LiveNewsFeed.Models;
 
 using LiveNewsFeed.UI.UWP.Managers;
 using LiveNewsFeed.UI.UWP.Services;
 using LiveNewsFeed.UI.UWP.Views;
-using Microsoft.Extensions.Logging;
 
 namespace LiveNewsFeed.UI.UWP.ViewModels
 {
