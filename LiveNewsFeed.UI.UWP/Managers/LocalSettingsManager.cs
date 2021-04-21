@@ -27,11 +27,7 @@ namespace LiveNewsFeed.UI.UWP.Managers
         public AutomaticUpdateSettings AutomaticUpdateSettings { get; private set; }
 
         public NewsFeedDisplaySettings NewsFeedDisplaySettings { get; private set; }
-
-        public bool AreSettingsLoaded { get; private set; }
-
-        public event EventHandler? SettingsLoaded;
-
+        
         public LocalSettingsManager()
         {
             _appDataSettings = ApplicationData.Current.LocalSettings;
@@ -42,10 +38,6 @@ namespace LiveNewsFeed.UI.UWP.Managers
             LoadNotificationSettings();
             LoadAutomaticUpdateSettings();
             LoadNewsFeedDisplaySettings();
-
-            AreSettingsLoaded = true;
-
-            SettingsLoaded?.Invoke(this, EventArgs.Empty);
 
             return Task.CompletedTask;
         }

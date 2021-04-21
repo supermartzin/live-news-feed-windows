@@ -3,31 +3,37 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
-using Windows.UI.Notifications;
 using Microsoft.Toolkit.Uwp.UI;
 using Microsoft.Toolkit.Mvvm.Input;
 using Microsoft.Extensions.Logging;
 
 using LiveNewsFeed.Models;
-using LiveNewsFeed.UI.UWP.Common;
+
 using LiveNewsFeed.UI.UWP.Managers;
+using LiveNewsFeed.UI.UWP.Managers.Settings;
 using LiveNewsFeed.UI.UWP.Services;
 using LiveNewsFeed.UI.UWP.Views;
-using Microsoft.Toolkit.Uwp.Notifications;
 
 namespace LiveNewsFeed.UI.UWP.ViewModels
 {
     public class NewsFeedPageViewModel : ViewModelBase
     {
+        private static class ViewFilters
+        {
+            public static readonly Predicate<NewsArticlePostViewModel> ShowOnlyImportantPostsFilter = viewModel => viewModel.IsImportant;
+        }
+
         private readonly ILogger<NewsFeedPageViewModel>? _logger;
 
         private readonly IDataSourcesManager _dataSourcesManager;
         private readonly INavigationService _navigationService;
         private readonly ILiveTileService _liveTileService;
         private readonly INotificationsManager _notificationsManager;
+        private readonly ISettingsManager _settingsManager;
         private readonly IAutomaticUpdater _automaticUpdater;
 
         private readonly ObservableCollection<NewsArticlePostViewModel> _articlePosts;
+        private readonly ISet<Predicate<NewsArticlePostViewModel>> _articlePostsViewFilters;
 
         private bool _allPostsLoading;
         public bool AllPostsLoading
@@ -66,13 +72,14 @@ namespace LiveNewsFeed.UI.UWP.ViewModels
             set => SetProperty(ref _selectedPost, value);
         }
 
-        public AdvancedCollectionView ArticlePosts { get; }
-        
+        public AdvancedCollectionView ArticlePosts { get; private set; }
+
         public IAsyncRelayCommand RefreshNewsFeedCommand { get; private set; }
 
         public NewsFeedPageViewModel(IDataSourcesManager dataSourcesManager,
                                      INavigationService navigationService,
                                      INotificationsManager notificationsManager,
+                                     ISettingsManager settingsManager,
                                      ILiveTileService liveTileService,
                                      IAutomaticUpdater automaticUpdater,
                                      QuickPanelSettingsViewModel quickPanelSettingsViewModel,
@@ -82,6 +89,7 @@ namespace LiveNewsFeed.UI.UWP.ViewModels
             _dataSourcesManager = dataSourcesManager ?? throw new ArgumentNullException(nameof(dataSourcesManager));
             _navigationService = navigationService ?? throw new ArgumentNullException(nameof(navigationService));
             _notificationsManager = notificationsManager ?? throw new ArgumentNullException(nameof(notificationsManager));
+            _settingsManager = settingsManager ?? throw new ArgumentNullException(nameof(settingsManager));
             _liveTileService = liveTileService ?? throw new ArgumentNullException(nameof(liveTileService));
             _automaticUpdater = automaticUpdater ?? throw new ArgumentNullException(nameof(automaticUpdater));
             QuickPanelSettings = quickPanelSettingsViewModel ?? throw new ArgumentNullException(nameof(quickPanelSettingsViewModel));
@@ -89,22 +97,46 @@ namespace LiveNewsFeed.UI.UWP.ViewModels
             _logger = logger;
 
             _articlePosts = new ObservableCollection<NewsArticlePostViewModel>();
-            ArticlePosts = new AdvancedCollectionView(_articlePosts);
-            ArticlePosts.SortDescriptions.Add(new SortDescription(nameof(NewsArticlePostViewModel.PublishTime), SortDirection.Descending));
+            _articlePostsViewFilters = new HashSet<Predicate<NewsArticlePostViewModel>>();
 
-            _dataSourcesManager.NewsArticlePostReceived += DataSourcesManager_OnNewsArticlePostReceived;
-           
+            SetArticlePostsView();
+            RegisterEventHandlers();
             InitializeCommands();
             LoadPosts();
             StartUpdater();
         }
-        
+
+
+        private void SetArticlePostsView()
+        {
+            ArticlePosts = new AdvancedCollectionView(_articlePosts);
+            // set sorting description
+            ArticlePosts.SortDescriptions.Add(new SortDescription(nameof(NewsArticlePostViewModel.PublishTime), SortDirection.Descending));
+            // set filter conditions
+            ArticlePosts.Filter = obj =>
+            {
+                if (obj is not NewsArticlePostViewModel articlePost)
+                    return true;
+
+                return _articlePostsViewFilters.Count == 0 || _articlePostsViewFilters.Aggregate(true,
+                    (current, filter) => current && filter.Invoke(articlePost));
+            };
+
+            if (_settingsManager.NewsFeedDisplaySettings.ShowOnlyImportantPosts)
+                _articlePostsViewFilters.Add(ViewFilters.ShowOnlyImportantPostsFilter);
+        }
+
+        private void RegisterEventHandlers()
+        {
+            _dataSourcesManager.NewsArticlePostReceived += DataSourcesManager_OnNewsArticlePostReceived;
+            _settingsManager.NewsFeedDisplaySettings.SettingChanged += NewsFeedDisplaySettings_OnChanged;
+        }
 
         private async Task LoadPosts()
         {
             AllPostsLoading = true;
 
-            var posts = await _dataSourcesManager.GetLatestPostsFromAllAsync();
+            var posts = await _dataSourcesManager.GetLatestPostsFromAllAsync(GetCurrentOptions());
 
             using (ArticlePosts.DeferRefresh())
             {
@@ -130,7 +162,7 @@ namespace LiveNewsFeed.UI.UWP.ViewModels
             {
                 _logger?.LogDebug("Automatic news feeds update initiated...");
 
-                _dataSourcesManager.LoadLatestPostsSinceLastUpdateAsync();
+                _dataSourcesManager.LoadLatestPostsSinceLastUpdateAsync(GetCurrentOptions());
             };
             _automaticUpdater.Start();
         }
@@ -190,7 +222,7 @@ namespace LiveNewsFeed.UI.UWP.ViewModels
 
             NewPostsLoading = true;
 
-            var posts = await _dataSourcesManager.GetLatestPostsSinceLastUpdateAsync();
+            var posts = await _dataSourcesManager.GetLatestPostsSinceLastUpdateAsync(GetCurrentOptions());
 
             foreach (var viewModel in posts.Select(post => new NewsArticlePostViewModel(post)))
             {
@@ -222,5 +254,30 @@ namespace LiveNewsFeed.UI.UWP.ViewModels
             if (newsArticlePost.Image != null)
                 _liveTileService.UpdateLiveTile(newsArticlePost);
         }
+
+        private void NewsFeedDisplaySettings_OnChanged(object sender, SettingChangedEventArgs eventArgs)
+        {
+            if (eventArgs.SettingName == nameof(NewsFeedDisplaySettings.ShowOnlyImportantPosts))
+            {
+                switch (eventArgs.GetNewValue<bool>())
+                {
+                    case true:
+                        _articlePostsViewFilters.Add(ViewFilters.ShowOnlyImportantPostsFilter);
+                        ArticlePosts.RefreshFilter();
+                        break;
+
+                    case false:
+                        _articlePostsViewFilters.Remove(ViewFilters.ShowOnlyImportantPostsFilter);
+                        ArticlePosts.RefreshFilter();
+                        break;
+                }
+            }
+        }
+
+        private DataSourceUpdateOptions GetCurrentOptions() => new()
+        {
+            Important = _settingsManager.NewsFeedDisplaySettings.ShowOnlyImportantPosts,
+            Count = 20
+        };
     }
 }

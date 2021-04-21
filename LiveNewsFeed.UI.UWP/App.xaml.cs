@@ -198,7 +198,7 @@ namespace LiveNewsFeed.UI.UWP
         {
             var settingsManager = ServiceLocator.Container.GetRequiredService<ISettingsManager>();
 
-            settingsManager.LoadSettingsAsync();
+            settingsManager.LoadSettingsAsync().Wait();
         }
 
         private static void LoadDataSources()

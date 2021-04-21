@@ -42,15 +42,8 @@ namespace LiveNewsFeed.UI.UWP.ViewModels
         public QuickPanelSettingsViewModel(ISettingsManager settingsManager)
         {
             _settingsManager = settingsManager ?? throw new ArgumentNullException(nameof(settingsManager));
-            if (!_settingsManager.AreSettingsLoaded)
-            {
-                _settingsManager.SettingsLoaded += (_, _) => LoadSettings();
-            }
-            else
-            {
-                LoadSettings();
-            }
             
+            LoadSettings();
             InitializeCommands();
         }
 

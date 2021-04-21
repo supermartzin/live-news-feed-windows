@@ -1,5 +1,4 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 
 using LiveNewsFeed.UI.UWP.Managers.Settings;
 
@@ -12,11 +11,7 @@ namespace LiveNewsFeed.UI.UWP.Managers
         AutomaticUpdateSettings AutomaticUpdateSettings { get; }
 
         NewsFeedDisplaySettings NewsFeedDisplaySettings { get; }
-
-        bool AreSettingsLoaded { get; }
-
-        event EventHandler? SettingsLoaded;
-
+        
         Task LoadSettingsAsync();
 
         Task SaveSettingsAsync();

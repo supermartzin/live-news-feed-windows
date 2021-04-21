@@ -23,24 +23,11 @@ namespace LiveNewsFeed.UI.UWP.Managers
             _settingsManager = settingsManager ?? throw new ArgumentNullException(nameof(settingsManager));
             _logger = logger;
 
-            if (!_settingsManager.AreSettingsLoaded)
-            {
-                _settingsManager.SettingsLoaded += (_, _) =>
-                {
-                    _settingsManager.AutomaticUpdateSettings.SettingChanged += OnSettingsChanged;
-                    Start();
-                };
-            }
-            else
-            {
-                _settingsManager.AutomaticUpdateSettings.SettingChanged += OnSettingsChanged;
-            }
+            _settingsManager.AutomaticUpdateSettings.SettingChanged += OnSettingsChanged;
         }
         
         public void Start()
         {
-            if (!_settingsManager.AreSettingsLoaded)
-                return;
             if (!Settings.AutomaticUpdateAllowed)
                 return;
             if (_periodicTimer is { Enabled: true })
