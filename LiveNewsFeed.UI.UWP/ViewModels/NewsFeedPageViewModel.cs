@@ -35,26 +35,26 @@ namespace LiveNewsFeed.UI.UWP.ViewModels
         private readonly ObservableCollection<NewsArticlePostViewModel> _articlePosts;
         private readonly ISet<Predicate<NewsArticlePostViewModel>> _articlePostsViewFilters;
 
-        private bool _allPostsLoading;
-        public bool AllPostsLoading
+        private bool _arePostsLoadingAutomatically;
+        public bool ArePostsLoadingAutomatically
         {
-            get => _allPostsLoading;
+            get => _arePostsLoadingAutomatically;
             set
             {
-                var changed = SetProperty(ref _allPostsLoading, value);
+                var changed = SetProperty(ref _arePostsLoadingAutomatically, value);
 
                 if (changed)
                     ReevaluateCommands();
             }
         }
 
-        private bool _newPostsLoading;
-        public bool NewPostsLoading
+        private bool _arePostsLoadingManually;
+        public bool ArePostsLoadingManually
         {
-            get => _newPostsLoading;
+            get => _arePostsLoadingManually;
             set
             {
-                var changed = SetProperty(ref _newPostsLoading, value);
+                var changed = SetProperty(ref _arePostsLoadingManually, value);
 
                 if (changed)
                     ReevaluateCommands();
@@ -75,6 +75,8 @@ namespace LiveNewsFeed.UI.UWP.ViewModels
         public AdvancedCollectionView ArticlePosts { get; private set; }
 
         public IAsyncRelayCommand RefreshNewsFeedCommand { get; private set; }
+
+        public IAsyncRelayCommand LoadOlderPostsCommand { get; private set; }
 
         public NewsFeedPageViewModel(IDataSourcesManager dataSourcesManager,
                                      INavigationService navigationService,
@@ -134,7 +136,7 @@ namespace LiveNewsFeed.UI.UWP.ViewModels
 
         private async Task LoadPosts()
         {
-            AllPostsLoading = true;
+            ArePostsLoadingAutomatically = true;
 
             var posts = await _dataSourcesManager.GetLatestPostsFromAllAsync(GetCurrentOptions());
 
@@ -156,7 +158,7 @@ namespace LiveNewsFeed.UI.UWP.ViewModels
                 }
             }
 
-            AllPostsLoading = false;
+            ArePostsLoadingAutomatically = false;
         }
 
         private void StartUpdater()
@@ -212,18 +214,20 @@ namespace LiveNewsFeed.UI.UWP.ViewModels
         private void InitializeCommands()
         {
             RefreshNewsFeedCommand = new AsyncRelayCommand(ReloadArticlesManually, CanReloadArticlesManually);
+            LoadOlderPostsCommand = new AsyncRelayCommand(LoadOlderPosts, CanLoadOlderPosts);
         }
-
+        
         private void ReevaluateCommands()
         {
             RefreshNewsFeedCommand.NotifyCanExecuteChanged();
+            LoadOlderPostsCommand.NotifyCanExecuteChanged();
         }
 
         private async Task ReloadArticlesManually()
         {
             _logger?.LogDebug("Manual News Feed refresh requested.");
 
-            NewPostsLoading = true;
+            ArePostsLoadingManually = true;
 
             var posts = await _dataSourcesManager.GetLatestPostsSinceLastUpdateAsync(GetCurrentOptions());
 
@@ -245,10 +249,25 @@ namespace LiveNewsFeed.UI.UWP.ViewModels
                     _liveTileService.UpdateLiveTile(post, true);
             }
 
-            NewPostsLoading = false;
+            ArePostsLoadingManually = false;
         }
 
-        private bool CanReloadArticlesManually() => !NewPostsLoading;
+        private bool CanReloadArticlesManually() => !ArePostsLoadingManually;
+
+        private async Task LoadOlderPosts()
+        {
+            _logger?.LogDebug("Loading of older posts requested.");
+
+            ArePostsLoadingManually = true;
+
+            await Task.Delay(3000);
+            // TODO add corresponding method to manager
+            //var posts = await _dataSourcesManager.
+
+            ArePostsLoadingManually = false;
+        }
+
+        private bool CanLoadOlderPosts() => !ArePostsLoadingManually;
 
         private void DataSourcesManager_OnNewsArticlePostReceived(object sender, NewsArticlePost newsArticlePost)
         {

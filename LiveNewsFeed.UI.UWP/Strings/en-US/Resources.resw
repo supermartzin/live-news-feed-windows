@@ -225,6 +225,12 @@
   <data name="NewsFeed_LoadingLabel.Text" xml:space="preserve">
     <value>Loading posts...</value>
   </data>
+  <data name="NewsFeed_LoadOlderPostsButton.Text" xml:space="preserve">
+    <value>Load older posts</value>
+  </data>
+  <data name="NewsFeed_LoadOlderPostsButton.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
+    <value>Load older posts</value>
+  </data>
   <data name="NewsFeed_NewsFeedTitle.Text" xml:space="preserve">
     <value>News Feed</value>
   </data>
@@ -243,14 +249,26 @@
   <data name="NewsFeed_Settings_NotificationsOff.Text" xml:space="preserve">
     <value>Notifications | OFF</value>
   </data>
+  <data name="NewsFeed_Settings_NotificationsOff.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
+    <value>Notifications are turned OFF</value>
+  </data>
   <data name="NewsFeed_Settings_NotificationsOn.Text" xml:space="preserve">
     <value>Notifications | ON</value>
+  </data>
+  <data name="NewsFeed_Settings_NotificationsOn.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
+    <value>Notifications are turned ON</value>
   </data>
   <data name="NewsFeed_Settings_OnlyImportantOff.Text" xml:space="preserve">
     <value>Only important | OFF</value>
   </data>
+  <data name="NewsFeed_Settings_OnlyImportantOff.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
+    <value>Showing all posts</value>
+  </data>
   <data name="NewsFeed_Settings_OnlyImportantOn.Text" xml:space="preserve">
     <value>Only important | ON</value>
+  </data>
+  <data name="NewsFeed_Settings_OnlyImportantOn.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
+    <value>Showing only important posts</value>
   </data>
   <data name="Notification_Buttons_CopyLinkToClipboard" xml:space="preserve">
     <value>Copy</value>
