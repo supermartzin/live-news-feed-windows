@@ -29,7 +29,7 @@ namespace LiveNewsFeed.Models
 
         public string NewsFeedName { get; }
 
-        public NewsArticlePost(string id, 
+        public NewsArticlePost(string id,
                                string title,
                                string content,
                                DateTime publishTime,

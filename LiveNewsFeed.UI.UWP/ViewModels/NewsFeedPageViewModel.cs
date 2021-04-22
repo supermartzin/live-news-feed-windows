@@ -144,10 +144,13 @@ namespace LiveNewsFeed.UI.UWP.ViewModels
                 {
                     var viewModel = new NewsArticlePostViewModel(post);
 
+                    if (_articlePosts.Contains(viewModel)) 
+                        continue;
+
                     RegisterEvents(viewModel);
 
                     _articlePosts.Add(viewModel);
-                    
+
                     if (post.Image != null)
                         _liveTileService.UpdateLiveTile(post, true);
                 }
@@ -224,11 +227,22 @@ namespace LiveNewsFeed.UI.UWP.ViewModels
 
             var posts = await _dataSourcesManager.GetLatestPostsSinceLastUpdateAsync(GetCurrentOptions());
 
-            foreach (var viewModel in posts.Select(post => new NewsArticlePostViewModel(post)))
+            foreach (var post in posts)
             {
+                var viewModel = new NewsArticlePostViewModel(post);
+
+                if (_articlePosts.Contains(viewModel))
+                    continue;
+                
                 RegisterEvents(viewModel);
 
                 _articlePosts.Add(viewModel);
+
+                // show notification
+                _notificationsManager.ShowNotification(post);
+
+                if (post.Image != null)
+                    _liveTileService.UpdateLiveTile(post, true);
             }
 
             NewPostsLoading = false;
@@ -242,17 +256,20 @@ namespace LiveNewsFeed.UI.UWP.ViewModels
             {
                 var viewModel = new NewsArticlePostViewModel(newsArticlePost);
 
+                if (_articlePosts.Contains(viewModel))
+                    return;
+
                 RegisterEvents(viewModel);
 
                 _articlePosts.Add(viewModel);
                 
                 // show notification
                 _notificationsManager.ShowNotification(newsArticlePost);
-            });
 
-            // update live tile
-            if (newsArticlePost.Image != null)
-                _liveTileService.UpdateLiveTile(newsArticlePost);
+                // update live tile
+                if (newsArticlePost.Image != null)
+                    _liveTileService.UpdateLiveTile(newsArticlePost);
+            });
         }
 
         private void NewsFeedDisplaySettings_OnChanged(object sender, SettingChangedEventArgs eventArgs)
