@@ -21,6 +21,8 @@ namespace LiveNewsFeed.UI.UWP.Managers
 
         Task<IEnumerable<NewsArticlePost>> GetLatestPostsSinceLastUpdateAsync(DataSourceUpdateOptions? options = default);
 
+        Task<IEnumerable<NewsArticlePost>> GetOlderPostsFromAllAsync(DataSourceUpdateOptions? options = default);
+
         Task LoadLatestPostsSinceLastUpdateAsync(DataSourceUpdateOptions? options = default);
     }
 }

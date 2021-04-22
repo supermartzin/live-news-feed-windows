@@ -260,9 +260,22 @@ namespace LiveNewsFeed.UI.UWP.ViewModels
 
             ArePostsLoadingManually = true;
 
-            await Task.Delay(3000);
-            // TODO add corresponding method to manager
-            //var posts = await _dataSourcesManager.
+            var posts = await _dataSourcesManager.GetOlderPostsFromAllAsync(GetCurrentOptions());
+
+            using (ArticlePosts.DeferRefresh())
+            {
+                foreach (var post in posts)
+                {
+                    var viewModel = new NewsArticlePostViewModel(post);
+
+                    if (_articlePosts.Contains(viewModel))
+                        continue;
+
+                    RegisterEvents(viewModel);
+
+                    _articlePosts.Add(viewModel);
+                }
+            }
 
             ArePostsLoadingManually = false;
         }
