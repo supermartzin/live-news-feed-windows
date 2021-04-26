@@ -135,6 +135,7 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Common\FixedSizeSortedQueue.cs" />
     <Compile Include="Common\Helpers.cs" />
     <Compile Include="Common\ServiceLocator.cs" />
     <Compile Include="Common\UiHelpers.cs" />

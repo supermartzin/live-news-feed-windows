@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace LiveNewsFeed.Models
 {
-    public class NewsArticlePost
+    public class NewsArticlePost : IComparable<NewsArticlePost>
     {
         public string Id { get; }
 
@@ -56,7 +56,12 @@ namespace LiveNewsFeed.Models
             Categories = categories ?? new HashSet<Category>();
             Tags = tags ?? new HashSet<Tag>();
         }
-        
+
+        public int CompareTo(NewsArticlePost other)
+        {
+            return - PublishTime.CompareTo(other.PublishTime);
+        }
+
         public override bool Equals(object? obj)
         {
             if (ReferenceEquals(null, obj))
@@ -73,6 +78,7 @@ namespace LiveNewsFeed.Models
         {
             return Id.GetHashCode();
         }
+        
 
         protected bool Equals(NewsArticlePost other)
         {
