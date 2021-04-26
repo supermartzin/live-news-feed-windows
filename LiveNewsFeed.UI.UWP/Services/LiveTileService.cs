@@ -75,39 +75,36 @@ namespace LiveNewsFeed.UI.UWP.Services
 
                     content?.Children.Add(CreateLargeTileGroup(
                         header: $"{articlePost.PublishTime:t} | {articlePost.Title}",
-                        content: Helpers.SanitizeHtmlContent(articlePost.Content),
-                        image: articlePost.Image));
+                        content: Helpers.SanitizeHtmlContent(articlePost.Content)));
 
                     if (i == 0 && articlePost.Image != null)
                         builder.SetPeekImage(articlePost.Image!.Url, TileSize.Large);
                 }
 
-                //numberOfCreatedTiles++;
+                numberOfCreatedTiles++;
             }
-            else
+
+            // create single post tiles
+            for (var postIndex = 0; numberOfCreatedTiles < MaxNumberOfTileContents; postIndex++)
             {
-                // create single post tiles
-                for (var postIndex = 0; numberOfCreatedTiles < MaxNumberOfTileContents; postIndex++)
-                {
-                    var newsArticlePost = _postsOnTileQueue.ElementAtOrDefault(postIndex);
-                    if (newsArticlePost == null)
-                        break;
+                var newsArticlePost = _postsOnTileQueue.ElementAtOrDefault(postIndex);
+                if (newsArticlePost == null)
+                    break;
 
-                    // create content
-                    builder.AddTile(TileSize.Large)
-                        .AddText(newsArticlePost.Title, hintStyle: AdaptiveTextStyle.Subtitle, size: TileSize.Large)
-                        .AddText($"{newsArticlePost.PublishTime:t} {newsArticlePost.PublishTime:d}", hintStyle: AdaptiveTextStyle.BaseSubtle, size: TileSize.Large)
-                        .AddText(Helpers.SanitizeHtmlContent(newsArticlePost.Content), hintStyle: AdaptiveTextStyle.Default, hintWrap: true, size: TileSize.Large);
+                // create content
+                builder.AddTile(TileSize.Large)
+                    .AddText(newsArticlePost.Title, hintStyle: AdaptiveTextStyle.Subtitle, size: TileSize.Large)
+                    .AddText($"{newsArticlePost.PublishTime:t} {newsArticlePost.PublishTime:d}", hintStyle: AdaptiveTextStyle.BaseSubtle, size: TileSize.Large)
+                    .AddText(Helpers.SanitizeHtmlContent(newsArticlePost.Content), hintStyle: AdaptiveTextStyle.Default, hintWrap: true, size: TileSize.Large);
 
-                    if (newsArticlePost.Image != null)
-                        builder.SetPeekImage(newsArticlePost.Image!.Url, TileSize.Large);
+                if (newsArticlePost.Image != null)
+                    builder.SetPeekImage(newsArticlePost.Image!.Url, TileSize.Large);
 
-                    numberOfCreatedTiles++;
-                }
+                numberOfCreatedTiles++;
             }
         }
 
-        private static AdaptiveGroup CreateLargeTileGroup(string header, string content, Image? image) => new()
+        private static AdaptiveGroup CreateLargeTileGroup(string header, string content) => new()
         {
             Children =
             {
@@ -115,12 +112,6 @@ namespace LiveNewsFeed.UI.UWP.Services
                 {
                     Children =
                     {
-                        //new AdaptiveImage
-                        //{
-                        //    Source = image?.Url.OriginalString,
-                        //    HintCrop = AdaptiveImageCrop.Default,
-                        //    HintAlign = AdaptiveImageAlign.Left
-                        //},
                         new AdaptiveText
                         {
                             Text = header,
