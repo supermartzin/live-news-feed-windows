@@ -89,7 +89,8 @@
         <!--  News Feed  -->
         <RefreshContainer Visibility="{x:Bind Path=ViewModel.ArePostsLoadingAutomatically,
                                               Mode=TwoWay,
-                                              Converter={StaticResource InverseBoolToVisibilityConverter}}">
+                                              Converter={StaticResource InverseBoolToVisibilityConverter}}"
+                          RefreshRequested="RefreshContainer_OnRefreshRequested">
             <i:Interaction.Behaviors>
                 <core:EventTriggerBehavior EventName="RefreshRequested">
                     <core:InvokeCommandAction Command="{x:Bind ViewModel.RefreshNewsFeedCommand}"/>

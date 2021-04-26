@@ -1,6 +1,9 @@
-﻿using Windows.UI;
+﻿using System.ComponentModel;
+using Windows.Foundation;
+using Windows.UI;
 using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
+using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Navigation;
 using Microsoft.Extensions.Logging;
@@ -14,12 +17,15 @@ namespace LiveNewsFeed.UI.UWP.Views
     public sealed partial class NewsFeedPage : BasePage
     {
         private const float DefaultImageZoomFactor = 0.9f;
+
+        private Deferral? _refreshContainerDeferral;
         
         public NewsFeedPageViewModel ViewModel { get; }
         
         public NewsFeedPage()
         {
             ViewModel = ServiceLocator.Container.GetRequiredService<NewsFeedPageViewModel>();
+            ViewModel.PropertyChanged += ViewModel_OnPropertyChanged;
 
             InitializeComponent();
 
@@ -92,6 +98,24 @@ namespace LiveNewsFeed.UI.UWP.Views
             var logger = ServiceLocator.Container.GetService<ILogger<NewsFeedPage>>();
             
             logger?.LogError($"Error loading Article image: {e.ErrorMessage}");
+        }
+
+        private void RefreshContainer_OnRefreshRequested(RefreshContainer sender, RefreshRequestedEventArgs args)
+        {
+            _refreshContainerDeferral = args.GetDeferral();
+        }
+
+        private void ViewModel_OnPropertyChanged(object sender, PropertyChangedEventArgs eventArgs)
+        {
+            if (eventArgs.PropertyName == nameof(ViewModel.ArePostsLoadingManually))
+            {
+                if (!ViewModel.ArePostsLoadingManually && _refreshContainerDeferral != null)
+                {
+                    _refreshContainerDeferral.Complete();
+                    _refreshContainerDeferral.Dispose();
+                    _refreshContainerDeferral = null;
+                }
+            }
         }
 
         #endregion
