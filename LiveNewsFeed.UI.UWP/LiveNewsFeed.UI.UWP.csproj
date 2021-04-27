@@ -324,10 +324,10 @@
       <Version>1.7.2</Version>
     </PackageReference>
     <PackageReference Include="Sentry">
-      <Version>3.3.1</Version>
+      <Version>3.3.4</Version>
     </PackageReference>
     <PackageReference Include="Sentry.Extensions.Logging">
-      <Version>3.3.1</Version>
+      <Version>3.3.4</Version>
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
