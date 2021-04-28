@@ -258,6 +258,9 @@
   <data name="Notification_Buttons_SharePost" xml:space="preserve">
     <value>Zdieľať</value>
   </data>
+  <data name="SettingsMenu_ApplicationSettingsTitle.Text" xml:space="preserve">
+    <value>Nastavenia aplikácie</value>
+  </data>
   <data name="SettingsMenu_AutomaticUpdatesInterval.Header" xml:space="preserve">
     <value>Interval aktualizácie</value>
   </data>
@@ -269,6 +272,9 @@
   </data>
   <data name="SettingsMenu_AutomaticUpdatesTitle.Text" xml:space="preserve">
     <value>Automatická aktualizácia správ</value>
+  </data>
+  <data name="SettingsMenu_DisplayLanguages.Header" xml:space="preserve">
+    <value>Jazyk</value>
   </data>
   <data name="SettingsMenu_NewsFeedDisplayTitle.Text" xml:space="preserve">
     <value>Zobrazenie príspevkov</value>

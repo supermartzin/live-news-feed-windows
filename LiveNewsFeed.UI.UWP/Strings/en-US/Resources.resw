@@ -258,6 +258,9 @@
   <data name="Notification_Buttons_SharePost" xml:space="preserve">
     <value>Share</value>
   </data>
+  <data name="SettingsMenu_ApplicationSettingsTitle.Text" xml:space="preserve">
+    <value>Application</value>
+  </data>
   <data name="SettingsMenu_AutomaticUpdatesInterval.Header" xml:space="preserve">
     <value>Update Interval</value>
   </data>
@@ -269,6 +272,9 @@
   </data>
   <data name="SettingsMenu_AutomaticUpdatesTitle.Text" xml:space="preserve">
     <value>Automatic News Feed Update</value>
+  </data>
+  <data name="SettingsMenu_DisplayLanguages.Header" xml:space="preserve">
+    <value>Language</value>
   </data>
   <data name="SettingsMenu_NewsFeedDisplayTitle.Text" xml:space="preserve">
     <value>News Feed display</value>

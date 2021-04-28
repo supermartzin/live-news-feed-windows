@@ -8,5 +8,7 @@
     <converters:EmptyObjectToObjectConverter x:Key="NullToVisibilityConverter" EmptyValue="Collapsed" NotEmptyValue="Visible" />
     <converters:EmptyCollectionToObjectConverter x:Key="EmptyCollectionToVisibilityConverter" EmptyValue="Collapsed" NotEmptyValue="Visible" />
     <converters:FormatStringConverter x:Key="DateTimeFormatter" />
-    <localConverters:AutomaticUpdatesIntervalValueConverter x:Key="AutomaticUpdatesIntervalValueConverter"/>
+
+    <localConverters:AutomaticUpdatesIntervalValueConverter x:Key="AutomaticUpdatesIntervalValueConverter" />
+    <localConverters:LanguageCodesConverter x:Key="LanguageCodesConverter" />
 </ResourceDictionary>

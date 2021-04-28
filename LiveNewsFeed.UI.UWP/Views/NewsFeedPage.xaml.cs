@@ -25,7 +25,6 @@ namespace LiveNewsFeed.UI.UWP.Views
         public NewsFeedPage()
         {
             ViewModel = ServiceLocator.Container.GetRequiredService<NewsFeedPageViewModel>();
-            ViewModel.PropertyChanged += ViewModel_OnPropertyChanged;
 
             InitializeComponent();
 
@@ -34,9 +33,18 @@ namespace LiveNewsFeed.UI.UWP.Views
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
-            Window.Current.SetTitleBar(NewsFeedTitleBar);
+            ViewModel.PropertyChanged += ViewModel_OnPropertyChanged;
 
+            Window.Current.SetTitleBar(NewsFeedTitleBar);
+            
             base.OnNavigatedTo(e);
+        }
+
+        protected override void OnNavigatedFrom(NavigationEventArgs e)
+        {
+            ViewModel.PropertyChanged -= ViewModel_OnPropertyChanged;
+
+            base.OnNavigatedFrom(e);
         }
 
         protected override void OnApplicationThemeChanged(ApplicationTheme theme)

@@ -142,8 +142,10 @@
     <Compile Include="Controls\CustomGridView.cs" />
     <Compile Include="Controls\ScrollViewerExtensions.cs" />
     <Compile Include="Converters\AutomaticUpdatesIntervalValueConverter.cs" />
+    <Compile Include="Converters\LanguageCodesConverter.cs" />
     <Compile Include="Managers\AutomaticUpdater.cs" />
     <Compile Include="Managers\IAutomaticUpdater.cs" />
+    <Compile Include="Managers\Settings\ApplicationSettings.cs" />
     <Compile Include="Managers\Settings\AutomaticUpdateSettings.cs" />
     <Compile Include="Managers\DataSourceUpdateOptions.cs" />
     <Compile Include="Managers\INotificationsManager.cs" />

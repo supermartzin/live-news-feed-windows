@@ -24,12 +24,20 @@ namespace LiveNewsFeed.UI.UWP.Services
                 CurrentFrame.GoBack();
         }
         
-        public virtual void NavigateTo<T>(object? parameter = default)
+        public virtual void NavigateTo<T>(object? parameter = default, bool tempDisableCache = false)
         {
             if (!typeof(Page).IsAssignableFrom(typeof(T)))
                 throw new ArgumentOutOfRangeException(nameof(T), $@"Provided type '{typeof(T).Name}' is not assignable to root Page type.");
 
+            var originalCacheSize = CurrentFrame.CacheSize;
+
+            if (tempDisableCache)
+                CurrentFrame.CacheSize = 0;
+
             CurrentFrame.Navigate(typeof(T), parameter);
+
+            if (tempDisableCache)
+                CurrentFrame.CacheSize = originalCacheSize;
         }
     }
 }

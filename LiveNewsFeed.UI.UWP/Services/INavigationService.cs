@@ -10,6 +10,6 @@ namespace LiveNewsFeed.UI.UWP.Services
 
         void GoBack();
 
-        void NavigateTo<T>(object? parameter = default);
+        void NavigateTo<T>(object? parameter = default, bool tempDisableCache = false);
     }
 }

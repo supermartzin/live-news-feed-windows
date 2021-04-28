@@ -1,5 +1,6 @@
 ﻿<views:BasePage x:Class="LiveNewsFeed.UI.UWP.Views.NewsFeedPage"
                 xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                xmlns:api8="http://schemas.microsoft.com/winfx/2006/xaml/presentation?IsApiContractPresent(Windows.Foundation.UniversalApiContract, 8)"
                 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                 xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
                 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -406,18 +407,24 @@
                           Icon="Setting"
                           AllowFocusOnInteraction="True">
                 <AppBarButton.Flyout>
-                    <Flyout AllowFocusOnInteraction="True">
+                    <Flyout x:Name="SettingsMenuFlyout"
+                            AllowFocusOnInteraction="True"
+                            api8:ShouldConstrainToRootBounds="False">
                         <StackPanel Orientation="Vertical">
                             <StackPanel.Resources>
                                 <Style x:Key="TitleStyle" TargetType="TextBlock">
                                     <Setter Property="FontWeight" Value="SemiBold" />
                                     <Setter Property="FontSize" Value="18" />
                                 </Style>
+
+                                <Style x:Key="SectionPanelStyle" TargetType="StackPanel">
+                                    <Setter Property="Margin" Value="5 5 5 10" />
+                                </Style>
                             </StackPanel.Resources>
 
                             <!--  Automatic Feed refresh Settings  -->
                             <StackPanel Orientation="Vertical"
-                                        Margin="5 5 5 10">
+                                        Style="{StaticResource SectionPanelStyle}">
                                 <TextBlock x:Uid="SettingsMenu_AutomaticUpdatesTitle"
                                            Style="{StaticResource TitleStyle}" />
 
@@ -449,7 +456,7 @@
 
                             <!--  Notifications Settings  -->
                             <StackPanel Orientation="Vertical"
-                                        Margin="5 5 5 10">
+                                        Style="{StaticResource SectionPanelStyle}">
                                 <TextBlock x:Uid="SettingsMenu_NotificationsTitle"
                                            Style="{StaticResource TitleStyle}" />
 
@@ -466,7 +473,7 @@
 
                             <!--  News Feed Display Settings  -->
                             <StackPanel Orientation="Vertical"
-                                        Margin="5">
+                                        Style="{StaticResource SectionPanelStyle}">
                                 <TextBlock x:Uid="SettingsMenu_NewsFeedDisplayTitle"
                                            Style="{StaticResource TitleStyle}" />
 
@@ -474,6 +481,39 @@
                                 <ToggleSwitch x:Uid="SettingsMenu_ShowOnlyImportantPostsSwitch"
                                               IsOn="{x:Bind ViewModel.SettingsMenu.ShowOnlyImportantPosts, Mode=TwoWay}"
                                               Margin="10 5 0 0"/>
+                            </StackPanel>
+
+                            <!--  Application Settings  -->
+                            <StackPanel Orientation="Vertical"
+                                        Margin="5">
+                                <TextBlock x:Uid="SettingsMenu_ApplicationSettingsTitle"
+                                           Style="{StaticResource TitleStyle}" />
+
+                                <!--  Display Language  -->
+                                <ComboBox x:Uid="SettingsMenu_DisplayLanguages"
+                                          x:Name="LanguagesComboBox"
+                                          SelectedItem="{x:Bind ViewModel.SettingsMenu.DisplayLanguageCode, Mode=TwoWay}"
+                                          Margin="10 5 0 0">
+                                    <ComboBox.ItemTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding Converter={StaticResource LanguageCodesConverter}}"/>
+                                        </DataTemplate>
+                                    </ComboBox.ItemTemplate>
+
+                                    <i:Interaction.Behaviors>
+                                        <i:BehaviorCollection>
+                                            <core:EventTriggerBehavior SourceObject="{Binding ElementName=LanguagesComboBox}"
+                                                                       EventName="SelectionChanged">
+                                                <core:CallMethodAction TargetObject="{Binding ElementName=SettingsMenuFlyout}"
+                                                                       MethodName="Hide" />
+                                            </core:EventTriggerBehavior>
+                                        </i:BehaviorCollection>
+                                    </i:Interaction.Behaviors>
+
+                                    <!--  Language values  -->
+                                    <x:String>en</x:String>
+                                    <x:String>sk</x:String>
+                                </ComboBox>
                             </StackPanel>
                         </StackPanel>
                     </Flyout>

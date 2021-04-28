@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
+using Windows.ApplicationModel.Resources.Core;
+using Windows.Globalization;
 using Microsoft.Toolkit.Uwp.UI;
 using Microsoft.Toolkit.Mvvm.Input;
 using Microsoft.Extensions.Logging;
@@ -127,7 +130,8 @@ namespace LiveNewsFeed.UI.UWP.ViewModels
         private void RegisterEventHandlers()
         {
             _dataSourcesManager.NewsArticlePostReceived += DataSourcesManager_OnNewsArticlePostReceived;
-            _settingsManager.NewsFeedDisplaySettings.SettingChanged += NewsFeedDisplaySettings_OnChanged;
+            _settingsManager.ApplicationSettings.SettingChanged += Settings_OnChanged;
+            _settingsManager.NewsFeedDisplaySettings.SettingChanged += Settings_OnChanged;
         }
 
         private async Task LoadPosts()
@@ -300,23 +304,43 @@ namespace LiveNewsFeed.UI.UWP.ViewModels
             });
         }
 
-        private void NewsFeedDisplaySettings_OnChanged(object sender, SettingChangedEventArgs eventArgs)
+        private void Settings_OnChanged(object sender, SettingChangedEventArgs eventArgs)
         {
-            if (eventArgs.SettingName == nameof(NewsFeedDisplaySettings.ShowOnlyImportantPosts))
+            switch (eventArgs.SettingName)
             {
-                switch (eventArgs.GetNewValue<bool>())
-                {
-                    case true:
-                        _articlePostsViewFilters.Add(ViewFilters.ShowOnlyImportantPostsFilter);
-                        ArticlePosts.RefreshFilter();
-                        break;
+                case nameof(ApplicationSettings.DisplayLanguageCode):
+                    ChangeLanguage(eventArgs.GetNewValue<string>());
+                    break;
 
-                    case false:
-                        _articlePostsViewFilters.Remove(ViewFilters.ShowOnlyImportantPostsFilter);
-                        ArticlePosts.RefreshFilter();
-                        break;
-                }
+                case nameof(NewsFeedDisplaySettings.ShowOnlyImportantPosts):
+                    switch (eventArgs.GetNewValue<bool>())
+                    {
+                        case true:
+                            _articlePostsViewFilters.Add(ViewFilters.ShowOnlyImportantPostsFilter);
+                            ArticlePosts.RefreshFilter();
+                            break;
+
+                        case false:
+                            _articlePostsViewFilters.Remove(ViewFilters.ShowOnlyImportantPostsFilter);
+                            ArticlePosts.RefreshFilter();
+                            break;
+                    }
+                    break;
             }
+        }
+
+        private void ChangeLanguage(string? languageCode)
+        {
+            if (languageCode == null)
+                return;
+
+            ApplicationLanguages.PrimaryLanguageOverride = languageCode;
+            ResourceContext.GetForCurrentView().Reset();
+            ResourceContext.GetForViewIndependentUse().Reset();
+
+            _logger?.LogInformation($"App language switched to {CultureInfo.GetCultureInfo(languageCode).EnglishName}");
+            
+            _navigationService.NavigateTo<NewsFeedPage>(tempDisableCache: true);
         }
 
         private DataSourceUpdateOptions GetCurrentOptions() => new()

@@ -6,6 +6,8 @@ namespace LiveNewsFeed.UI.UWP.Managers
 {
     public interface ISettingsManager
     {
+        ApplicationSettings ApplicationSettings { get; }
+
         NotificationSettings NotificationSettings { get; }
 
         AutomaticUpdateSettings AutomaticUpdateSettings { get; }

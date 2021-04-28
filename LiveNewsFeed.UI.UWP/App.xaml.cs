@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 using System.Threading.Tasks;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
@@ -71,7 +72,7 @@ namespace LiveNewsFeed.UI.UWP
             if (e.PrelaunchActivated)
                 return;
 
-            SetLanguage("sk");
+            SetLanguage();
 
             if (rootFrame.Content == null)
             {
@@ -186,14 +187,7 @@ namespace LiveNewsFeed.UI.UWP
 
             ImageCache.Instance.MaxMemoryCacheCount = 50;
         }
-
-        private static void SetLanguage(string languageCode)
-        {
-            ApplicationLanguages.PrimaryLanguageOverride = languageCode;
-            ResourceContext.GetForCurrentView().Reset();
-            ResourceContext.GetForViewIndependentUse().Reset();
-        }
-
+        
         private static void InitializeSettings()
         {
             var settingsManager = ServiceLocator.Container.GetRequiredService<ISettingsManager>();
@@ -207,6 +201,19 @@ namespace LiveNewsFeed.UI.UWP
 
             manager.RegisterDataSource(new NewsFeedDataSource(ServiceLocator.Container.GetRequiredService<DennikNskNewsFeed>(), new Uri("ms-appx:///Assets/Logos/denniknsk-logo.png")));
             manager.RegisterDataSource(new NewsFeedDataSource(ServiceLocator.Container.GetRequiredService<DenikNczNewsFeed>(), new Uri("ms-appx:///Assets/Logos/denikncz-logo.jpg")));
+        }
+
+        private static void SetLanguage()
+        {
+            var settingsManager = ServiceLocator.Container.GetRequiredService<ISettingsManager>();
+
+            ApplicationLanguages.PrimaryLanguageOverride = settingsManager.ApplicationSettings.DisplayLanguageCode;
+            ResourceContext.GetForCurrentView().Reset();
+            ResourceContext.GetForViewIndependentUse().Reset();
+
+            string language = CultureInfo.GetCultureInfo(settingsManager.ApplicationSettings.DisplayLanguageCode)?.EnglishName
+                                ?? settingsManager.ApplicationSettings.DisplayLanguageCode;
+            Logger.LogInformation($"App language set to '{language}'.");
         }
 
         private static void OnUnhandledException(object sender, UnhandledExceptionEventArgs e)

@@ -69,21 +69,35 @@ namespace LiveNewsFeed.UI.UWP.ViewModels
             }
         }
 
+        private string _displayLanguageCode;
+        public string DisplayLanguageCode
+        {
+            get => _displayLanguageCode;
+            set
+            {
+                var changed = SetProperty(ref _displayLanguageCode, value);
+                if (changed) 
+                    _settingsManager.ApplicationSettings.DisplayLanguageCode = value;
+            }
+        }
+
         public SettingsMenuViewModel(ISettingsManager settingsManager)
         {
             _settingsManager = settingsManager ?? throw new ArgumentNullException(nameof(settingsManager));
-            
+
             LoadSettings();
         }
 
         private void LoadSettings()
         {
+            _displayLanguageCode = _settingsManager.ApplicationSettings.DisplayLanguageCode;
             _automaticUpdates = _settingsManager.AutomaticUpdateSettings.AutomaticUpdateAllowed;
             _automaticUpdatesInterval = _settingsManager.AutomaticUpdateSettings.UpdateInterval.TotalSeconds;
             _notificationsTurnedOn = _settingsManager.NotificationSettings.NotificationsAllowed;
             _notifyOnlyOnImportantPosts = _settingsManager.NotificationSettings.NotifyOnlyOnImportantPosts;
             _showOnlyImportantPosts = _settingsManager.NewsFeedDisplaySettings.ShowOnlyImportantPosts;
 
+            _settingsManager.ApplicationSettings.SettingChanged += Settings_OnChanged;
             _settingsManager.AutomaticUpdateSettings.SettingChanged += Settings_OnChanged;
             _settingsManager.NotificationSettings.SettingChanged += Settings_OnChanged;
             _settingsManager.NewsFeedDisplaySettings.SettingChanged += Settings_OnChanged;
@@ -93,6 +107,11 @@ namespace LiveNewsFeed.UI.UWP.ViewModels
         {
             switch (eventArgs.SettingName)
             {
+                case nameof(ApplicationSettings.DisplayLanguageCode):
+                    if (eventArgs.TryGetNewValue<string>(out var languageCode) && DisplayLanguageCode != languageCode && languageCode != null)
+                        DisplayLanguageCode = languageCode;
+                    break;
+
                 case nameof(AutomaticUpdateSettings.AutomaticUpdateAllowed):
                     if (eventArgs.TryGetNewValue<bool>(out var updatesAllowed) && AutomaticUpdates != updatesAllowed)
                         AutomaticUpdates = updatesAllowed;

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 using System.Threading.Tasks;
 using Windows.Storage;
 
@@ -10,6 +11,8 @@ namespace LiveNewsFeed.UI.UWP.Managers
     {
         private static class SettingsKeys
         {
+            public const string ApplicationSettingsKey = "appSettings";
+            public const string LanguageCodeKey = "language";
             public const string NotificationSettingsKey = "notificationSettings";
             public const string NotificationsAllowedKey = "allowed";
             public const string NotifyOnlyOnImportantPostsKey = "onlyImportant";
@@ -20,7 +23,19 @@ namespace LiveNewsFeed.UI.UWP.Managers
             public const string ShowOnlyImportantPostsKey = "onlyImportant";
         }
 
+        private static class DefaultSettings
+        {
+            public static readonly string DisplayLanguageCode = CultureInfo.CurrentUICulture.TwoLetterISOLanguageName;
+            public const bool NotificationsAllowed = false;
+            public const bool NotifyOnlyOnImportantPosts = false;
+            public const bool AutomaticUpdateAllowed = false;
+            public static readonly TimeSpan UpdateInterval = TimeSpan.FromMinutes(5);
+            public const bool ShowOnlyImportantPosts = false;
+        }
+
         private readonly ApplicationDataContainer _appDataSettings;
+
+        public ApplicationSettings ApplicationSettings { get; private set; }
 
         public NotificationSettings NotificationSettings { get; private set; }
 
@@ -35,20 +50,45 @@ namespace LiveNewsFeed.UI.UWP.Managers
 
         public Task LoadSettingsAsync()
         {
+            LoadApplicationSettings();
             LoadNotificationSettings();
             LoadAutomaticUpdateSettings();
             LoadNewsFeedDisplaySettings();
 
             return Task.CompletedTask;
         }
-
+        
         public Task SaveSettingsAsync()
         {
+            SaveApplicationSettings();
             SaveNotificationSettings();
             SaveAutomaticUpdateSettings();
             SaveNewsFeedDisplaySettings();
 
             return Task.CompletedTask;
+        }
+
+        
+        private void LoadApplicationSettings()
+        {
+            ApplicationSettings = new ApplicationSettings();
+
+            // load from Local AppData
+            if (_appDataSettings.Values[SettingsKeys.ApplicationSettingsKey] is ApplicationDataCompositeValue applicationSettings)
+            {
+                if (applicationSettings.TryGetValue(SettingsKeys.LanguageCodeKey, out var languageCodeValue) && languageCodeValue is string languageCode and not null)
+                {
+                    ApplicationSettings.DisplayLanguageCode = languageCode;
+                }
+            }
+            else
+            {
+                ApplicationSettings.DisplayLanguageCode = DefaultSettings.DisplayLanguageCode;
+
+                SaveApplicationSettings();
+            }
+
+            ApplicationSettings.SettingChanged += (_, _) => SaveApplicationSettings();
         }
 
         private void LoadNotificationSettings()
@@ -66,6 +106,13 @@ namespace LiveNewsFeed.UI.UWP.Managers
                 {
                     NotificationSettings.NotifyOnlyOnImportantPosts = onlyImportant;
                 }
+            }
+            else
+            {
+                NotificationSettings.NotificationsAllowed = DefaultSettings.NotificationsAllowed;
+                NotificationSettings.NotifyOnlyOnImportantPosts = DefaultSettings.NotifyOnlyOnImportantPosts;
+
+                SaveNotificationSettings();
             }
 
             NotificationSettings.SettingChanged += (_, _) => SaveNotificationSettings();
@@ -88,6 +135,13 @@ namespace LiveNewsFeed.UI.UWP.Managers
                         AutomaticUpdateSettings.UpdateInterval = interval;
                 }
             }
+            else
+            {
+                AutomaticUpdateSettings.AutomaticUpdateAllowed = DefaultSettings.AutomaticUpdateAllowed;
+                AutomaticUpdateSettings.UpdateInterval = DefaultSettings.UpdateInterval;
+
+                SaveAutomaticUpdateSettings();
+            }
 
             AutomaticUpdateSettings.SettingChanged += (_, _) => SaveAutomaticUpdateSettings();
         }
@@ -104,8 +158,23 @@ namespace LiveNewsFeed.UI.UWP.Managers
                     NewsFeedDisplaySettings.ShowOnlyImportantPosts = onlyImportant;
                 }
             }
+            else
+            {
+                NewsFeedDisplaySettings.ShowOnlyImportantPosts = DefaultSettings.ShowOnlyImportantPosts;
+
+                SaveNewsFeedDisplaySettings();
+            }
 
             NewsFeedDisplaySettings.SettingChanged += (_, _) => SaveNewsFeedDisplaySettings();
+        }
+
+        private void SaveApplicationSettings()
+        {
+            // save to Local AppData
+            _appDataSettings.Values[SettingsKeys.ApplicationSettingsKey] = new ApplicationDataCompositeValue
+            {
+                [SettingsKeys.LanguageCodeKey] = ApplicationSettings.DisplayLanguageCode
+            };
         }
 
         private void SaveNotificationSettings()
