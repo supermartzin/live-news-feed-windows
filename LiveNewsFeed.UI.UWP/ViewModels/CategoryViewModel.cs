@@ -8,7 +8,9 @@ namespace LiveNewsFeed.UI.UWP.ViewModels
 {
     public sealed class CategoryViewModel : ViewModelBase
     {
-        public string Name { get; }
+        private readonly Category _category;
+        
+        public string Name => GetLocalizedString($"CategoryEnum_{_category}");
 
         public string IconGlyph { get; }
 
@@ -22,13 +24,13 @@ namespace LiveNewsFeed.UI.UWP.ViewModels
                                  string iconGlyph,
                                  FontFamily fontFamily)
         {
-            Name = GetLocalizedString($"CategoryEnum_{category}");
+            _category = category;
             IconGlyph = iconGlyph;
             FontFamily = fontFamily;
 
             _colorResourceKey = colorResourceKey;
         }
-
+        
         protected override void OnApplicationThemeChanged(ApplicationTheme theme)
         {
             // force reevaluation of Color property

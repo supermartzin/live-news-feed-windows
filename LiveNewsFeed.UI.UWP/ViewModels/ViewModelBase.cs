@@ -2,7 +2,6 @@
 using System.Threading.Tasks;
 using Windows.ApplicationModel.Core;
 using Windows.ApplicationModel.Resources;
-using Windows.UI.Core;
 using Windows.UI.Xaml;
 using Microsoft.Toolkit.Mvvm.ComponentModel;
 using Microsoft.Toolkit.Uwp;
@@ -12,14 +11,10 @@ namespace LiveNewsFeed.UI.UWP.ViewModels
 {
     public abstract class ViewModelBase : ObservableObject
     {
-        private readonly CoreDispatcher _dispatcher;
-
         protected readonly ThemeListener ThemeListener;
 
         protected ViewModelBase()
         {
-            _dispatcher = CoreWindow.GetForCurrentThread().Dispatcher;
-
             ThemeListener = new ThemeListener();
             ThemeListener.ThemeChanged += ThemeListener_OnThemeChanged;
         }

@@ -30,9 +30,9 @@ namespace LiveNewsFeed.UI.UWP.ViewModels
 
         private readonly IDataSourcesManager _dataSourcesManager;
         private readonly INavigationService _navigationService;
+        private readonly ISettingsManager _settingsManager;
         private readonly ILiveTileService _liveTileService;
         private readonly INotificationsManager _notificationsManager;
-        private readonly ISettingsManager _settingsManager;
         private readonly IAutomaticUpdater _automaticUpdater;
 
         private readonly ObservableCollection<NewsArticlePostViewModel> _articlePosts;
