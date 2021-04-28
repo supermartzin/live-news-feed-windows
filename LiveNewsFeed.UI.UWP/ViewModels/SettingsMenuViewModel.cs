@@ -32,7 +32,43 @@ namespace LiveNewsFeed.UI.UWP.ViewModels
                     _settingsManager.AutomaticUpdateSettings.UpdateInterval = TimeSpan.FromSeconds(value);
             }
         }
-        
+
+        private bool _notificationsTurnedOn;
+        public bool NotificationsTurnedOn
+        {
+            get => _notificationsTurnedOn;
+            set
+            {
+                var changed = SetProperty(ref _notificationsTurnedOn, value);
+                if (changed)
+                    _settingsManager.NotificationSettings.NotificationsAllowed = value;
+            }
+        }
+
+        private bool _notifyOnlyOnImportantPosts;
+        public bool NotifyOnlyOnImportantPosts
+        {
+            get => _notifyOnlyOnImportantPosts;
+            set
+            {
+                var changed = SetProperty(ref _notifyOnlyOnImportantPosts, value);
+                if (changed)
+                    _settingsManager.NotificationSettings.NotifyOnlyOnImportantPosts = value;
+            }
+        }
+
+        private bool _showOnlyImportantPosts;
+        public bool ShowOnlyImportantPosts
+        {
+            get => _showOnlyImportantPosts;
+            set
+            {
+                var changed = SetProperty(ref _showOnlyImportantPosts, value);
+                if (changed)
+                    _settingsManager.NewsFeedDisplaySettings.ShowOnlyImportantPosts = value;
+            }
+        }
+
         public SettingsMenuViewModel(ISettingsManager settingsManager)
         {
             _settingsManager = settingsManager ?? throw new ArgumentNullException(nameof(settingsManager));
@@ -44,11 +80,16 @@ namespace LiveNewsFeed.UI.UWP.ViewModels
         {
             _automaticUpdates = _settingsManager.AutomaticUpdateSettings.AutomaticUpdateAllowed;
             _automaticUpdatesInterval = _settingsManager.AutomaticUpdateSettings.UpdateInterval.TotalSeconds;
+            _notificationsTurnedOn = _settingsManager.NotificationSettings.NotificationsAllowed;
+            _notifyOnlyOnImportantPosts = _settingsManager.NotificationSettings.NotifyOnlyOnImportantPosts;
+            _showOnlyImportantPosts = _settingsManager.NewsFeedDisplaySettings.ShowOnlyImportantPosts;
 
-            _settingsManager.AutomaticUpdateSettings.SettingChanged += AutomaticUpdateSettings_OnChanged;
+            _settingsManager.AutomaticUpdateSettings.SettingChanged += Settings_OnChanged;
+            _settingsManager.NotificationSettings.SettingChanged += Settings_OnChanged;
+            _settingsManager.NewsFeedDisplaySettings.SettingChanged += Settings_OnChanged;
         }
 
-        private void AutomaticUpdateSettings_OnChanged(object sender, SettingChangedEventArgs eventArgs)
+        private void Settings_OnChanged(object sender, SettingChangedEventArgs eventArgs)
         {
             switch (eventArgs.SettingName)
             {
@@ -60,6 +101,21 @@ namespace LiveNewsFeed.UI.UWP.ViewModels
                 case nameof(AutomaticUpdateSettings.UpdateInterval):
                     if (eventArgs.TryGetNewValue<TimeSpan>(out var interval) && Math.Abs(AutomaticUpdatesInterval - interval.TotalSeconds) > 0.001)
                         AutomaticUpdatesInterval = interval.TotalSeconds;
+                    break;
+
+                case nameof(NotificationSettings.NotificationsAllowed):
+                    if (eventArgs.TryGetNewValue<bool>(out var allowed) && NotificationsTurnedOn != allowed)
+                        NotificationsTurnedOn = allowed;
+                    break;
+
+                case nameof(NotificationSettings.NotifyOnlyOnImportantPosts):
+                    if (eventArgs.TryGetNewValue<bool>(out var onlyOnImportantPosts) && NotifyOnlyOnImportantPosts != onlyOnImportantPosts)
+                        NotifyOnlyOnImportantPosts = onlyOnImportantPosts;
+                    break;
+
+                case nameof(NewsFeedDisplaySettings.ShowOnlyImportantPosts):
+                    if (eventArgs.TryGetNewValue<bool>(out var showOnlyImportantPosts) && ShowOnlyImportantPosts != showOnlyImportantPosts)
+                        ShowOnlyImportantPosts = showOnlyImportantPosts;
                     break;
             }
         }

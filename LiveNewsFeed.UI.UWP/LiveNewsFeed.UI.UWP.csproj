@@ -170,7 +170,6 @@
     <Compile Include="ViewModels\ImageViewModel.cs" />
     <Compile Include="ViewModels\NewsArticlePostViewModel.cs" />
     <Compile Include="ViewModels\NewsFeedPageViewModel.cs" />
-    <Compile Include="ViewModels\QuickPanelSettingsViewModel.cs" />
     <Compile Include="ViewModels\TagViewModel.cs" />
     <Compile Include="Views\ArticlePreviewPage.xaml.cs">
       <DependentUpon>ArticlePreviewPage.xaml</DependentUpon>

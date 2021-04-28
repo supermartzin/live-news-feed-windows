@@ -246,30 +246,6 @@
   <data name="NewsFeed_RefreshFeedButton.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
     <value>Aktualizovať články</value>
   </data>
-  <data name="NewsFeed_Settings_NotificationsOff.Text" xml:space="preserve">
-    <value>Upozornenia | OFF</value>
-  </data>
-  <data name="NewsFeed_Settings_NotificationsOff.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
-    <value>Upozornenia sú VYPNUTÉ</value>
-  </data>
-  <data name="NewsFeed_Settings_NotificationsOn.Text" xml:space="preserve">
-    <value>Upozornenia | ON</value>
-  </data>
-  <data name="NewsFeed_Settings_NotificationsOn.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
-    <value>Upozornenia sú ZAPNUTÉ</value>
-  </data>
-  <data name="NewsFeed_Settings_OnlyImportantOff.Text" xml:space="preserve">
-    <value>Iba dôležité | OFF</value>
-  </data>
-  <data name="NewsFeed_Settings_OnlyImportantOff.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
-    <value>Zobrazujú sa všetky príspevky</value>
-  </data>
-  <data name="NewsFeed_Settings_OnlyImportantOn.Text" xml:space="preserve">
-    <value>Iba dôležité | ON</value>
-  </data>
-  <data name="NewsFeed_Settings_OnlyImportantOn.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
-    <value>Zobrazujú sa iba dôležité príspevky</value>
-  </data>
   <data name="Notification_Buttons_CopyLinkToClipboard" xml:space="preserve">
     <value>Kopírovať</value>
   </data>
@@ -285,14 +261,44 @@
   <data name="SettingsMenu_AutomaticUpdatesInterval.Header" xml:space="preserve">
     <value>Interval aktualizácie</value>
   </data>
-  <data name="SettingsMenu_AutomaticUpdatesSwitch.Header" xml:space="preserve">
-    <value>Automatická aktualizácia</value>
-  </data>
   <data name="SettingsMenu_AutomaticUpdatesSwitch.OffContent" xml:space="preserve">
     <value>Vypnutá</value>
   </data>
   <data name="SettingsMenu_AutomaticUpdatesSwitch.OnContent" xml:space="preserve">
     <value>Zapnutá</value>
+  </data>
+  <data name="SettingsMenu_AutomaticUpdatesTitle.Text" xml:space="preserve">
+    <value>Automatická aktualizácia správ</value>
+  </data>
+  <data name="SettingsMenu_NewsFeedDisplayTitle.Text" xml:space="preserve">
+    <value>Zobrazenie príspevkov</value>
+  </data>
+  <data name="SettingsMenu_NotificationsSwitch.OffContent" xml:space="preserve">
+    <value>Vypnuté</value>
+  </data>
+  <data name="SettingsMenu_NotificationsSwitch.OnContent" xml:space="preserve">
+    <value>Zapnuté</value>
+  </data>
+  <data name="SettingsMenu_NotificationsTitle.Text" xml:space="preserve">
+    <value>Notifikácie</value>
+  </data>
+  <data name="SettingsMenu_NotifyOnImportantPostsOnlySwitch.Header" xml:space="preserve">
+    <value>Iba na dôležité príspevky</value>
+  </data>
+  <data name="SettingsMenu_NotifyOnImportantPostsOnlySwitch.OffContent" xml:space="preserve">
+    <value>Vypnuté</value>
+  </data>
+  <data name="SettingsMenu_NotifyOnImportantPostsOnlySwitch.OnContent" xml:space="preserve">
+    <value>Zapnuté</value>
+  </data>
+  <data name="SettingsMenu_ShowOnlyImportantPostsSwitch.Header" xml:space="preserve">
+    <value>Zobraziť iba dôležité</value>
+  </data>
+  <data name="SettingsMenu_ShowOnlyImportantPostsSwitch.OffContent" xml:space="preserve">
+    <value>Vypnuté</value>
+  </data>
+  <data name="SettingsMenu_ShowOnlyImportantPostsSwitch.OnContent" xml:space="preserve">
+    <value>Zapnuté</value>
   </data>
   <data name="SocialPostType_ToolTip_AppleMusic" xml:space="preserve">
     <value>Obsahuje audio z Apple Music</value>

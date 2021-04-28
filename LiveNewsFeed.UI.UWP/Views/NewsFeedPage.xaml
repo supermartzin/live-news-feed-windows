@@ -25,50 +25,6 @@
             <VisualStateGroup>
                 <VisualState>
                     <VisualState.StateTriggers>
-                        <triggers:IsEqualStateTrigger Value="{x:Bind ViewModel.QuickPanelSettings.NotificationsTurnedOn, Mode=OneWay}" To="True" />
-                    </VisualState.StateTriggers>
-                    <VisualState.Setters>
-                        <Setter Target="NotificationsToggleButton.Label" Value="{Binding Path=Text, ElementName=NotificationsOn}" />
-                        <Setter Target="NotificationsToggleButton.Background" Value="{ThemeResource AccentAcrylicElementBrush}" />
-                        <Setter Target="NotificationsToggleButton.(ToolTipService.ToolTip)" Value="{Binding Path=(ToolTipService.ToolTip), ElementName=NotificationsOn}"/>
-                    </VisualState.Setters>
-                </VisualState>
-                <VisualState>
-                    <VisualState.StateTriggers>
-                        <triggers:IsEqualStateTrigger Value="{x:Bind ViewModel.QuickPanelSettings.NotificationsTurnedOn, Mode=OneWay}" To="False" />
-                    </VisualState.StateTriggers>
-                    <VisualState.Setters>
-                        <Setter Target="NotificationsToggleButton.Label" Value="{Binding Path=Text, ElementName=NotificationsOff}" />
-                        <Setter Target="NotificationsToggleButton.Background" Value="Transparent" />
-                        <Setter Target="NotificationsToggleButton.(ToolTipService.ToolTip)" Value="{Binding Path=(ToolTipService.ToolTip), ElementName=NotificationsOff}"/>
-                    </VisualState.Setters>
-                </VisualState>
-            </VisualStateGroup>
-            <VisualStateGroup>
-                <VisualState>
-                    <VisualState.StateTriggers>
-                        <triggers:IsEqualStateTrigger Value="{x:Bind ViewModel.QuickPanelSettings.ShowOnlyImportantPosts, Mode=OneWay}" To="True" />
-                    </VisualState.StateTriggers>
-                    <VisualState.Setters>
-                        <Setter Target="OnlyImportantPostsToggleButton.Label" Value="{Binding Path=Text, ElementName=OnlyImportantOn}" />
-                        <Setter Target="OnlyImportantPostsToggleButton.Background" Value="{ThemeResource AccentAcrylicElementBrush}" />
-                        <Setter Target="OnlyImportantPostsToggleButton.(ToolTipService.ToolTip)" Value="{Binding Path=(ToolTipService.ToolTip), ElementName=OnlyImportantOn}"/>
-                    </VisualState.Setters>
-                </VisualState>
-                <VisualState>
-                    <VisualState.StateTriggers>
-                        <triggers:IsEqualStateTrigger Value="{x:Bind ViewModel.QuickPanelSettings.ShowOnlyImportantPosts, Mode=OneWay}" To="False" />
-                    </VisualState.StateTriggers>
-                    <VisualState.Setters>
-                        <Setter Target="OnlyImportantPostsToggleButton.Label" Value="{Binding Path=Text, ElementName=OnlyImportantOff}" />
-                        <Setter Target="OnlyImportantPostsToggleButton.Background" Value="Transparent" />
-                        <Setter Target="OnlyImportantPostsToggleButton.(ToolTipService.ToolTip)" Value="{Binding Path=(ToolTipService.ToolTip), ElementName=OnlyImportantOff}"/>
-                    </VisualState.Setters>
-                </VisualState>
-            </VisualStateGroup>
-            <VisualStateGroup>
-                <VisualState>
-                    <VisualState.StateTriggers>
                         <triggers:CompareStateTrigger Value="{Binding Path=(controls:ScrollViewerExtensions.VerticalScrollOffset), ElementName=NewsFeed}" To="100" Comparison="LessThanOrEqual" />
                     </VisualState.StateTriggers>
                     <VisualState.Setters>
@@ -444,50 +400,43 @@
                     Background="{ThemeResource CustomAcrylicElementBrush}"
                     IsDynamicOverflowEnabled="True"
                     DefaultLabelPosition="Right">
-            <AppBarButton x:Name="OnlyImportantPostsToggleButton"
-                          Style="{ThemeResource AppBarButtonRevealStyle}"
-                          Command="{x:Bind ViewModel.QuickPanelSettings.ShowOnlyImportantPostsCommand}">
-                <FontIcon Glyph="&#xE730;"/>
-            </AppBarButton>
-            <AppBarButton x:Name="NotificationsToggleButton"
-                          Style="{ThemeResource AppBarButtonRevealStyle}"
-                          Command="{x:Bind ViewModel.QuickPanelSettings.TurnOnNotificationsCommand}">
-                <FontIcon Glyph="&#xEA8F;"/>
-            </AppBarButton>
+            <!--  Settings menu  -->
             <AppBarButton x:Uid="NewsFeed_OpenSettingsButton"
                           Style="{ThemeResource AppBarButtonRevealStyle}"
                           Icon="Setting"
                           AllowFocusOnInteraction="True">
                 <AppBarButton.Flyout>
                     <Flyout AllowFocusOnInteraction="True">
-                        <StackPanel Orientation="Vertical"
-                                    Margin="10">
-                            <ToggleSwitch x:Uid="SettingsMenu_AutomaticUpdatesSwitch"
-                                          IsOn="{x:Bind ViewModel.SettingsMenu.AutomaticUpdates, Mode=TwoWay}"
-                                          Margin="0 0 0 10">
-                                <ToggleSwitch.HeaderTemplate>
-                                    <DataTemplate>
-                                        <TextBlock Text="{Binding}"
-                                                   FontWeight="SemiBold"/>
-                                    </DataTemplate>
-                                </ToggleSwitch.HeaderTemplate>
-                            </ToggleSwitch>
+                        <StackPanel Orientation="Vertical">
+                            <StackPanel.Resources>
+                                <Style x:Key="TitleStyle" TargetType="TextBlock">
+                                    <Setter Property="FontWeight" Value="SemiBold" />
+                                    <Setter Property="FontSize" Value="18" />
+                                </Style>
+                            </StackPanel.Resources>
 
-                            <StackPanel Orientation="Horizontal">
+                            <!--  Automatic Feed refresh Settings  -->
+                            <StackPanel Orientation="Vertical"
+                                        Margin="5 5 5 10">
+                                <TextBlock x:Uid="SettingsMenu_AutomaticUpdatesTitle"
+                                           Style="{StaticResource TitleStyle}" />
+
+                                <!--  Refresh ON/OFF  -->
+                                <ToggleSwitch x:Uid="SettingsMenu_AutomaticUpdatesSwitch"
+                                              IsOn="{x:Bind ViewModel.SettingsMenu.AutomaticUpdates, Mode=TwoWay}"
+                                              Margin="10 0 0 5" />
+
+                                <!--  Refresh Interval  -->
                                 <ComboBox x:Uid="SettingsMenu_AutomaticUpdatesInterval"
-                                          SelectedItem="{x:Bind ViewModel.SettingsMenu.AutomaticUpdatesInterval, Mode=TwoWay}">
-                                    <ComboBox.HeaderTemplate>
-                                        <DataTemplate>
-                                            <TextBlock Text="{Binding}"
-                                                       FontWeight="SemiBold"/>
-                                        </DataTemplate>
-                                    </ComboBox.HeaderTemplate>
+                                          SelectedItem="{x:Bind ViewModel.SettingsMenu.AutomaticUpdatesInterval, Mode=TwoWay}"
+                                          Margin="10 0 0 0">
                                     <ComboBox.ItemTemplate>
                                         <DataTemplate>
                                             <TextBlock Text="{Binding Converter={StaticResource AutomaticUpdatesIntervalValueConverter}}"/>
                                         </DataTemplate>
                                     </ComboBox.ItemTemplate>
 
+                                    <!--  Interval values  -->
                                     <x:Double>30</x:Double>
                                     <x:Double>60</x:Double>
                                     <x:Double>120</x:Double>
@@ -496,6 +445,35 @@
                                     <x:Double>900</x:Double>
                                     <x:Double>1800</x:Double>
                                 </ComboBox>
+                            </StackPanel>
+
+                            <!--  Notifications Settings  -->
+                            <StackPanel Orientation="Vertical"
+                                        Margin="5 5 5 10">
+                                <TextBlock x:Uid="SettingsMenu_NotificationsTitle"
+                                           Style="{StaticResource TitleStyle}" />
+
+                                <!--  Notifications ON/OFF  -->
+                                <ToggleSwitch x:Uid="SettingsMenu_NotificationsSwitch"
+                                              IsOn="{x:Bind ViewModel.SettingsMenu.NotificationsTurnedOn, Mode=TwoWay}"
+                                              Margin="10 0 0 5" />
+
+                                <!--  Notify on important posts only ON/OFF  -->
+                                <ToggleSwitch x:Uid="SettingsMenu_NotifyOnImportantPostsOnlySwitch"
+                                              IsOn="{x:Bind ViewModel.SettingsMenu.NotifyOnlyOnImportantPosts, Mode=TwoWay}"
+                                              Margin="10 0 0 0" />
+                            </StackPanel>
+
+                            <!--  News Feed Display Settings  -->
+                            <StackPanel Orientation="Vertical"
+                                        Margin="5">
+                                <TextBlock x:Uid="SettingsMenu_NewsFeedDisplayTitle"
+                                           Style="{StaticResource TitleStyle}" />
+
+                                <!--  Show important posts only ON/OFF  -->
+                                <ToggleSwitch x:Uid="SettingsMenu_ShowOnlyImportantPostsSwitch"
+                                              IsOn="{x:Bind ViewModel.SettingsMenu.ShowOnlyImportantPosts, Mode=TwoWay}"
+                                              Margin="10 5 0 0"/>
                             </StackPanel>
                         </StackPanel>
                     </Flyout>
@@ -599,8 +577,8 @@
                 <!--  Info  -->
                 <Button x:Uid="ImagePreview_ImageInfoButton"
                         x:Name="ImageInfoButton"
-                        x:Load="{x:Bind common:UiHelpers.IsNotNull(ViewModel.SelectedPost.Image.Title)}"
-                        Visibility="{x:Bind ViewModel.SelectedPost.Image.Title, Converter={StaticResource NullToVisibilityConverter}}"
+                        x:Load="{x:Bind common:UiHelpers.IsNotNull(ViewModel.SelectedPost.Image.Title), FallbackValue=True}"
+                        Visibility="{x:Bind ViewModel.SelectedPost.Image.Title, FallbackValue=Collapsed, Converter={StaticResource NullToVisibilityConverter}}"
                         Margin="0 5 0 0"
                         Padding="10"
                         Style="{ThemeResource ButtonRevealStyle}"
@@ -661,19 +639,5 @@
                 </mtuc:DropShadowPanel>
             </ScrollViewer>
         </Grid>
-
-        <!--  Hidden helper elements  -->
-        <TextBlock x:Name="NotificationsOn"
-                   x:Uid="NewsFeed_Settings_NotificationsOn"
-                   Visibility="Collapsed"/>
-        <TextBlock x:Name="NotificationsOff"
-                   x:Uid="NewsFeed_Settings_NotificationsOff"
-                   Visibility="Collapsed"/>
-        <TextBlock x:Name="OnlyImportantOn"
-                   x:Uid="NewsFeed_Settings_OnlyImportantOn"
-                   Visibility="Collapsed"/>
-        <TextBlock x:Name="OnlyImportantOff"
-                   x:Uid="NewsFeed_Settings_OnlyImportantOff"
-                   Visibility="Collapsed"/>
     </Grid>
 </views:BasePage>

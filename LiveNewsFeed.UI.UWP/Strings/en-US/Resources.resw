@@ -246,30 +246,6 @@
   <data name="NewsFeed_RefreshFeedButton.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
     <value>Refresh News Feed</value>
   </data>
-  <data name="NewsFeed_Settings_NotificationsOff.Text" xml:space="preserve">
-    <value>Notifications | OFF</value>
-  </data>
-  <data name="NewsFeed_Settings_NotificationsOff.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
-    <value>Notifications are turned OFF</value>
-  </data>
-  <data name="NewsFeed_Settings_NotificationsOn.Text" xml:space="preserve">
-    <value>Notifications | ON</value>
-  </data>
-  <data name="NewsFeed_Settings_NotificationsOn.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
-    <value>Notifications are turned ON</value>
-  </data>
-  <data name="NewsFeed_Settings_OnlyImportantOff.Text" xml:space="preserve">
-    <value>Only important | OFF</value>
-  </data>
-  <data name="NewsFeed_Settings_OnlyImportantOff.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
-    <value>Showing all posts</value>
-  </data>
-  <data name="NewsFeed_Settings_OnlyImportantOn.Text" xml:space="preserve">
-    <value>Only important | ON</value>
-  </data>
-  <data name="NewsFeed_Settings_OnlyImportantOn.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
-    <value>Showing only important posts</value>
-  </data>
   <data name="Notification_Buttons_CopyLinkToClipboard" xml:space="preserve">
     <value>Copy</value>
   </data>
@@ -285,13 +261,43 @@
   <data name="SettingsMenu_AutomaticUpdatesInterval.Header" xml:space="preserve">
     <value>Update Interval</value>
   </data>
-  <data name="SettingsMenu_AutomaticUpdatesSwitch.Header" xml:space="preserve">
-    <value>Automatic Updates</value>
-  </data>
   <data name="SettingsMenu_AutomaticUpdatesSwitch.OffContent" xml:space="preserve">
     <value>Off</value>
   </data>
   <data name="SettingsMenu_AutomaticUpdatesSwitch.OnContent" xml:space="preserve">
+    <value>On</value>
+  </data>
+  <data name="SettingsMenu_AutomaticUpdatesTitle.Text" xml:space="preserve">
+    <value>Automatic News Feed Update</value>
+  </data>
+  <data name="SettingsMenu_NewsFeedDisplayTitle.Text" xml:space="preserve">
+    <value>News Feed display</value>
+  </data>
+  <data name="SettingsMenu_NotificationsSwitch.OffContent" xml:space="preserve">
+    <value>Off</value>
+  </data>
+  <data name="SettingsMenu_NotificationsSwitch.OnContent" xml:space="preserve">
+    <value>On</value>
+  </data>
+  <data name="SettingsMenu_NotificationsTitle.Text" xml:space="preserve">
+    <value>Notifications</value>
+  </data>
+  <data name="SettingsMenu_NotifyOnImportantPostsOnlySwitch.Header" xml:space="preserve">
+    <value>Only on Important Posts</value>
+  </data>
+  <data name="SettingsMenu_NotifyOnImportantPostsOnlySwitch.OffContent" xml:space="preserve">
+    <value>Off</value>
+  </data>
+  <data name="SettingsMenu_NotifyOnImportantPostsOnlySwitch.OnContent" xml:space="preserve">
+    <value>On</value>
+  </data>
+  <data name="SettingsMenu_ShowOnlyImportantPostsSwitch.Header" xml:space="preserve">
+    <value>Show only Important Posts</value>
+  </data>
+  <data name="SettingsMenu_ShowOnlyImportantPostsSwitch.OffContent" xml:space="preserve">
+    <value>Off</value>
+  </data>
+  <data name="SettingsMenu_ShowOnlyImportantPostsSwitch.OnContent" xml:space="preserve">
     <value>On</value>
   </data>
   <data name="SocialPostType_ToolTip_AppleMusic" xml:space="preserve">

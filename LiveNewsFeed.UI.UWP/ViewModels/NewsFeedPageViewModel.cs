@@ -61,8 +61,6 @@ namespace LiveNewsFeed.UI.UWP.ViewModels
             }
         }
         
-        public QuickPanelSettingsViewModel QuickPanelSettings { get; }
-
         public SettingsMenuViewModel SettingsMenu { get; }
 
         private NewsArticlePostViewModel? _selectedPost;
@@ -84,7 +82,6 @@ namespace LiveNewsFeed.UI.UWP.ViewModels
                                      ISettingsManager settingsManager,
                                      ILiveTileService liveTileService,
                                      IAutomaticUpdater automaticUpdater,
-                                     QuickPanelSettingsViewModel quickPanelSettingsViewModel,
                                      SettingsMenuViewModel settingsMenuViewModel,
                                      ILogger<NewsFeedPageViewModel>? logger = default)
         {
@@ -94,7 +91,6 @@ namespace LiveNewsFeed.UI.UWP.ViewModels
             _settingsManager = settingsManager ?? throw new ArgumentNullException(nameof(settingsManager));
             _liveTileService = liveTileService ?? throw new ArgumentNullException(nameof(liveTileService));
             _automaticUpdater = automaticUpdater ?? throw new ArgumentNullException(nameof(automaticUpdater));
-            QuickPanelSettings = quickPanelSettingsViewModel ?? throw new ArgumentNullException(nameof(quickPanelSettingsViewModel));
             SettingsMenu = settingsMenuViewModel ?? throw new ArgumentNullException(nameof(settingsMenuViewModel));
             _logger = logger;
 
