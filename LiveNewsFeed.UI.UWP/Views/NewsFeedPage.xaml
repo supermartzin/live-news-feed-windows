@@ -491,34 +491,38 @@
 
                                 <!--  Display Language  -->
                                 <ComboBox x:Uid="SettingsMenu_DisplayLanguages"
-                                          x:Name="LanguagesComboBox"
                                           SelectedItem="{x:Bind ViewModel.SettingsMenu.DisplayLanguageCode, Mode=TwoWay}"
-                                          Margin="10 5 0 0">
+                                          Margin="10 5 0 5">
                                     <ComboBox.ItemTemplate>
                                         <DataTemplate>
                                             <TextBlock Text="{Binding Converter={StaticResource LanguageCodesConverter}}"/>
                                         </DataTemplate>
                                     </ComboBox.ItemTemplate>
 
-                                    <i:Interaction.Behaviors>
-                                        <i:BehaviorCollection>
-                                            <core:EventTriggerBehavior SourceObject="{Binding ElementName=LanguagesComboBox}"
-                                                                       EventName="SelectionChanged">
-                                                <core:CallMethodAction TargetObject="{Binding ElementName=SettingsMenuFlyout}"
-                                                                       MethodName="Hide" />
-                                            </core:EventTriggerBehavior>
-                                        </i:BehaviorCollection>
-                                    </i:Interaction.Behaviors>
-
                                     <!--  Language values  -->
                                     <x:String>en</x:String>
                                     <x:String>sk</x:String>
+                                </ComboBox>
+
+                                <!--  Application Theme  -->
+                                <ComboBox x:Uid="SettingsMenu_ApplicationTheme"
+                                          ItemsSource="{x:Bind ViewModel.SettingsMenu.ApplicationThemeNames}"
+                                          SelectedItem="{x:Bind ViewModel.SettingsMenu.ApplicationThemeName, Mode=TwoWay}"
+                                          SelectionChanged="ThemesComboBox_OnSelectionChanged"
+                                          Margin="10 0 0 0">
+                                    <ComboBox.ItemTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding Converter={StaticResource ApplicationThemeValuesConverter}}" />
+                                        </DataTemplate>
+                                    </ComboBox.ItemTemplate>
                                 </ComboBox>
                             </StackPanel>
                         </StackPanel>
                     </Flyout>
                 </AppBarButton.Flyout>
             </AppBarButton>
+
+            <!--  Refresh feed  -->
             <AppBarButton x:Uid="NewsFeed_RefreshFeedButton"
                           Style="{ThemeResource AppBarButtonRevealStyle}"
                           Icon="Refresh"

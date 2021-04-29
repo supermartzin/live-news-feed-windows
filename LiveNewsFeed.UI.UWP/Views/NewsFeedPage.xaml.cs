@@ -10,6 +10,8 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.DependencyInjection;
 
 using LiveNewsFeed.UI.UWP.Common;
+using LiveNewsFeed.UI.UWP.Managers;
+using LiveNewsFeed.UI.UWP.Resources;
 using LiveNewsFeed.UI.UWP.ViewModels;
 
 namespace LiveNewsFeed.UI.UWP.Views
@@ -47,11 +49,11 @@ namespace LiveNewsFeed.UI.UWP.Views
             base.OnNavigatedFrom(e);
         }
 
-        protected override void OnApplicationThemeChanged(ApplicationTheme theme)
+        protected override void OnApplicationThemeChanged(Theme theme)
         {
             SetTitleBarButtonColors();
         }
-        
+
 
         private void ImagePreviewOpened()
         {
@@ -76,7 +78,7 @@ namespace LiveNewsFeed.UI.UWP.Views
         {
             // set buttons foreground
             var titleBar = ApplicationView.GetForCurrentView().TitleBar;
-            titleBar.ButtonForegroundColor = titleBar.ButtonHoverForegroundColor = (Color?) Application.Current.Resources["TitleBarButtonsForegroundColor"];
+            titleBar.ButtonForegroundColor = titleBar.ButtonHoverForegroundColor = ThemeResources.GetAs<Color>("TitleBarButtonsForegroundColor");
         }
 
         #region Event handlers
@@ -106,6 +108,11 @@ namespace LiveNewsFeed.UI.UWP.Views
             var logger = ServiceLocator.Container.GetService<ILogger<NewsFeedPage>>();
             
             logger?.LogError($"Error loading Article image: {e.ErrorMessage}");
+        }
+
+        private void ThemesComboBox_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            SettingsMenuFlyout.Hide();
         }
 
         private void RefreshContainer_OnRefreshRequested(RefreshContainer sender, RefreshRequestedEventArgs args)

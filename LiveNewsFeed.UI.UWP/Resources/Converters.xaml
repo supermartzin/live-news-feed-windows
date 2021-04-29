@@ -11,4 +11,5 @@
 
     <localConverters:AutomaticUpdatesIntervalValueConverter x:Key="AutomaticUpdatesIntervalValueConverter" />
     <localConverters:LanguageCodesConverter x:Key="LanguageCodesConverter" />
+    <localConverters:ApplicationThemeValuesConverter x:Key="ApplicationThemeValuesConverter" />
 </ResourceDictionary>

@@ -19,13 +19,13 @@ namespace LiveNewsFeed.UI.UWP.Managers.Settings
             _newValue = newValue;
         }
 
-        public T? GetNewValue<T>() => GetValue<T>(ref _newValue);
+        public T? GetNewValueAs<T>() => GetValue<T>(ref _newValue);
 
-        public T? GetOldValue<T>() => GetValue<T>(ref _oldValue);
+        public T? GetOldValueAs<T>() => GetValue<T>(ref _oldValue);
 
-        public bool TryGetNewValue<T>(out T? value) => TryGetValue(out value, ref _newValue);
+        public bool TryGetNewValueAs<T>(out T? value) => TryGetValue(out value, ref _newValue);
         
-        public bool TryGetOldValue<T>(out T? value) => TryGetValue(out value, ref _oldValue);
+        public bool TryGetOldValueAs<T>(out T? value) => TryGetValue(out value, ref _oldValue);
 
 
         private static T? GetValue<T>(ref object? value)

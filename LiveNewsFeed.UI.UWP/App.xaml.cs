@@ -20,6 +20,8 @@ using LiveNewsFeed.DataSource.DennikNsk;
 
 using LiveNewsFeed.UI.UWP.Common;
 using LiveNewsFeed.UI.UWP.Managers;
+using LiveNewsFeed.UI.UWP.Managers.Settings;
+using LiveNewsFeed.UI.UWP.Services;
 using LiveNewsFeed.UI.UWP.Views;
 
 namespace LiveNewsFeed.UI.UWP
@@ -31,19 +33,30 @@ namespace LiveNewsFeed.UI.UWP
     {
         private static readonly ILogger Logger = ServiceLocator.Container.GetRequiredService<ILogger<App>>();
 
+        private readonly ISettingsManager _settingsManager;
+        private readonly IThemeManager _themeManager;
+        
         /// <summary>
         /// Initializes the singleton application object.  This is the first line of authored code
         /// executed, and as such is the logical equivalent of main() or WinMain().
         /// </summary>
         public App()
         {
-            InitializeComponent();
-            SetEventHandlers();
-            SetServices();
+            SetGlobalEventHandlers();
+
+            ImageCache.Instance.MaxMemoryCacheCount = 50;
+
+            ServiceLocator.Initialize();
+            _settingsManager = ServiceLocator.Container.GetRequiredService<ISettingsManager>();
+            _themeManager = ServiceLocator.Container.GetRequiredService<IThemeManager>();
+
             InitializeSettings();
             LoadDataSources();
+            SetInitialApplicationTheme();
+
+            InitializeComponent();
         }
-        
+
         /// <summary>
         /// Invoked when the application is launched normally by the end user.  Other entry points
         /// will be used such as when the application is launched to open a specific file.
@@ -72,7 +85,10 @@ namespace LiveNewsFeed.UI.UWP
             if (e.PrelaunchActivated)
                 return;
 
-            SetLanguage();
+            SetLanguage(_settingsManager.ApplicationSettings.DisplayLanguageCode);
+
+            // set theme loaded from settings
+            _themeManager.SetTheme(_settingsManager.ApplicationSettings.Theme);
 
             if (rootFrame.Content == null)
             {
@@ -171,7 +187,7 @@ namespace LiveNewsFeed.UI.UWP
         }
 
 
-        private void SetEventHandlers()
+        private void SetGlobalEventHandlers()
         {
             Suspending += OnSuspending;
             Current.Resuming += OnResuming;
@@ -181,39 +197,60 @@ namespace LiveNewsFeed.UI.UWP
             TaskScheduler.UnobservedTaskException += OnUnobservedException;
         }
 
-        private static void SetServices()
+        private void InitializeSettings()
         {
-            ServiceLocator.Initialize();
+            _settingsManager.LoadSettingsAsync().Wait();
 
-            ImageCache.Instance.MaxMemoryCacheCount = 50;
+            _settingsManager.ApplicationSettings.SettingChanged += ApplicationSettings_OnSettingChanged;
+        }
+
+        private void SetInitialApplicationTheme()
+        {
+            RequestedTheme = _settingsManager.ApplicationSettings.Theme switch
+            {
+                Theme.Light => ApplicationTheme.Light,
+                Theme.Dark => ApplicationTheme.Dark,
+                Theme.SystemDefault => _themeManager.CurrentSystemTheme,
+                _ => _themeManager.CurrentSystemTheme
+            };
+        }
+
+        private void SetLanguage(string? languageCode)
+        {
+            if (languageCode == null)
+                return;
+
+            ApplicationLanguages.PrimaryLanguageOverride = languageCode;
+            ResourceContext.GetForCurrentView().Reset();
+            ResourceContext.GetForViewIndependentUse().Reset();
+            
+            Logger.LogInformation($"App language set to '{CultureInfo.GetCultureInfo(languageCode)?.EnglishName ?? languageCode}'.");
+        }
+
+        private void ApplicationSettings_OnSettingChanged(object sender, SettingChangedEventArgs eventArgs)
+        {
+            switch (eventArgs.SettingName)
+            {
+                case nameof(ApplicationSettings.DisplayLanguageCode):
+                    SetLanguage(eventArgs.GetNewValueAs<string>());
+
+                    // reload UI
+                    var navigationService = ServiceLocator.Container.GetRequiredService<INavigationService>();
+                    navigationService.NavigateTo<NewsFeedPage>(tempDisableCache: true);
+                    break;
+
+                case nameof(ApplicationSettings.Theme):
+                    _themeManager.SetTheme(eventArgs.GetNewValueAs<Theme>());
+                    break;
+            }
         }
         
-        private static void InitializeSettings()
-        {
-            var settingsManager = ServiceLocator.Container.GetRequiredService<ISettingsManager>();
-
-            settingsManager.LoadSettingsAsync().Wait();
-        }
-
         private static void LoadDataSources()
         {
             var manager = ServiceLocator.Container.GetRequiredService<IDataSourcesManager>();
 
             manager.RegisterDataSource(new NewsFeedDataSource(ServiceLocator.Container.GetRequiredService<DennikNskNewsFeed>(), new Uri("ms-appx:///Assets/Logos/denniknsk-logo.png")));
             manager.RegisterDataSource(new NewsFeedDataSource(ServiceLocator.Container.GetRequiredService<DenikNczNewsFeed>(), new Uri("ms-appx:///Assets/Logos/denikncz-logo.jpg")));
-        }
-
-        private static void SetLanguage()
-        {
-            var settingsManager = ServiceLocator.Container.GetRequiredService<ISettingsManager>();
-
-            ApplicationLanguages.PrimaryLanguageOverride = settingsManager.ApplicationSettings.DisplayLanguageCode;
-            ResourceContext.GetForCurrentView().Reset();
-            ResourceContext.GetForViewIndependentUse().Reset();
-
-            string language = CultureInfo.GetCultureInfo(settingsManager.ApplicationSettings.DisplayLanguageCode)?.EnglishName
-                                ?? settingsManager.ApplicationSettings.DisplayLanguageCode;
-            Logger.LogInformation($"App language set to '{language}'.");
         }
 
         private static void OnUnhandledException(object sender, UnhandledExceptionEventArgs e)

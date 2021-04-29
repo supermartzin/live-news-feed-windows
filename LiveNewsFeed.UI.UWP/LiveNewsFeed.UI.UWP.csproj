@@ -141,15 +141,22 @@
     <Compile Include="Common\UiHelpers.cs" />
     <Compile Include="Controls\CustomGridView.cs" />
     <Compile Include="Controls\ScrollViewerExtensions.cs" />
+    <Compile Include="Converters\ApplicationThemeValuesConverter.cs" />
     <Compile Include="Converters\AutomaticUpdatesIntervalValueConverter.cs" />
     <Compile Include="Converters\LanguageCodesConverter.cs" />
+    <Compile Include="Converters\ValueConverterBase.cs" />
     <Compile Include="Managers\AutomaticUpdater.cs" />
     <Compile Include="Managers\IAutomaticUpdater.cs" />
+    <Compile Include="Managers\IThemeManager.cs" />
     <Compile Include="Managers\Settings\ApplicationSettings.cs" />
     <Compile Include="Managers\Settings\AutomaticUpdateSettings.cs" />
     <Compile Include="Managers\DataSourceUpdateOptions.cs" />
     <Compile Include="Managers\INotificationsManager.cs" />
     <Compile Include="Managers\ISettingsManager.cs" />
+    <Compile Include="Managers\Theme.cs" />
+    <Compile Include="Managers\ThemeChangedEventArgs.cs" />
+    <Compile Include="Managers\ThemeManager.cs" />
+    <Compile Include="Resources\ThemeResources.cs" />
     <Compile Include="Services\ILiveTileService.cs" />
     <Compile Include="Services\LiveTileService.cs" />
     <Compile Include="Services\NavigationParameters.cs" />
@@ -275,10 +282,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Resources\Converters.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Resources\ThemeDictionaries.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -117,6 +117,15 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="AppTheme_Dark" xml:space="preserve">
+    <value>Tmavý</value>
+  </data>
+  <data name="AppTheme_Light" xml:space="preserve">
+    <value>Svetlý</value>
+  </data>
+  <data name="AppTheme_SystemDefault" xml:space="preserve">
+    <value>Podľa systému</value>
+  </data>
   <data name="ArticlePost_ActionsButton.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
     <value>Možnosti</value>
   </data>
@@ -260,6 +269,9 @@
   </data>
   <data name="SettingsMenu_ApplicationSettingsTitle.Text" xml:space="preserve">
     <value>Nastavenia aplikácie</value>
+  </data>
+  <data name="SettingsMenu_ApplicationTheme.Header" xml:space="preserve">
+    <value>Vzhľad</value>
   </data>
   <data name="SettingsMenu_AutomaticUpdatesInterval.Header" xml:space="preserve">
     <value>Interval aktualizácie</value>

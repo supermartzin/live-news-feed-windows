@@ -1,27 +1,33 @@
 ﻿using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Microsoft.Toolkit.Uwp.UI.Helpers;
+using Microsoft.Extensions.DependencyInjection;
+
+using LiveNewsFeed.UI.UWP.Common;
+using LiveNewsFeed.UI.UWP.Managers;
 
 namespace LiveNewsFeed.UI.UWP.Views
 {
     public abstract class BasePage : Page
     {
-        protected readonly ThemeListener ThemeListener;
-
         protected BasePage()
         {
-            ThemeListener = new ThemeListener();
-            ThemeListener.ThemeChanged += ThemeListener_OnThemeChanged;
+            RegisterThemeChangingEventHandlers();
         }
 
-        protected virtual void OnApplicationThemeChanged(ApplicationTheme theme)
+        protected virtual void OnSystemThemeChanged(ApplicationTheme theme)
         {
         }
 
-
-        private void ThemeListener_OnThemeChanged(ThemeListener sender)
+        protected virtual void OnApplicationThemeChanged(Theme theme)
         {
-            OnApplicationThemeChanged(sender.CurrentTheme);
+        }
+
+        private void RegisterThemeChangingEventHandlers()
+        {
+            IThemeManager themeManager = ServiceLocator.Container.GetRequiredService<IThemeManager>();
+
+            themeManager.ApplicationThemeChanged += async (_, _) => await Helpers.InvokeOnUiAsync(() => OnApplicationThemeChanged(themeManager.CurrentTheme));
+            themeManager.SystemThemeChanged += async (_, _) => await Helpers.InvokeOnUiAsync(() => OnSystemThemeChanged(themeManager.CurrentSystemTheme));
         }
     }
 }

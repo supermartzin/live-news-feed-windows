@@ -1,9 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
+using Windows.ApplicationModel.Core;
 using Windows.Data.Html;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Media.Imaging;
 using Microsoft.Toolkit.Uwp.UI;
+using Microsoft.Toolkit.Uwp;
 
 using LiveNewsFeed.Models;
 
@@ -19,16 +22,16 @@ namespace LiveNewsFeed.UI.UWP.Common
         private static readonly Dictionary<string, ImageSource> NewsFeedLogos = new();
         private static readonly Dictionary<SocialPostType, ImageSource> SocialSiteLogos = CreateSocialSiteLogos();
         private static readonly Dictionary<Category, CategoryViewModel> CategoriesMap = new();
-        
+
         public static void CreateCategoriesMap()
         {
-            CategoriesMap[Category.Local] = new CategoryViewModel(Category.Local, "CategoryLocalColor", "\uE10F", SegoeMdl2AssetsFontFamily);
-            CategoriesMap[Category.World] = new CategoryViewModel(Category.World, "CategoryWorldColor", "\uE128", SegoeMdl2AssetsFontFamily);
-            CategoriesMap[Category.Economy] = new CategoryViewModel(Category.Economy, "CategoryEconomyColor", "\U0001F4B2", SegoeUiSymbolFontFamily);
-            CategoriesMap[Category.Sport] = new CategoryViewModel(Category.Sport, "CategorySportColor", "\u26BD", SegoeUiSymbolFontFamily);
-            CategoriesMap[Category.Arts] = new CategoryViewModel(Category.Arts, "CategoryArtsColor", "\U0001F3A8", SegoeUiSymbolFontFamily);
-            CategoriesMap[Category.Science] = new CategoryViewModel(Category.Science, "CategoryScienceColor", "\U0001F4A1", SegoeUiSymbolFontFamily);
-            CategoriesMap[Category.Commentary] = new CategoryViewModel(Category.Commentary, "CategoryCommentaryColor", "\uE206", SegoeMdl2AssetsFontFamily);
+            CategoriesMap[Category.Local] = new CategoryViewModel(Category.Local, "\uE10F", SegoeMdl2AssetsFontFamily);
+            CategoriesMap[Category.World] = new CategoryViewModel(Category.World, "\uE128", SegoeMdl2AssetsFontFamily);
+            CategoriesMap[Category.Economy] = new CategoryViewModel(Category.Economy, "\U0001F4B2", SegoeUiSymbolFontFamily);
+            CategoriesMap[Category.Sport] = new CategoryViewModel(Category.Sport, "\u26BD", SegoeUiSymbolFontFamily);
+            CategoriesMap[Category.Arts] = new CategoryViewModel(Category.Arts, "\U0001F3A8", SegoeUiSymbolFontFamily);
+            CategoriesMap[Category.Science] = new CategoryViewModel(Category.Science, "\U0001F4A1", SegoeUiSymbolFontFamily);
+            CategoriesMap[Category.Commentary] = new CategoryViewModel(Category.Commentary, "\uE206", SegoeMdl2AssetsFontFamily);
         }
 
         public static ImageSource? GetLogoForNewsFeed(string newsFeedName)
@@ -72,6 +75,16 @@ namespace LiveNewsFeed.UI.UWP.Common
             content = HtmlUtilities.ConvertToText(content);
 
             return content.Trim();
+        }
+
+        public static async Task InvokeOnUiAsync(Action action)
+        {
+            if (action == null)
+                throw new ArgumentNullException(nameof(action));
+
+            await CoreApplication.MainView
+                                 .DispatcherQueue
+                                 .EnqueueAsync(action);
         }
 
 

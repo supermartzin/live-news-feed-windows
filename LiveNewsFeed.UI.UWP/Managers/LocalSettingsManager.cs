@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Globalization;
 using System.Threading.Tasks;
 using Windows.Storage;
 
@@ -13,6 +12,7 @@ namespace LiveNewsFeed.UI.UWP.Managers
         {
             public const string ApplicationSettingsKey = "appSettings";
             public const string LanguageCodeKey = "language";
+            public const string ApplicationThemeKey = "appTheme";
             public const string NotificationSettingsKey = "notificationSettings";
             public const string NotificationsAllowedKey = "allowed";
             public const string NotifyOnlyOnImportantPostsKey = "onlyImportant";
@@ -25,7 +25,8 @@ namespace LiveNewsFeed.UI.UWP.Managers
 
         private static class DefaultSettings
         {
-            public static readonly string DisplayLanguageCode = CultureInfo.CurrentUICulture.TwoLetterISOLanguageName;
+            public const string DisplayLanguageCode = "en";
+            public const Theme ApplicationTheme = Theme.SystemDefault;
             public const bool NotificationsAllowed = false;
             public const bool NotifyOnlyOnImportantPosts = false;
             public const bool AutomaticUpdateAllowed = false;
@@ -80,10 +81,15 @@ namespace LiveNewsFeed.UI.UWP.Managers
                 {
                     ApplicationSettings.DisplayLanguageCode = languageCode;
                 }
+                if (applicationSettings.TryGetValue(SettingsKeys.ApplicationThemeKey, out var appThemeValue) && appThemeValue is string appTheme and not null)
+                {
+                    ApplicationSettings.Theme = Enum.Parse<Theme>(appTheme);
+                }
             }
             else
             {
                 ApplicationSettings.DisplayLanguageCode = DefaultSettings.DisplayLanguageCode;
+                ApplicationSettings.Theme = DefaultSettings.ApplicationTheme;
 
                 SaveApplicationSettings();
             }
@@ -173,7 +179,8 @@ namespace LiveNewsFeed.UI.UWP.Managers
             // save to Local AppData
             _appDataSettings.Values[SettingsKeys.ApplicationSettingsKey] = new ApplicationDataCompositeValue
             {
-                [SettingsKeys.LanguageCodeKey] = ApplicationSettings.DisplayLanguageCode
+                [SettingsKeys.LanguageCodeKey] = ApplicationSettings.DisplayLanguageCode,
+                [SettingsKeys.ApplicationThemeKey] = ApplicationSettings.Theme.ToString()
             };
         }
 

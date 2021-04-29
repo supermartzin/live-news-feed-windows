@@ -54,6 +54,7 @@ namespace LiveNewsFeed.UI.UWP.Common
             serviceCollection.AddSingleton<INotificationsManager, NotificationsManager>();
             serviceCollection.AddSingleton<ISettingsManager, LocalSettingsManager>();
             serviceCollection.AddSingleton<IAutomaticUpdater, AutomaticUpdater>();
+            serviceCollection.AddSingleton<IThemeManager, ThemeManager>();
         }
 
         private static void AddViewModels(IServiceCollection serviceCollection)

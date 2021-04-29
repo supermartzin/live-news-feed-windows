@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 using LiveNewsFeed.UI.UWP.Managers;
 using LiveNewsFeed.UI.UWP.Managers.Settings;
@@ -76,14 +77,34 @@ namespace LiveNewsFeed.UI.UWP.ViewModels
             set
             {
                 var changed = SetProperty(ref _displayLanguageCode, value);
-                if (changed) 
+                if (changed)
                     _settingsManager.ApplicationSettings.DisplayLanguageCode = value;
             }
         }
 
+        private string _applicationThemeName;
+        public string ApplicationThemeName
+        {
+            get => _applicationThemeName;
+            set
+            {
+                var changed = SetProperty(ref _applicationThemeName, value);
+                if (changed)
+                    _settingsManager.ApplicationSettings.Theme = Enum.Parse<Theme>(value);
+            }
+        }
+
+        public IList<string> ApplicationThemeNames { get; }
+
         public SettingsMenuViewModel(ISettingsManager settingsManager)
         {
             _settingsManager = settingsManager ?? throw new ArgumentNullException(nameof(settingsManager));
+            ApplicationThemeNames = new List<string>
+            {
+                nameof(Theme.SystemDefault),
+                nameof(Theme.Light),
+                nameof(Theme.Dark)
+            };
 
             LoadSettings();
         }
@@ -91,6 +112,7 @@ namespace LiveNewsFeed.UI.UWP.ViewModels
         private void LoadSettings()
         {
             _displayLanguageCode = _settingsManager.ApplicationSettings.DisplayLanguageCode;
+            _applicationThemeName = _settingsManager.ApplicationSettings.Theme.ToString();
             _automaticUpdates = _settingsManager.AutomaticUpdateSettings.AutomaticUpdateAllowed;
             _automaticUpdatesInterval = _settingsManager.AutomaticUpdateSettings.UpdateInterval.TotalSeconds;
             _notificationsTurnedOn = _settingsManager.NotificationSettings.NotificationsAllowed;
@@ -108,32 +130,37 @@ namespace LiveNewsFeed.UI.UWP.ViewModels
             switch (eventArgs.SettingName)
             {
                 case nameof(ApplicationSettings.DisplayLanguageCode):
-                    if (eventArgs.TryGetNewValue<string>(out var languageCode) && DisplayLanguageCode != languageCode && languageCode != null)
+                    if (eventArgs.TryGetNewValueAs<string>(out var languageCode) && languageCode != null && DisplayLanguageCode != languageCode)
                         DisplayLanguageCode = languageCode;
                     break;
 
+                case nameof(ApplicationSettings.Theme):
+                    if (eventArgs.TryGetNewValueAs<Theme>(out var appTheme) && ApplicationThemeName != appTheme.ToString())
+                        ApplicationThemeName = appTheme.ToString();
+                    break;
+
                 case nameof(AutomaticUpdateSettings.AutomaticUpdateAllowed):
-                    if (eventArgs.TryGetNewValue<bool>(out var updatesAllowed) && AutomaticUpdates != updatesAllowed)
+                    if (eventArgs.TryGetNewValueAs<bool>(out var updatesAllowed) && AutomaticUpdates != updatesAllowed)
                         AutomaticUpdates = updatesAllowed;
                     break;
 
                 case nameof(AutomaticUpdateSettings.UpdateInterval):
-                    if (eventArgs.TryGetNewValue<TimeSpan>(out var interval) && Math.Abs(AutomaticUpdatesInterval - interval.TotalSeconds) > 0.001)
+                    if (eventArgs.TryGetNewValueAs<TimeSpan>(out var interval) && Math.Abs(AutomaticUpdatesInterval - interval.TotalSeconds) > 0.001)
                         AutomaticUpdatesInterval = interval.TotalSeconds;
                     break;
 
                 case nameof(NotificationSettings.NotificationsAllowed):
-                    if (eventArgs.TryGetNewValue<bool>(out var allowed) && NotificationsTurnedOn != allowed)
+                    if (eventArgs.TryGetNewValueAs<bool>(out var allowed) && NotificationsTurnedOn != allowed)
                         NotificationsTurnedOn = allowed;
                     break;
 
                 case nameof(NotificationSettings.NotifyOnlyOnImportantPosts):
-                    if (eventArgs.TryGetNewValue<bool>(out var onlyOnImportantPosts) && NotifyOnlyOnImportantPosts != onlyOnImportantPosts)
+                    if (eventArgs.TryGetNewValueAs<bool>(out var onlyOnImportantPosts) && NotifyOnlyOnImportantPosts != onlyOnImportantPosts)
                         NotifyOnlyOnImportantPosts = onlyOnImportantPosts;
                     break;
 
                 case nameof(NewsFeedDisplaySettings.ShowOnlyImportantPosts):
-                    if (eventArgs.TryGetNewValue<bool>(out var showOnlyImportantPosts) && ShowOnlyImportantPosts != showOnlyImportantPosts)
+                    if (eventArgs.TryGetNewValueAs<bool>(out var showOnlyImportantPosts) && ShowOnlyImportantPosts != showOnlyImportantPosts)
                         ShowOnlyImportantPosts = showOnlyImportantPosts;
                     break;
             }

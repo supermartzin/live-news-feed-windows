@@ -1,8 +1,10 @@
 ﻿using Windows.UI;
-using Windows.UI.Xaml;
 using Windows.UI.Xaml.Media;
 
 using LiveNewsFeed.Models;
+
+using LiveNewsFeed.UI.UWP.Managers;
+using LiveNewsFeed.UI.UWP.Resources;
 
 namespace LiveNewsFeed.UI.UWP.ViewModels
 {
@@ -15,23 +17,19 @@ namespace LiveNewsFeed.UI.UWP.ViewModels
         public string IconGlyph { get; }
 
         public FontFamily FontFamily { get; }
-
-        private readonly string _colorResourceKey;
-        public Color Color => (Color) Application.Current.Resources[_colorResourceKey];
+        
+        public Color Color => ThemeResources.GetAs<Color>($"Category{_category}Color");
         
         public CategoryViewModel(Category category,
-                                 string colorResourceKey,
                                  string iconGlyph,
                                  FontFamily fontFamily)
         {
             _category = category;
             IconGlyph = iconGlyph;
             FontFamily = fontFamily;
-
-            _colorResourceKey = colorResourceKey;
         }
         
-        protected override void OnApplicationThemeChanged(ApplicationTheme theme)
+        protected override void OnApplicationThemeChanged(Theme theme)
         {
             // force reevaluation of Color property
             OnPropertyChanged(nameof(Color));

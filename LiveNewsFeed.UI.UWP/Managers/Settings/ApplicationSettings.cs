@@ -8,5 +8,12 @@
             get => _displayLanguageCode;
             set => Set(ref _displayLanguageCode, value);
         }
+
+        private Theme _theme;
+        public Theme Theme
+        {
+            get => _theme;
+            set => Set(ref _theme, value);
+        }
     }
 }

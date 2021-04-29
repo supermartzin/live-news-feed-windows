@@ -1,11 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
-using Windows.ApplicationModel.Resources.Core;
-using Windows.Globalization;
 using Microsoft.Toolkit.Uwp.UI;
 using Microsoft.Toolkit.Mvvm.Input;
 using Microsoft.Extensions.Logging;
@@ -130,7 +127,6 @@ namespace LiveNewsFeed.UI.UWP.ViewModels
         private void RegisterEventHandlers()
         {
             _dataSourcesManager.NewsArticlePostReceived += DataSourcesManager_OnNewsArticlePostReceived;
-            _settingsManager.ApplicationSettings.SettingChanged += Settings_OnChanged;
             _settingsManager.NewsFeedDisplaySettings.SettingChanged += Settings_OnChanged;
         }
 
@@ -308,12 +304,8 @@ namespace LiveNewsFeed.UI.UWP.ViewModels
         {
             switch (eventArgs.SettingName)
             {
-                case nameof(ApplicationSettings.DisplayLanguageCode):
-                    ChangeLanguage(eventArgs.GetNewValue<string>());
-                    break;
-
                 case nameof(NewsFeedDisplaySettings.ShowOnlyImportantPosts):
-                    switch (eventArgs.GetNewValue<bool>())
+                    switch (eventArgs.GetNewValueAs<bool>())
                     {
                         case true:
                             _articlePostsViewFilters.Add(ViewFilters.ShowOnlyImportantPostsFilter);
@@ -329,17 +321,8 @@ namespace LiveNewsFeed.UI.UWP.ViewModels
             }
         }
 
-        private void ChangeLanguage(string? languageCode)
+        private void ChangeLanguage()
         {
-            if (languageCode == null)
-                return;
-
-            ApplicationLanguages.PrimaryLanguageOverride = languageCode;
-            ResourceContext.GetForCurrentView().Reset();
-            ResourceContext.GetForViewIndependentUse().Reset();
-
-            _logger?.LogInformation($"App language switched to {CultureInfo.GetCultureInfo(languageCode).EnglishName}");
-            
             _navigationService.NavigateTo<NewsFeedPage>(tempDisableCache: true);
         }
 
