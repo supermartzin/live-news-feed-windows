@@ -401,7 +401,8 @@
         <CommandBar VerticalAlignment="Bottom"
                     Background="{ThemeResource CustomAcrylicElementBrush}"
                     IsDynamicOverflowEnabled="True"
-                    DefaultLabelPosition="Right">
+                    DefaultLabelPosition="Right"
+                    OverflowButtonVisibility="Collapsed">
             <!--  App info (on the left side)  -->
             <CommandBar.Content>
                 <AppBarButton x:Uid="NewsFeed_AppInfoButton"
