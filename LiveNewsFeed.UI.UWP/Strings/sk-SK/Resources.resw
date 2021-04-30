@@ -117,6 +117,24 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="AppInfo_CreatedBy.Text" xml:space="preserve">
+    <value>Vytvoril</value>
+  </data>
+  <data name="AppInfo_License.Text" xml:space="preserve">
+    <value>Licencia:</value>
+  </data>
+  <data name="AppInfo_Repository.Text" xml:space="preserve">
+    <value>Repozitár na GitHub.com</value>
+  </data>
+  <data name="AppInfo_SendEmailToAuthor.Text" xml:space="preserve">
+    <value>Poslať email autorovi</value>
+  </data>
+  <data name="AppInfo_SourceCode.Text" xml:space="preserve">
+    <value>Zdrojové kódy</value>
+  </data>
+  <data name="AppInfo_ThirdPartyLibraries.Text" xml:space="preserve">
+    <value>Knižnice tretích strán</value>
+  </data>
   <data name="AppTheme_Dark" xml:space="preserve">
     <value>Tmavý</value>
   </data>
@@ -227,6 +245,9 @@
   </data>
   <data name="ImagePreview_OpenInBrowserButton.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
     <value>Otvoriť v prehliadači</value>
+  </data>
+  <data name="NewsFeed_AppInfoButton.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
+    <value>Informácie o aplikácii</value>
   </data>
   <data name="NewsFeed_BackToTopButton.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
     <value>Späť na začiatok</value>

@@ -62,7 +62,7 @@ namespace LiveNewsFeed.UI.UWP.ViewModels
         }
         
         public SettingsMenuViewModel SettingsMenu { get; }
-
+        
         private NewsArticlePostViewModel? _selectedPost;
         public NewsArticlePostViewModel? SelectedPost
         {

@@ -117,6 +117,24 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="AppInfo_CreatedBy.Text" xml:space="preserve">
+    <value>Created by</value>
+  </data>
+  <data name="AppInfo_License.Text" xml:space="preserve">
+    <value>License:</value>
+  </data>
+  <data name="AppInfo_Repository.Text" xml:space="preserve">
+    <value>GitHub repository</value>
+  </data>
+  <data name="AppInfo_SendEmailToAuthor.Text" xml:space="preserve">
+    <value>Send email to author</value>
+  </data>
+  <data name="AppInfo_SourceCode.Text" xml:space="preserve">
+    <value>Source code</value>
+  </data>
+  <data name="AppInfo_ThirdPartyLibraries.Text" xml:space="preserve">
+    <value>3rd party libraries</value>
+  </data>
   <data name="AppTheme_Dark" xml:space="preserve">
     <value>Dark</value>
   </data>
@@ -227,6 +245,9 @@
   </data>
   <data name="ImagePreview_OpenInBrowserButton.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
     <value>Open in Browser</value>
+  </data>
+  <data name="NewsFeed_AppInfoButton.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
+    <value>Application info</value>
   </data>
   <data name="NewsFeed_BackToTopButton.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
     <value>Back to Top</value>

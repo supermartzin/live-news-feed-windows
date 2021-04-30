@@ -16,6 +16,7 @@
                 xmlns:animations="using:Microsoft.Toolkit.Uwp.UI.Animations"
                 xmlns:core="using:Microsoft.Xaml.Interactions.Core"
                 xmlns:views="using:LiveNewsFeed.UI.UWP.Views"
+                xmlns:app="using:LiveNewsFeed.UI.UWP"
                 mc:Ignorable="d"
                 Background="{ThemeResource CustomAcrylicBackgroundBrush}"
                 ui:TitleBarExtensions.ButtonBackgroundColor="Transparent"
@@ -401,6 +402,82 @@
                     Background="{ThemeResource CustomAcrylicElementBrush}"
                     IsDynamicOverflowEnabled="True"
                     DefaultLabelPosition="Right">
+            <!--  App info (on the left side)  -->
+            <CommandBar.Content>
+                <AppBarButton x:Uid="NewsFeed_AppInfoButton"
+                              Style="{ThemeResource AppBarButtonRevealStyle}"
+                              AllowFocusOnInteraction="True"
+                              Width="45">
+                    <AppBarButton.Icon>
+                        <FontIcon Glyph="&#xE946;" />
+                    </AppBarButton.Icon>
+
+                    <AppBarButton.Flyout>
+                        <Flyout api8:ShouldConstrainToRootBounds="False">
+                            <StackPanel Orientation="Vertical"
+                                        Margin="5">
+                                <StackPanel.Resources>
+                                    <Style TargetType="TextBlock">
+                                        <Setter Property="FontSize" Value="13" />
+                                    </Style>
+                                </StackPanel.Resources>
+                                <!--  App logo & name  -->
+                                <StackPanel Orientation="Horizontal"
+                                            Margin="0 5">
+                                    <Image Source="../Assets/Logos/app-logo.png"
+                                           MaxWidth="35"
+                                           Margin="0 0 5 0" />
+                                    <TextBlock FontSize="18"
+                                               FontWeight="ExtraBold"
+                                               Text="{x:Bind app:ApplicationInfo.ApplicationName}"
+                                               VerticalAlignment="Center" />
+                                </StackPanel>
+
+                                <!--  Version, author, license, links etc.  -->
+                                <TextBlock Margin="5">
+                                    <Run Text="{x:Bind app:ApplicationInfo.AppVersion}"
+                                         FontSize="14"
+                                         FontWeight="Bold"/>
+                                    <LineBreak/>
+                                    <Run Text="{x:Bind app:ApplicationInfo.BuildDate, Converter={StaticResource DateTimeFormatter}, ConverterParameter=d}"
+                                         FontSize="11">
+                                        <Run.Foreground>
+                                            <SolidColorBrush Color="{ThemeResource SystemBaseMediumColor}" />
+                                        </Run.Foreground>
+                                    </Run>
+                                    <LineBreak/>
+                                    <LineBreak/>
+                                    <Run x:Uid="AppInfo_CreatedBy"/>
+                                    <Run Text="{x:Bind app:ApplicationInfo.Author}"
+                                         FontWeight="SemiBold"/>
+                                    <LineBreak/>
+                                    <Hyperlink NavigateUri="mailto:supermartzin@gmail.com">
+                                        <Run x:Uid="AppInfo_SendEmailToAuthor"
+                                             FontSize="12"/>    
+                                    </Hyperlink>
+                                    <LineBreak/>
+                                    <LineBreak/>
+                                    <Run x:Uid="AppInfo_License" />
+                                    <Hyperlink NavigateUri="https://choosealicense.com/licenses/gpl-3.0/">GNU GPLv3</Hyperlink>
+                                    <LineBreak/>
+                                    <LineBreak/>
+                                    <Run x:Uid="AppInfo_SourceCode"
+                                         FontWeight="SemiBold" />
+                                    <LineBreak/>
+                                    <Hyperlink NavigateUri="https://github.com/supermartzin/live-news-feed-windows">
+                                        <Run x:Uid="AppInfo_Repository"/>
+                                    </Hyperlink>
+                                    <LineBreak/>
+                                    <Hyperlink NavigateUri="https://github.com/supermartzin/live-news-feed-windows/network/dependencies">
+                                        <Run x:Uid="AppInfo_ThirdPartyLibraries" />
+                                    </Hyperlink>
+                                </TextBlock>
+                            </StackPanel>
+                        </Flyout>
+                    </AppBarButton.Flyout>
+                </AppBarButton>
+            </CommandBar.Content>
+
             <!--  Settings menu  -->
             <AppBarButton x:Uid="NewsFeed_OpenSettingsButton"
                           Style="{ThemeResource AppBarButtonRevealStyle}"
@@ -408,7 +485,6 @@
                           AllowFocusOnInteraction="True">
                 <AppBarButton.Flyout>
                     <Flyout x:Name="SettingsMenuFlyout"
-                            AllowFocusOnInteraction="True"
                             api8:ShouldConstrainToRootBounds="False">
                         <StackPanel Orientation="Vertical">
                             <StackPanel.Resources>
