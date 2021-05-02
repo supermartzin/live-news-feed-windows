@@ -211,11 +211,11 @@
 
                                 <!--  Article post Content  -->
                                 <TextBlock Grid.Column="1"
-                                       Text="{x:Bind Content}"
-                                       TextWrapping="Wrap"
-                                       TextAlignment="Justify"
-                                       IsTextSelectionEnabled="True"
-                                       x:Phase="1"/>
+                                           controls:TextBlockExtensions.FormattedString="{x:Bind Content}"
+                                           TextWrapping="Wrap"
+                                           TextAlignment="Justify"
+                                           IsTextSelectionEnabled="True"
+                                           x:Phase="1"/>
                             </Grid>
 
                             <!--  Tags & Actions button  -->
@@ -236,10 +236,10 @@
                                         <ItemsControl.Template>
                                             <ControlTemplate>
                                                 <ScrollViewer HorizontalScrollMode="Auto"
-                                                          HorizontalScrollBarVisibility="Hidden"
-                                                          VerticalScrollMode="Disabled"
-                                                          VerticalScrollBarVisibility="Disabled"
-                                                          Padding="{TemplateBinding Padding}">
+                                                              HorizontalScrollBarVisibility="Hidden"
+                                                              VerticalScrollMode="Disabled"
+                                                              VerticalScrollBarVisibility="Disabled"
+                                                              Padding="{TemplateBinding Padding}">
                                                     <ItemsPresenter />
                                                 </ScrollViewer>
                                             </ControlTemplate>

@@ -54,7 +54,7 @@ namespace LiveNewsFeed.UI.UWP.Services
             builder.AddTile(TileSize.Medium | TileSize.Wide)
                    .SetDisplayName($"{newsArticlePost.PublishTime:t} | {AppInfo.Current.DisplayInfo.DisplayName}", size: TileSize.Medium | TileSize.Wide)
                    .AddText(newsArticlePost.Title, hintStyle: AdaptiveTextStyle.Base, size: TileSize.Medium | TileSize.Wide)
-                   .AddText(Helpers.SanitizeHtmlContent(newsArticlePost.Content),
+                   .AddText(newsArticlePost.Content.SanitizeHtmlContent(),
                             hintStyle: AdaptiveTextStyle.Caption, hintMaxLines: 3, hintWrap: true, size: TileSize.Medium | TileSize.Wide);
             
             if (newsArticlePost.Image != null)
@@ -75,7 +75,7 @@ namespace LiveNewsFeed.UI.UWP.Services
 
                     content?.Children.Add(CreateLargeTileGroup(
                         header: $"{articlePost.PublishTime:t} | {articlePost.Title}",
-                        content: Helpers.SanitizeHtmlContent(articlePost.Content)));
+                        content: articlePost.Content.SanitizeHtmlContent()));
 
                     if (i == 0 && articlePost.Image != null)
                         builder.SetPeekImage(articlePost.Image!.Url, TileSize.Large);
@@ -95,7 +95,7 @@ namespace LiveNewsFeed.UI.UWP.Services
                 builder.AddTile(TileSize.Large)
                     .AddText(newsArticlePost.Title, hintStyle: AdaptiveTextStyle.Subtitle, size: TileSize.Large)
                     .AddText($"{newsArticlePost.PublishTime:t} {newsArticlePost.PublishTime:d}", hintStyle: AdaptiveTextStyle.BaseSubtle, size: TileSize.Large)
-                    .AddText(Helpers.SanitizeHtmlContent(newsArticlePost.Content), hintStyle: AdaptiveTextStyle.Default, hintWrap: true, size: TileSize.Large);
+                    .AddText(newsArticlePost.Content.SanitizeHtmlContent(), hintStyle: AdaptiveTextStyle.Default, hintWrap: true, size: TileSize.Large);
 
                 if (newsArticlePost.Image != null)
                     builder.SetPeekImage(newsArticlePost.Image!.Url, TileSize.Large);

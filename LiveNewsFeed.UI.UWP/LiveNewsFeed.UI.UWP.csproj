@@ -147,9 +147,12 @@
     <Compile Include="Common\FixedSizeSortedQueue.cs" />
     <Compile Include="Common\Helpers.cs" />
     <Compile Include="Common\ServiceLocator.cs" />
+    <Compile Include="Common\StringExtensions.cs" />
     <Compile Include="Common\UiHelpers.cs" />
     <Compile Include="Controls\CustomGridView.cs" />
+    <Compile Include="Controls\TextBlockExtensions.cs" />
     <Compile Include="Controls\ScrollViewerExtensions.cs" />
+    <Compile Include="Controls\WebExtensions.cs" />
     <Compile Include="Converters\ApplicationThemeValuesConverter.cs" />
     <Compile Include="Converters\AutomaticUpdatesIntervalValueConverter.cs" />
     <Compile Include="Converters\LanguageCodesConverter.cs" />
@@ -182,7 +185,6 @@
     <Compile Include="ViewModels\SettingsMenuViewModel.cs" />
     <Compile Include="ViewModels\SocialPostViewModel.cs" />
     <Compile Include="ViewModels\ViewModelBase.cs" />
-    <Compile Include="Controls\WebExtensions.cs" />
     <Compile Include="Managers\DataSourcesManager.cs" />
     <Compile Include="Managers\IDataSourcesManager.cs" />
     <Compile Include="ViewModels\CategoryViewModel.cs" />

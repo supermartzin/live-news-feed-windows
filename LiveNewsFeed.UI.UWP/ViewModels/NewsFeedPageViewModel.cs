@@ -320,12 +320,7 @@ namespace LiveNewsFeed.UI.UWP.ViewModels
                     break;
             }
         }
-
-        private void ChangeLanguage()
-        {
-            _navigationService.NavigateTo<NewsFeedPage>(tempDisableCache: true);
-        }
-
+        
         private DataSourceUpdateOptions GetCurrentOptions() => new()
         {
             Important = _settingsManager.NewsFeedDisplaySettings.ShowOnlyImportantPosts,
