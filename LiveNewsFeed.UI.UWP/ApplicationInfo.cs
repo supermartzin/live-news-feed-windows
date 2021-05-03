@@ -11,7 +11,7 @@ namespace LiveNewsFeed.UI.UWP
 
         public static string Author => Package.Current.Id.Publisher.Remove(0, 3);
 
-        public static DateTime BuildDate => new(2021, 4, 30);
+        public static DateTime BuildDate => new(2021, 5, 3);
 
         private static string GetVersion()
         {
