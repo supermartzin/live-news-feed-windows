@@ -142,7 +142,7 @@ namespace LiveNewsFeed.UI.UWP.ViewModels
                 {
                     var viewModel = new NewsArticlePostViewModel(post);
 
-                    if (_articlePosts.Contains(viewModel)) 
+                    if (_articlePosts.Contains(viewModel))
                         continue;
 
                     RegisterEvents(viewModel);

@@ -85,7 +85,11 @@ namespace LiveNewsFeed.UI.UWP.Managers
 
         private void UiSettings_OnColorValuesChanged(UISettings settings, object args)
         {
-            _currentSystemTheme = DecideSystemTheme();
+            var newTheme = DecideSystemTheme();
+            if (newTheme == _currentSystemTheme)
+                return;
+
+            _currentSystemTheme = newTheme;
 
             _logger?.LogInformation($"System theme changed to '{CurrentSystemTheme}'.");
 
