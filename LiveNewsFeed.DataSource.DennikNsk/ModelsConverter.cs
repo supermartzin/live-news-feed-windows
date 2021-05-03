@@ -37,17 +37,18 @@ namespace LiveNewsFeed.DataSource.DennikNsk
 
         public static NewsArticlePost ToNewsArticlePost(ArticlePostDTO postDto, string newsFeedName) =>
             new(postDto.Id.ToString(),
-                              newsFeedName,
-                              postDto.Content.MainText,
-                              postDto.Created,
-                              postDto.Updated,
-                              new Uri(postDto.Url),
-                              postDto.ImportantCode.HasValue,
-                              newsFeedName,
-                              ToImage(postDto.Image),
-                              ToSocialPost(postDto.SocialPost),
-                              ParseCategories(postDto.Categories),
-                              ParseTags(postDto.Tags));
+                newsFeedName,
+                postDto.Content.MainText,
+                postDto.Created,
+                postDto.Updated,
+                new Uri(postDto.Url),
+                postDto.ImportantCode.HasValue,
+                newsFeedName,
+                postDto.Content.ExtendedText,
+                ToImage(postDto.Image),
+                ToSocialPost(postDto.SocialPost),
+                ParseCategories(postDto.Categories),
+                ParseTags(postDto.Tags));
         
         public static Category ToCategory(CategoryDTO categoryDto) => ToCategory((int) categoryDto.Id);
 
@@ -56,7 +57,7 @@ namespace LiveNewsFeed.DataSource.DennikNsk
             // add to dictionary
             TagNameToCodeDictionary[tagDto.Name] = tagDto.Id;
 
-            return new(tagDto.Name);
+            return new Tag(tagDto.Name);
         }
 
         public static Image? ToImage(ImageDTO? imageDto) => imageDto != null
@@ -80,7 +81,7 @@ namespace LiveNewsFeed.DataSource.DennikNsk
                 ? TagNameToCodeDictionary[tag.Name]
                 : 0;
 
-
+        
         private static SocialPost? ToSocialPost(SocialPostDTO? socialPostDto) => socialPostDto != null
             ? new SocialPost(new Uri(socialPostDto.Url), socialPostDto.EmbedCode)
             : default;

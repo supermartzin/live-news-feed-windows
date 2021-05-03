@@ -11,6 +11,8 @@ namespace LiveNewsFeed.Models
 
         public string Content { get; }
 
+        public string? ExtendedContent { get; }
+
         public DateTime PublishTime { get; }
 
         public DateTime UpdateTime { get; }
@@ -37,10 +39,11 @@ namespace LiveNewsFeed.Models
                                Uri fullArticleUrl,
                                bool isImportant,
                                string newsFeedName,
-                               Image? image = null,
-                               SocialPost? socialPost = null,
-                               ISet<Category>? categories = null,
-                               ISet<Tag>? tags = null)
+                               string? extendedContent = default,
+                               Image? image = default,
+                               SocialPost? socialPost = default,
+                               ISet<Category>? categories = default,
+                               ISet<Tag>? tags = default)
         {
             Id = id ?? throw new ArgumentNullException(nameof(id));
             Title = title ?? throw new ArgumentNullException(nameof(title));
@@ -51,6 +54,7 @@ namespace LiveNewsFeed.Models
             IsImportant = isImportant;
             NewsFeedName = newsFeedName;
 
+            ExtendedContent = extendedContent;
             Image = image;
             SocialPost = socialPost;
             Categories = categories ?? new HashSet<Category>();
@@ -59,7 +63,7 @@ namespace LiveNewsFeed.Models
 
         public int CompareTo(NewsArticlePost other)
         {
-            return - PublishTime.CompareTo(other.PublishTime);
+            return PublishTime.CompareTo(other.PublishTime);
         }
 
         public override bool Equals(object? obj)
@@ -79,7 +83,6 @@ namespace LiveNewsFeed.Models
             return Id.GetHashCode();
         }
         
-
         protected bool Equals(NewsArticlePost other)
         {
             return Id == other.Id;

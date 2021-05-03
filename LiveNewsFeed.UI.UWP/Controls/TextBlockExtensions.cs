@@ -17,9 +17,9 @@ namespace LiveNewsFeed.UI.UWP.Controls
                                                                                                       typeof(TextBlock),
                                                                                                       PropertyMetadata.Create(string.Empty, OnFormattedTextChanged));
 
-        public static string GetFormattedString(DependencyObject obj) => (string) obj.GetValue(FormattedTextProperty);
+        public static string GetFormattedText(DependencyObject obj) => (string) obj.GetValue(FormattedTextProperty);
         
-        public static void SetFormattedString(DependencyObject obj, string value) => obj.SetValue(FormattedTextProperty, value);
+        public static void SetFormattedText(DependencyObject obj, string value) => obj.SetValue(FormattedTextProperty, value);
         
 
         private static void OnFormattedTextChanged(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs eventArgs)
@@ -28,6 +28,7 @@ namespace LiveNewsFeed.UI.UWP.Controls
                 return;
             if (eventArgs.NewValue is not string text)
                 return;
+
 
             textBlock.Inlines.Clear();
             var results = Regex.Matches(text, "\\(bold\\)(.*?)\\(\\.bold\\)|\\(link=(.*?)\\)(.*?)\\(\\.link\\)", RegexOptions.Singleline);
@@ -80,9 +81,14 @@ namespace LiveNewsFeed.UI.UWP.Controls
                             NavigateUri = new Uri(groups[1].Value),
                             TextDecorations = TextDecorations.None
                         };
+
+                        var linkText = groups[2].Value
+                                                      .Replace("(bold)", string.Empty)
+                                                      .Replace("(.bold)", string.Empty)
+                                                      .Trim();
                         link.Inlines.Add(new Run
                         {
-                            Text = groups[2].Value.Trim(),
+                            Text = linkText,
                             FontWeight = FontWeights.SemiBold
                         });
 

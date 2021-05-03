@@ -182,20 +182,25 @@
                             <!--  Article post image % content  -->
                             <Grid Margin="0 5 0 0">
                                 <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="Auto"/>
-                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="*" />
                                 </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                </Grid.RowDefinitions>
 
                                 <!--  Article post image  -->
-                                <Image Grid.Column="0"
-                                   x:Name="ArticlePostImage"
-                                   x:Load="{x:Bind common:UiHelpers.IsNotNull(Image)}"
-                                   x:Phase="2"
-                                   Margin="0 0 10 0"
-                                   HorizontalAlignment="Left"
-                                   VerticalAlignment="Top"
-                                   ToolTipService.ToolTip="{x:Bind Image.Title}"
-                                   PointerPressed="ArticlePostImageThumbnail_OnPointerPressed">
+                                <Image Grid.Row="0"
+                                       Grid.Column="0"
+                                       x:Name="ArticlePostImage"
+                                       x:Load="{x:Bind common:UiHelpers.IsNotNull(Image)}"
+                                       x:Phase="2"
+                                       Margin="0 0 10 0"
+                                       HorizontalAlignment="Left"
+                                       VerticalAlignment="Top"
+                                       ToolTipService.ToolTip="{x:Bind Image.Title}"
+                                       PointerPressed="ArticlePostImageThumbnail_OnPointerPressed">
                                     <Image.Source>
                                         <BitmapImage DecodePixelWidth="180"
                                                  UriSource="{x:Bind Image.NormalImageUrl}"/>
@@ -210,29 +215,54 @@
                                 </Image>
 
                                 <!--  Article post Content  -->
-                                <TextBlock Grid.Column="1"
-                                           controls:TextBlockExtensions.FormattedString="{x:Bind Content}"
+                                <TextBlock Grid.Row="0"
+                                           Grid.Column="1"
+                                           controls:TextBlockExtensions.FormattedText="{x:Bind Content}"
                                            TextWrapping="Wrap"
                                            TextAlignment="Justify"
                                            IsTextSelectionEnabled="True"
+                                           Margin="0 0 0 0"
                                            x:Phase="1"/>
+
+                                <!--  Article post Extended content  -->
+                                <TextBlock Grid.Row="1"
+                                           Grid.Column="0"
+                                           Grid.ColumnSpan="2"
+                                           x:Name="ArticlePostExtendedContent"
+                                           Margin="0 10 0 0"
+                                           TextWrapping="Wrap"
+                                           TextAlignment="Justify"
+                                           IsTextSelectionEnabled="True"
+                                           Visibility="Collapsed"
+                                           controls:TextBlockExtensions.FormattedText="{x:Bind ExtendedContent}"/>
                             </Grid>
 
                             <!--  Tags & Actions button  -->
                             <Grid>
                                 <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="*"/>
-                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="Auto" />
                                 </Grid.ColumnDefinitions>
 
+                                <i:Interaction.Behaviors>
+                                    <core:DataTriggerBehavior Binding="{x:Bind HasTags}" Value="True">
+                                        <core:ChangePropertyAction PropertyName="Margin"
+                                                                   Value="0 10 5 0"/>
+                                    </core:DataTriggerBehavior>
+                                    <core:DataTriggerBehavior Binding="{x:Bind HasTags}" Value="False">
+                                        <core:ChangePropertyAction PropertyName="Margin"
+                                                                   Value="0 2 0 0"/>
+                                    </core:DataTriggerBehavior>
+                                </i:Interaction.Behaviors>
+
                                 <StackPanel Grid.Column="0"
-                                        Orientation="Vertical"
-                                        x:Name="TagsPanel"
-                                        x:Load="{x:Bind HasTags}">
+                                            Orientation="Vertical"
+                                            x:Name="TagsPanel"
+                                            x:Load="{x:Bind HasTags}">
                                     <!--  Tags  -->
                                     <ItemsControl ItemsSource="{x:Bind Tags}"
-                                              Margin="0 10 5 0"
-                                              x:Phase="1">
+                                                  x:Phase="1">
                                         <ItemsControl.Template>
                                             <ControlTemplate>
                                                 <ScrollViewer HorizontalScrollMode="Auto"
@@ -276,15 +306,49 @@
                                     </ItemsControl>
                                 </StackPanel>
 
-                                <!--  Open Actions button  -->
+                                <!--  Show extended content button  -->
                                 <Button Grid.Column="1"
-                                    x:Uid="ArticlePost_ActionsButton"
-                                    Margin="5 0 0 0"
-                                    Padding="5 0"
-                                    Style="{ThemeResource ButtonRevealStyle}"
-                                    Background="Transparent"
-                                    FontSize="12"
-                                    VerticalAlignment="Bottom">
+                                        x:Name="ShowExtendedContentButton"
+                                        x:Uid="ArticlePost_ShowExtendedContentButton"
+                                        x:Load="{x:Bind common:UiHelpers.IsNotNull(ExtendedContent)}"
+                                        Style="{ThemeResource ButtonRevealStyle}"
+                                        Background="Transparent"
+                                        Padding="7 2"
+                                        Margin="5 0 0 0"
+                                        VerticalAlignment="Bottom">
+                                    <FontIcon x:Name="ShowExtendedContentButtonIcon"
+                                              Glyph="&#xE70D;"
+                                              FontSize="16" />
+
+                                    <i:Interaction.Behaviors>
+                                        <core:EventTriggerBehavior EventName="Click">
+                                            <core:ChangePropertyAction TargetObject="{Binding ElementName=ArticlePostExtendedContent}"
+                                                                       PropertyName="Visibility"
+                                                                       Value="{Binding Visibility, Converter={StaticResource InvertVisibilityConverter}, ElementName=ArticlePostExtendedContent}" />
+                                        </core:EventTriggerBehavior>
+                                        <core:DataTriggerBehavior Binding="{Binding Visibility, ElementName=ArticlePostExtendedContent}"
+                                                                  Value="Visible">
+                                            <core:ChangePropertyAction TargetObject="{Binding ElementName=ShowExtendedContentButtonIcon}"
+                                                                       PropertyName="Glyph"
+                                                                       Value="&#xE70E;" />
+                                        </core:DataTriggerBehavior>
+                                        <core:DataTriggerBehavior Binding="{Binding Visibility, ElementName=ArticlePostExtendedContent}"
+                                                                  Value="Collapsed">
+                                            <core:ChangePropertyAction TargetObject="{Binding ElementName=ShowExtendedContentButtonIcon}"
+                                                                       PropertyName="Glyph"
+                                                                       Value="&#xE70D;" />
+                                        </core:DataTriggerBehavior>
+                                    </i:Interaction.Behaviors>
+                                </Button>
+
+                                <!--  Open Actions button  -->
+                                <Button Grid.Column="2"
+                                        x:Uid="ArticlePost_ActionsButton"
+                                        Margin="5 0 0 0"
+                                        Padding="5 0"
+                                        Style="{ThemeResource ButtonRevealStyle}"
+                                        Background="Transparent"
+                                        VerticalAlignment="Bottom">
                                     <FontIcon Glyph="&#xE10C;"/>
 
                                     <!--  Actions  -->

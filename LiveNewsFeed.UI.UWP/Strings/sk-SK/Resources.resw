@@ -180,6 +180,9 @@
   <data name="ArticlePost_IsPostImportantFlag.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
     <value>Dôležité</value>
   </data>
+  <data name="ArticlePost_ShowExtendedContentButton.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
+    <value>Zobraziť viac</value>
+  </data>
   <data name="ArticlePreview_BackToFeedButton.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
     <value>Späť na zoznam správ</value>
   </data>

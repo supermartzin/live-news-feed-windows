@@ -157,6 +157,7 @@
     <Compile Include="Converters\AutomaticUpdatesIntervalValueConverter.cs" />
     <Compile Include="Converters\LanguageCodesConverter.cs" />
     <Compile Include="Converters\ValueConverterBase.cs" />
+    <Compile Include="Converters\InvertVisibilityConverter.cs" />
     <Compile Include="Managers\AutomaticUpdater.cs" />
     <Compile Include="Managers\IAutomaticUpdater.cs" />
     <Compile Include="Managers\IThemeManager.cs" />

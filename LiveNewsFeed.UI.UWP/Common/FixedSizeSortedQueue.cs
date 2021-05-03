@@ -33,7 +33,7 @@ namespace LiveNewsFeed.UI.UWP.Common
 
                 // sort queue
                 var items = ToArray().ToList();
-                items.Sort((firstItem, secondItem) => firstItem.CompareTo(secondItem));
+                items.Sort((firstItem, secondItem) => - firstItem.CompareTo(secondItem));
 
                 Clear();
                 items.ForEach(base.Enqueue);
