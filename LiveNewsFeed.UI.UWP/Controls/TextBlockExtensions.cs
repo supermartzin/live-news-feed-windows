@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using Windows.UI.Text;
@@ -28,10 +29,9 @@ namespace LiveNewsFeed.UI.UWP.Controls
                 return;
             if (eventArgs.NewValue is not string text)
                 return;
-
-
+            
             textBlock.Inlines.Clear();
-            var results = Regex.Matches(text, "\\(bold\\)(.*?)\\(\\.bold\\)|\\(link=(.*?)\\)(.*?)\\(\\.link\\)", RegexOptions.Singleline);
+            var results = Regex.Matches(text, @"\(bold\)(.*?)\(\.bold\)|\(link=(.*?)\)(.*?)\(\.link\)", RegexOptions.Singleline);
 
             var matchNumber = 0;
             var fullyProcessed = false;
@@ -41,12 +41,8 @@ namespace LiveNewsFeed.UI.UWP.Controls
                 if (matchNumber == results.Count)
                 {
                     if (!string.IsNullOrWhiteSpace(text))
-                    {
-                        textBlock.Inlines.Add(new Run
-                        {
-                            Text = text
-                        });
-                    }
+                        textBlock.Inlines.Add(CreateRun(text));
+
                     fullyProcessed = true;
                     continue;
                 }
@@ -57,48 +53,24 @@ namespace LiveNewsFeed.UI.UWP.Controls
                 if (index > 0)
                 {
                     // create Run from text before the match
-                    textBlock.Inlines.Add(new Run
-                    {
-                        Text = text.Substring(0, index)
-                    });
+                    textBlock.Inlines.Add(CreateRun(text.Substring(0, index)));
                 }
 
                 switch (groups.Length)
                 {
                     case 2:
                         // bold text
-                        textBlock.Inlines.Add(new Run
+                        foreach (var inline in ProcessBoldText(groups[1].Value))
                         {
-                            Text = groups[1].Value,
-                            FontWeight = FontWeights.SemiBold
-                        });
+                            textBlock.Inlines.Add(inline);
+                        }
                         break;
                     case 3:
                     {
                         // link
-                        var link = new Hyperlink
-                        {
-                            NavigateUri = new Uri(groups[1].Value),
-                            TextDecorations = TextDecorations.None
-                        };
-
-                        var linkText = groups[2].Value
-                                                      .Replace("(bold)", string.Empty)
-                                                      .Replace("(.bold)", string.Empty)
-                                                      .Trim();
-                        link.Inlines.Add(new Run
-                        {
-                            Text = linkText,
-                            FontWeight = FontWeights.SemiBold
-                        });
-
-                        // set url as tooltip
-                        ToolTipService.SetToolTip(link, new ToolTip
-                        {
-                            Content = groups[1].Value
-                        });
-
-                        textBlock.Inlines.Add(link);
+                        textBlock.Inlines.Add(CreateLink(groups[1].Value,
+                                                         groups[2].Value.Replace("(bold)", string.Empty)
+                                                                        .Replace("(.bold)", string.Empty)));
                         break;
                     }
                 }
@@ -108,6 +80,68 @@ namespace LiveNewsFeed.UI.UWP.Controls
 
                 matchNumber++;
             }
+        }
+
+        private static IEnumerable<Inline> ProcessBoldText(string text)
+        {
+            var inlines = new List<Inline>();
+
+            // check if does not contain link
+            var linkResult = Regex.Match(text, @"\(link=(.*?)\)(.*?)\(\.link\)", RegexOptions.Singleline);
+            if (!linkResult.Success)
+            {
+                // only bold text
+                inlines.Add(CreateRun(text, FontWeights.SemiBold));
+            }
+            else
+            {
+                // bold text with link
+                var index = text.IndexOf(linkResult.Value, StringComparison.Ordinal);
+                if (index > 0)
+                {
+                    // process text before link
+                    inlines.Add(CreateRun(text.Substring(0, index), FontWeights.SemiBold));
+                    text = text.Substring(index);
+                }
+
+                // process link
+                inlines.Add(CreateLink(linkResult.Groups[1].Value, linkResult.Groups[2].Value));
+                text = text.Substring(linkResult.Value.Length);
+
+                if (text.Length > 0)
+                {
+                    // process text after link
+                    inlines.Add(CreateRun(text, FontWeights.SemiBold));
+                }
+            }
+
+            return inlines;
+        }
+
+        private static Run CreateRun(string text, FontWeight? weight = null) => new()
+        {
+            Text = text,
+            FontWeight = weight ?? FontWeights.Normal
+        };
+
+        private static Hyperlink CreateLink(string url, string text)
+        {
+            var link = new Hyperlink
+            {
+                NavigateUri = new Uri(url),
+                TextDecorations = TextDecorations.None
+            };
+
+            // link text
+            link.Inlines.Add(CreateRun(text, FontWeights.SemiBold));
+
+            // url as tooltip
+            ToolTipService.SetToolTip(link, new ToolTip
+            {
+                Content = url
+            });
+
+            return link;
         }
     }
 }

@@ -33,7 +33,7 @@ namespace LiveNewsFeed.UI.UWP.Common
                                      .Replace("</strong>", "(.bold)");
 
             // replace links
-            var expression = new Regex("<a\\W{1}.*?href=\\\"(.*?)\\\".*?>(.*?)<\\/a>");
+            var expression = new Regex(@"<a\W{1}.*?href=\""(.*?)\"".*?>(.*?)<\/a>");
             foreach (Match result in expression.Matches(htmlContent))
             {
                 if (result.Groups.Count != 3)
