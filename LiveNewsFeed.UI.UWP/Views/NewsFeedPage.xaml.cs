@@ -54,6 +54,11 @@ namespace LiveNewsFeed.UI.UWP.Views
             SetTitleBarButtonColors();
         }
 
+        protected override void OnSystemThemeChanged(ApplicationTheme theme)
+        {
+            SetTitleBarButtonColors();
+        }
+
 
         private void ImagePreviewOpened()
         {

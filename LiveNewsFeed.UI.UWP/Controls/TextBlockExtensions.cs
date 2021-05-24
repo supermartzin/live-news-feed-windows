@@ -28,7 +28,10 @@ namespace LiveNewsFeed.UI.UWP.Controls
             if (dependencyObject is not TextBlock textBlock)
                 return;
             if (eventArgs.NewValue is not string text)
+            {
+                textBlock.Inlines.Clear();
                 return;
+            }
             
             textBlock.Inlines.Clear();
             var results = Regex.Matches(text, @"\(bold\)(.*?)\(\.bold\)|\(link=(.*?)\)(.*?)\(\.link\)", RegexOptions.Singleline);

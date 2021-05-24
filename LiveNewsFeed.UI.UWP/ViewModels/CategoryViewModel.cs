@@ -1,4 +1,5 @@
 ﻿using Windows.UI;
+using Windows.UI.Xaml;
 using Windows.UI.Xaml.Media;
 
 using LiveNewsFeed.Models;
@@ -30,6 +31,12 @@ namespace LiveNewsFeed.UI.UWP.ViewModels
         }
         
         protected override void OnApplicationThemeChanged(Theme theme)
+        {
+            // force reevaluation of Color property
+            OnPropertyChanged(nameof(Color));
+        }
+
+        protected override void OnSystemThemeChanged(ApplicationTheme theme)
         {
             // force reevaluation of Color property
             OnPropertyChanged(nameof(Color));
