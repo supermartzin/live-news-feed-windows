@@ -1,4 +1,6 @@
 ﻿using System;
+using Windows.UI;
+using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 
 namespace LiveNewsFeed.UI.UWP.Managers
@@ -11,9 +13,14 @@ namespace LiveNewsFeed.UI.UWP.Managers
 
         ApplicationTheme CurrentSystemTheme { get; }
 
+        Color CurrentAccentColor { get; }
+
         event EventHandler<ThemeChangedEventArgs> SystemThemeChanged;
         event EventHandler<ThemeChangedEventArgs> ApplicationThemeChanged;
+        event EventHandler<ColorChangedEventArgs> SystemAccentColorChanged; 
 
         void SetTheme(Theme theme);
+
+        Color GetSystemColor(UIColorType colorType);
     }
 }

@@ -35,9 +35,12 @@ namespace LiveNewsFeed.UI.UWP.Managers
         /// </summary>
         private Theme _currentSystemTheme;
         public ApplicationTheme CurrentSystemTheme => ToApplicationTheme(_currentSystemTheme);
+
+        public Color CurrentAccentColor { get; private set; }
         
         public event EventHandler<ThemeChangedEventArgs>? SystemThemeChanged;
         public event EventHandler<ThemeChangedEventArgs>? ApplicationThemeChanged;
+        public event EventHandler<ColorChangedEventArgs>? SystemAccentColorChanged;
 
         public ThemeManager(ILogger<ThemeManager>? logger = default)
         {
@@ -47,7 +50,8 @@ namespace LiveNewsFeed.UI.UWP.Managers
             _uiSettings.ColorValuesChanged += UiSettings_OnColorValuesChanged;
 
             _currentSystemTheme = DecideSystemTheme();
-
+            
+            CurrentAccentColor = _uiSettings.GetColorValue(UIColorType.Accent);
             CurrentTheme = (Theme) (-1);
         }
 
@@ -82,12 +86,17 @@ namespace LiveNewsFeed.UI.UWP.Managers
             ApplicationThemeChanged?.Invoke(this, new ThemeChangedEventArgs(CurrentTheme));
         }
 
+        public Color GetSystemColor(UIColorType colorType) => _uiSettings.GetColorValue(colorType);
+
 
         private void UiSettings_OnColorValuesChanged(UISettings settings, object args)
         {
             var newTheme = DecideSystemTheme();
             if (newTheme == _currentSystemTheme)
+            {
+                CheckIfAccentColorChanged();
                 return;
+            }
 
             _currentSystemTheme = newTheme;
 
@@ -99,6 +108,20 @@ namespace LiveNewsFeed.UI.UWP.Managers
 
             // invoked on system color/theme change
             SystemThemeChanged?.Invoke(this, new ThemeChangedEventArgs(DecideSystemTheme()));
+
+            CheckIfAccentColorChanged();
+        }
+
+        private void CheckIfAccentColorChanged()
+        {
+            var accentColor = _uiSettings.GetColorValue(UIColorType.Accent);
+            if (CurrentAccentColor == accentColor) 
+                return;
+            
+            CurrentAccentColor = accentColor;
+
+            // invoke on accent color change
+            SystemAccentColorChanged?.Invoke(this, new ColorChangedEventArgs(accentColor));
         }
 
         private Theme DecideSystemTheme()

@@ -2,17 +2,36 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
+using Windows.UI;
 using Windows.UI.Text;
+using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Documents;
+using Windows.UI.Xaml.Media;
+using Microsoft.Extensions.DependencyInjection;
+
+using LiveNewsFeed.UI.UWP.Common;
+using LiveNewsFeed.UI.UWP.Managers;
 
 namespace LiveNewsFeed.UI.UWP.Controls
 {
     [Bindable]
     public class TextBlockExtensions : DependencyObject
     {
+        private static readonly IThemeManager ThemeManager = ServiceLocator.Container.GetRequiredService<IThemeManager>();
+
+        private static readonly IList<Hyperlink> Hyperlinks = new List<Hyperlink>();
+
+        static TextBlockExtensions()
+        {
+            ThemeManager.SystemThemeChanged += async (_, _) => await ReloadHyperlinksColor().ConfigureAwait(false);
+            ThemeManager.ApplicationThemeChanged += async (_, _) => await ReloadHyperlinksColor().ConfigureAwait(false);
+            ThemeManager.SystemAccentColorChanged += async (_, _) => await ReloadHyperlinksColor().ConfigureAwait(false);
+        }
+        
         public static readonly DependencyProperty FormattedTextProperty = DependencyProperty.Register("FormattedText",
                                                                                                       typeof(string),
                                                                                                       typeof(TextBlock),
@@ -132,8 +151,11 @@ namespace LiveNewsFeed.UI.UWP.Controls
             var link = new Hyperlink
             {
                 NavigateUri = new Uri(url),
-                TextDecorations = TextDecorations.None
+                TextDecorations = TextDecorations.None,
+                Foreground = new SolidColorBrush(GetCurrentHyperlinkColor())
             };
+            
+            Hyperlinks.Add(link);
 
             // link text
             link.Inlines.Add(CreateRun(text, FontWeights.SemiBold));
@@ -145,6 +167,24 @@ namespace LiveNewsFeed.UI.UWP.Controls
             });
 
             return link;
+        }
+
+        private static Color GetCurrentHyperlinkColor() => ThemeManager.CurrentApplicationTheme switch
+        {
+            ApplicationTheme.Dark => ThemeManager.GetSystemColor(UIColorType.AccentLight1),
+            ApplicationTheme.Light => ThemeManager.GetSystemColor(UIColorType.AccentDark1),
+            _ => ThemeManager.GetSystemColor(UIColorType.Accent)
+        };
+
+        private static async Task ReloadHyperlinksColor()
+        {
+            await Helpers.InvokeOnUiAsync(() =>
+            {
+                foreach (Hyperlink hyperlink in Hyperlinks)
+                {
+                    hyperlink.Foreground = new SolidColorBrush(GetCurrentHyperlinkColor());
+                }
+            });
         }
     }
 }
