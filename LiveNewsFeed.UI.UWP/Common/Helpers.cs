@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Threading.Tasks;
 using Windows.ApplicationModel.Core;
+using Windows.UI.Xaml;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Media.Imaging;
 using Microsoft.Toolkit.Uwp.UI;
@@ -19,7 +19,7 @@ namespace LiveNewsFeed.UI.UWP.Common
         private static readonly FontFamily SegoeUiSymbolFontFamily = new ("Segoe UI Symbol");
         private static readonly FontFamily SegoeMdl2AssetsFontFamily = new ("Segoe MDL2 Assets");
 
-        private static readonly Dictionary<string, ImageSource> NewsFeedLogos = new();
+        private static readonly Dictionary<ApplicationTheme, Dictionary<string, Uri>> NewsFeedLogos = new();
         private static readonly Dictionary<SocialPostType, ImageSource> SocialSiteLogos = CreateSocialSiteLogos();
         private static readonly Dictionary<Category, CategoryViewModel> CategoriesMap = new();
 
@@ -34,32 +34,31 @@ namespace LiveNewsFeed.UI.UWP.Common
             CategoriesMap[Category.Commentary] = new CategoryViewModel(Category.Commentary, "\uE206", SegoeMdl2AssetsFontFamily);
         }
 
-        public static ImageSource? GetLogoForNewsFeed(string newsFeedName)
+        public static Uri? GetLogoForNewsFeed(string newsFeedName, ApplicationTheme theme)
         {
             if (newsFeedName == null)
                 throw new ArgumentNullException(nameof(newsFeedName));
 
-            return NewsFeedLogos.ContainsKey(newsFeedName) ? NewsFeedLogos[newsFeedName] : default;
+            if (NewsFeedLogos.ContainsKey(theme) && NewsFeedLogos[theme].ContainsKey(newsFeedName)) 
+                return NewsFeedLogos[theme][newsFeedName];
+
+            return default;
         }
 
         public static ImageSource? GetLogoForSocialSite(SocialPostType postType) =>
             SocialSiteLogos.ContainsKey(postType) ? SocialSiteLogos[postType] : default;
 
-        public static void RegisterLogoForNewsFeed(string newsFeedName, Uri logoPath)
+        public static void RegisterLogoForNewsFeed(string newsFeedName, ApplicationTheme theme, Uri logoPath)
         {
             if (newsFeedName == null)
                 throw new ArgumentNullException(nameof(newsFeedName));
             if (logoPath == null)
                 throw new ArgumentNullException(nameof(logoPath));
 
-            if (Path.HasExtension(logoPath.AbsoluteUri))
-            {
-                var fileType = Path.GetExtension(logoPath.AbsoluteUri);
-                if (fileType is ".png" or ".jpg")
-                    NewsFeedLogos[newsFeedName] = new BitmapImage(logoPath);
-                if (fileType is ".svg")
-                    NewsFeedLogos[newsFeedName] = new SvgImageSource(logoPath);
-            }
+            if (!NewsFeedLogos.ContainsKey(theme))
+                NewsFeedLogos.Add(theme, new Dictionary<string, Uri>());
+
+            NewsFeedLogos[theme][newsFeedName] = logoPath;
 
             // cache logo in memory
             ImageCache.Instance.PreCacheAsync(logoPath, false, true);

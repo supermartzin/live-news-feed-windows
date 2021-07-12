@@ -250,9 +250,15 @@ namespace LiveNewsFeed.UI.UWP
         {
             var manager = ServiceLocator.Container.GetRequiredService<IDataSourcesManager>();
 
-            manager.RegisterDataSource(new NewsFeedDataSource(ServiceLocator.Container.GetRequiredService<DennikNskNewsFeed>(), new Uri("ms-appx:///Assets/Logos/denniknsk-logo.png")));
-            manager.RegisterDataSource(new NewsFeedDataSource(ServiceLocator.Container.GetRequiredService<DenikNczNewsFeed>(), new Uri("ms-appx:///Assets/Logos/denikncz-logo.jpg")));
-            manager.RegisterDataSource(new NewsFeedDataSource(ServiceLocator.Container.GetRequiredService<AktualneCzNewsFeed>(), new Uri("ms-appx:///Assets/Logos/aktualnecz-logo-color-small.png")));
+            manager.RegisterDataSource(new NewsFeedDataSource(ServiceLocator.Container.GetRequiredService<DennikNskNewsFeed>(),
+                                                              new Logo(new Uri("ms-appx:///Assets/Logos/denniknsk-logo.png"),
+                                                                       new Uri("ms-appx:///Assets/Logos/denniknsk-logo.png"))));
+            manager.RegisterDataSource(new NewsFeedDataSource(ServiceLocator.Container.GetRequiredService<DenikNczNewsFeed>(),
+                                                              new Logo(new Uri("ms-appx:///Assets/Logos/denikncz-logo.jpg"),
+                                                                       new Uri("ms-appx:///Assets/Logos/denikncz-logo.jpg"))));
+            manager.RegisterDataSource(new NewsFeedDataSource(ServiceLocator.Container.GetRequiredService<AktualneCzNewsFeed>(), 
+                                                              new Logo(new Uri("ms-appx:///Assets/Logos/aktualnecz-logo-color-small.png"),
+                                                                       new Uri("ms-appx:///Assets/Logos/aktualnecz-logo-white-small.png"))));
         }
 
         private static void OnUnhandledException(object sender, UnhandledExceptionEventArgs e)

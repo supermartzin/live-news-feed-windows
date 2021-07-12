@@ -5,7 +5,6 @@ using Windows.ApplicationModel.Resources;
 using Windows.Data.Html;
 using Windows.UI.Notifications;
 using Windows.UI.Xaml;
-using Windows.UI.Xaml.Media.Imaging;
 using Microsoft.Toolkit.Uwp.Notifications;
 
 using LiveNewsFeed.Models;
@@ -20,14 +19,17 @@ namespace LiveNewsFeed.UI.UWP.Managers
         private static readonly ResourceLoader Localization = ResourceLoader.GetForViewIndependentUse();
 
         private readonly ISettingsManager _settingsManager;
+        private readonly IThemeManager _themeManager;
 
         public NotificationSettings Settings => _settingsManager.NotificationSettings;
 
         public Dictionary<string, NewsArticlePost> NotifiedPosts { get; }
 
-        public NotificationsManager(ISettingsManager settingsManager)
+        public NotificationsManager(ISettingsManager settingsManager,
+                                    IThemeManager themeManager)
         {
             _settingsManager = settingsManager ?? throw new ArgumentNullException(nameof(settingsManager));
+            _themeManager = themeManager ?? throw new ArgumentNullException(nameof(themeManager));
             
             NotifiedPosts = new Dictionary<string, NewsArticlePost>();
         }
@@ -97,7 +99,9 @@ namespace LiveNewsFeed.UI.UWP.Managers
 
             ToastNotificationManager.CreateToastNotifier().Show(new ToastNotification(notification.GetXml()));
         }
-        
+
+
+        private Uri? GetNewsFeedLogo(NewsArticlePost articlePost) => Helpers.GetLogoForNewsFeed(articlePost.NewsFeedName, _themeManager.CurrentApplicationTheme);
 
         private static Uri GetButtonIcon(string iconPath)
         {
@@ -105,13 +109,6 @@ namespace LiveNewsFeed.UI.UWP.Managers
             var index = iconPath.IndexOf(".png", StringComparison.InvariantCulture);
 
             return new Uri(iconPath.Substring(0, index) + themeExtension + ".png", UriKind.Relative);
-        }
-        
-        private static Uri? GetNewsFeedLogo(NewsArticlePost articlePost)
-        {
-            var imageSource = (BitmapImage) Helpers.GetLogoForNewsFeed(articlePost.NewsFeedName)!;
-
-            return imageSource?.UriSource;
         }
     }
 }

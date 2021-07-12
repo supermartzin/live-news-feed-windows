@@ -177,13 +177,14 @@
     <Compile Include="Services\NavigationService.cs" />
     <Compile Include="ApplicationInfo.cs" />
     <Compile Include="ViewModels\ArticlePreviewPageViewModel.cs" />
+    <Compile Include="ViewModels\NewsFeedLogoViewModel.cs" />
     <Compile Include="ViewModels\SettingsMenuViewModel.cs" />
     <Compile Include="ViewModels\SocialPostViewModel.cs" />
     <Compile Include="ViewModels\ViewModelBase.cs" />
     <Compile Include="Managers\DataSourcesManager.cs" />
     <Compile Include="Managers\IDataSourcesManager.cs" />
     <Compile Include="ViewModels\CategoryViewModel.cs" />
-    <Compile Include="ViewModels\ImageViewModel.cs" />
+    <Compile Include="ViewModels\ArticleImageViewModel.cs" />
     <Compile Include="ViewModels\NewsArticlePostViewModel.cs" />
     <Compile Include="ViewModels\NewsFeedPageViewModel.cs" />
     <Compile Include="ViewModels\TagViewModel.cs" />

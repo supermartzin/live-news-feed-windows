@@ -5,7 +5,7 @@ using LiveNewsFeed.Models;
 
 namespace LiveNewsFeed.UI.UWP.ViewModels
 {
-    public class ImageViewModel : ViewModelBase
+    public class ArticleImageViewModel : ViewModelBase
     {
         public Image OriginalImage { get; }
 
@@ -15,7 +15,7 @@ namespace LiveNewsFeed.UI.UWP.ViewModels
 
         public string? Title { get; }
 
-        public ImageViewModel(Image image)
+        public ArticleImageViewModel(Image image)
         {
             OriginalImage = image ?? throw new ArgumentNullException(nameof(image));
 

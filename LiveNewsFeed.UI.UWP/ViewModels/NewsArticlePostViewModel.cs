@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Input;
+using Windows.UI.Xaml;
 using Windows.UI.Xaml.Media;
 using Microsoft.Toolkit.Mvvm.Input;
 
@@ -29,11 +30,11 @@ namespace LiveNewsFeed.UI.UWP.ViewModels
 
         public Uri ArticleUrl => OriginalPost.FullArticleUrl;
 
-        public ImageViewModel? Image { get; }
+        public ArticleImageViewModel? Image { get; }
 
         public SocialPostViewModel? SocialPost { get; }
 
-        public ImageBrush? NewsFeedLogo { get; }
+        public NewsFeedLogoViewModel? NewsFeedLogo { get; }
 
         public bool IsImportant => OriginalPost.IsImportant;
 
@@ -80,9 +81,10 @@ namespace LiveNewsFeed.UI.UWP.ViewModels
         {
             OriginalPost = newsArticlePost ?? throw new ArgumentNullException(nameof(newsArticlePost));
 
-            Image = OriginalPost.Image != null ? new ImageViewModel(OriginalPost.Image) : default;
+            Image = OriginalPost.Image != null ? new ArticleImageViewModel(OriginalPost.Image) : default;
             SocialPost = OriginalPost.SocialPost != null ? new SocialPostViewModel(OriginalPost.SocialPost) : default;
-            NewsFeedLogo = new ImageBrush {ImageSource = Helpers.GetLogoForNewsFeed(OriginalPost.NewsFeedName)};
+            NewsFeedLogo = new NewsFeedLogoViewModel(Helpers.GetLogoForNewsFeed(NewsFeedName, ApplicationTheme.Light),
+                                                     Helpers.GetLogoForNewsFeed(NewsFeedName, ApplicationTheme.Dark));
             Categories = OriginalPost.Categories
                                       .Where(category => category != Category.NotCategorized)
                                       .Select(Helpers.GetCategoryViewModel)

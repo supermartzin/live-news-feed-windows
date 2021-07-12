@@ -104,9 +104,10 @@
                                         VerticalAlignment="Center"
                                         BorderBrush="Transparent"
                                         BorderThickness="0"
-                                        CornerRadius="2"
-                                        Background="{x:Bind NewsFeedLogo}" 
-                                        x:Phase="1">
+                                        CornerRadius="2">
+                                    <Border.Background>
+                                        <ImageBrush ImageSource="{x:Bind NewsFeedLogo.FilePath.AbsoluteUri, Mode=OneWay}" />
+                                    </Border.Background>
                                 </Border>
                                 <!--  News feed name  -->
                                 <TextBlock Grid.Column="1"
@@ -128,10 +129,10 @@
                                               ToolTipService.ToolTip="{x:Bind SocialPost.ToolTip}"/>
                                 <!--  Categories  -->
                                 <ItemsControl Grid.Column="3"
-                                          x:Name="CategoriesPanel"
-                                          x:Load="{x:Bind HasCategories}"
-                                          x:Phase="1"
-                                          ItemsSource="{x:Bind Categories}">
+                                              x:Name="CategoriesPanel"
+                                              x:Load="{x:Bind HasCategories}"
+                                              x:Phase="1"
+                                              ItemsSource="{x:Bind Categories}">
                                     <ItemsControl.ItemsPanel>
                                         <ItemsPanelTemplate>
                                             <StackPanel Orientation="Horizontal"/>
@@ -140,13 +141,13 @@
                                     <ItemsControl.ItemTemplate>
                                         <DataTemplate x:DataType="vm:CategoryViewModel">
                                             <StackPanel Orientation="Horizontal"
-                                                    UseLayoutRounding="True"
-                                                    VerticalAlignment="Center"
-                                                    Margin="0 0 10 0">
+                                                        UseLayoutRounding="True"
+                                                        VerticalAlignment="Center"
+                                                        Margin="0 0 10 0">
                                                 <FontIcon Glyph="{x:Bind IconGlyph}"
-                                                      FontFamily="{x:Bind FontFamily}"
-                                                      FontSize="12"
-                                                      Margin="0 0 3 0">
+                                                          FontFamily="{x:Bind FontFamily}"
+                                                          FontSize="12"
+                                                          Margin="0 0 3 0">
                                                     <FontIcon.Foreground>
                                                         <SolidColorBrush Color="{x:Bind Color, Mode=OneWay}" />
                                                     </FontIcon.Foreground>
@@ -163,22 +164,22 @@
                                 </ItemsControl>
                                 <!--  Is Important flag  -->
                                 <TextBlock x:Name="IsPostImportantFlag"
-                                       x:Uid="ArticlePost_IsPostImportantFlag"
-                                       x:Load="{x:Bind IsImportant}"
-                                       Grid.Column="4"
-                                       Text="&#x2757;"
-                                       FontFamily="Segoe UI Emoji"
-                                       IsColorFontEnabled="True"
-                                       Margin="0 0 5 0"
-                                       HorizontalAlignment="Right"
-                                       VerticalAlignment="Center" />
+                                           x:Uid="ArticlePost_IsPostImportantFlag"
+                                           x:Load="{x:Bind IsImportant}"
+                                           Grid.Column="4"
+                                           Text="&#x2757;"
+                                           FontFamily="Segoe UI Emoji"
+                                           IsColorFontEnabled="True"
+                                           Margin="0 0 5 0"
+                                           HorizontalAlignment="Right"
+                                           VerticalAlignment="Center" />
                                 <!--  Publish time  -->
                                 <TextBlock Grid.Column="5"
-                                       HorizontalAlignment="Right"
-                                       VerticalAlignment="Center"
-                                       FontSize="12"
-                                       FontWeight="SemiLight"
-                                       Text="{x:Bind PublishTime, Converter={StaticResource DateTimeFormatter}, ConverterParameter=T}"/>
+                                           HorizontalAlignment="Right"
+                                           VerticalAlignment="Center"
+                                           FontSize="12"
+                                           FontWeight="SemiLight"
+                                           Text="{x:Bind PublishTime, Converter={StaticResource DateTimeFormatter}, ConverterParameter=T}"/>
                             </Grid>
 
                             <!--  Article post image % content  -->

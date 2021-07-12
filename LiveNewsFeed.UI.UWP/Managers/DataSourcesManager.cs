@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
 using System.Threading.Tasks;
+using Windows.UI.Xaml;
 using Microsoft.Extensions.Logging;
 
 using LiveNewsFeed.DataSource.Common;
@@ -44,8 +45,9 @@ namespace LiveNewsFeed.UI.UWP.Managers
 
             _logger?.LogInformation($"Registered News Feed data source '{newsFeedDataSource.Name}'.");
 
-            // register logo
-            Helpers.RegisterLogoForNewsFeed(newsFeedDataSource.Name, newsFeedDataSource.LogoUrl);
+            // register logos
+            Helpers.RegisterLogoForNewsFeed(newsFeedDataSource.Name, ApplicationTheme.Light, newsFeedDataSource.Logo.LightThemeUrl);
+            Helpers.RegisterLogoForNewsFeed(newsFeedDataSource.Name, ApplicationTheme.Dark, newsFeedDataSource.Logo.DarkThemeUrl);
         }
 
         public IEnumerable<NewsFeedDataSource> GetRegisteredDataSources()

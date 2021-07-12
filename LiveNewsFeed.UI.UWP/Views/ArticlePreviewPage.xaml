@@ -40,8 +40,11 @@
                         Margin="0 20"
                         BorderBrush="Transparent"
                         BorderThickness="0"
-                        VerticalAlignment="Center"
-                        Background="{x:Bind ViewModel.NewsArticlePost.NewsFeedLogo}"/>
+                        VerticalAlignment="Center">
+                    <Border.Background>
+                        <ImageBrush ImageSource="{x:Bind ViewModel.NewsArticlePost.NewsFeedLogo.FilePath.AbsoluteUri, Mode=OneWay}" />
+                    </Border.Background>
+                </Border>
 
                 <!--  News feed name  -->
                 <TextBlock Text="{x:Bind ViewModel.NewsArticlePost.NewsFeedName}"
