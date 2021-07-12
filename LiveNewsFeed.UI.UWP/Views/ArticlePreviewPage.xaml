@@ -43,8 +43,8 @@
                         VerticalAlignment="Center"
                         Background="{x:Bind ViewModel.NewsArticlePost.NewsFeedLogo}"/>
 
-                <!--  Title  -->
-                <TextBlock Text="{x:Bind ViewModel.NewsArticlePost.Title}"
+                <!--  News feed name  -->
+                <TextBlock Text="{x:Bind ViewModel.NewsArticlePost.NewsFeedName}"
                            HorizontalTextAlignment="Left"
                            TextLineBounds="Tight"
                            VerticalAlignment="Center"

@@ -107,9 +107,9 @@
                                     BorderThickness="0"
                                     CornerRadius="2"
                                     x:Phase="1"/>
-                                <!--  Title  -->
+                                <!--  News feed name  -->
                                 <TextBlock Grid.Column="1"
-                                       Text="{x:Bind Title}"
+                                       Text="{x:Bind NewsFeedName}"
                                        HorizontalTextAlignment="Left"
                                        FontWeight="Bold"
                                        FontSize="14"/>
@@ -188,15 +188,31 @@
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="Auto" />
                                     <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
                                 </Grid.RowDefinitions>
 
+                                <!--  Article title  -->
+                                <TextBlock Grid.Row="0"
+                                           Grid.Column="0"
+                                           Grid.ColumnSpan="2"
+                                           Margin="0 0 0 5"
+                                           Text="{x:Bind Title}"
+                                           TextAlignment="Left"
+                                           TextWrapping="NoWrap"
+                                           TextTrimming="CharacterEllipsis"
+                                           IsTextSelectionEnabled="True"
+                                           FontSize="16"
+                                           FontWeight="SemiBold"
+                                           ToolTipService.ToolTip="{x:Bind Title}"
+                                           Visibility="{x:Bind Title, Converter={StaticResource EmptyStringToVisibilityConverter}}" />
+
                                 <!--  Article post image  -->
-                                <Image Grid.Row="0"
+                                <Image Grid.Row="1"
                                        Grid.Column="0"
                                        x:Name="ArticlePostImage"
                                        x:Load="{x:Bind common:UiHelpers.IsNotNull(Image)}"
                                        x:Phase="2"
-                                       Margin="0 0 10 0"
+                                       Margin="0 5 10 0"
                                        HorizontalAlignment="Left"
                                        VerticalAlignment="Top"
                                        ToolTipService.ToolTip="{x:Bind Image.Title}"
@@ -215,7 +231,7 @@
                                 </Image>
 
                                 <!--  Article post Content  -->
-                                <TextBlock Grid.Row="0"
+                                <TextBlock Grid.Row="1"
                                            Grid.Column="1"
                                            controls:TextBlockExtensions.FormattedText="{x:Bind Content}"
                                            TextWrapping="Wrap"
@@ -225,7 +241,7 @@
                                            x:Phase="1"/>
 
                                 <!--  Article post Extended content  -->
-                                <TextBlock Grid.Row="1"
+                                <TextBlock Grid.Row="2"
                                            Grid.Column="0"
                                            Grid.ColumnSpan="2"
                                            x:Name="ArticlePostExtendedContent"

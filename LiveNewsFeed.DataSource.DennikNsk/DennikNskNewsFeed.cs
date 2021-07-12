@@ -23,7 +23,7 @@ namespace LiveNewsFeed.DataSource.DennikNsk
 
         public string Name => "Denník N [SK]";
 
-        public DennikNskNewsFeed(HttpClient httpClient, ILogger<DennikNskNewsFeed>? logger = null)
+        public DennikNskNewsFeed(HttpClient httpClient, ILogger<DennikNskNewsFeed>? logger = default)
         {
             _httpClient = httpClient ?? throw new ArgumentNullException(nameof(httpClient));
             _logger = logger;
@@ -44,15 +44,15 @@ namespace LiveNewsFeed.DataSource.DennikNsk
 
                 // convert to model
                 var posts = postsDtos.Select(dto => ModelsConverter.ToNewsArticlePost(dto, Name))
-                                                        .OrderByDescending(post => post.PublishTime)
-                                                        .ToList();
+                                                                   .OrderByDescending(post => post.PublishTime)
+                                                                   .ToList();
 
                 if (count > 0 && posts.Count > 0 && posts.Count < count)
                 {
                     // get missing number of posts
                     var anotherPosts = await GetPostsAsync(posts.Last().PublishTime,
-                                                                                after, category, tag, important,
-                                                                                count - posts.Count).ConfigureAwait(false);
+                                                           after, category, tag, important,
+                                                           count - posts.Count).ConfigureAwait(false);
                     posts = posts.Union(anotherPosts)
                                  .OrderByDescending(post => post.PublishTime)
                                  .ToList();
@@ -72,19 +72,19 @@ namespace LiveNewsFeed.DataSource.DennikNsk
             }
             catch (HttpRequestException hrEx)
             {
-                _logger?.LogError(hrEx, $"Error getting posts from Dennik N: {hrEx.Message}");
+                _logger?.LogError(hrEx, $"Error getting posts from {Name}: {hrEx.Message}");
 
                 return new List<NewsArticlePost>();
             }
             catch (JsonException jsonEx)
             {
-                _logger?.LogError(jsonEx, $"Error parsing received data from Dennik N: {jsonEx.Message}");
+                _logger?.LogError(jsonEx, $"Error parsing received data from {Name}: {jsonEx.Message}");
 
                 return new List<NewsArticlePost>();
             }
             catch (Exception ex)
             {
-                _logger?.LogError(ex, $"Error getting posts from Dennik N: {ex.Message}");
+                _logger?.LogError(ex, $"Error getting posts from {Name}: {ex.Message}");
 
                 return new List<NewsArticlePost>();
             }
@@ -129,8 +129,8 @@ namespace LiveNewsFeed.DataSource.DennikNsk
 
             // get data string from response
             var data = await response.Content
-                                            .ReadAsStringAsync()
-                                            .ConfigureAwait(false);
+                                     .ReadAsStringAsync()
+                                     .ConfigureAwait(false);
 
             // serialize to DTO objects
             var container = JsonSerializer.Deserialize<RootContainer>(data, new JsonSerializerOptions
@@ -139,12 +139,12 @@ namespace LiveNewsFeed.DataSource.DennikNsk
             });
 
             if (container == null)
-                throw new Exception("Error getting or parsing posts from Dennik N.");
+                throw new Exception($"Error getting or parsing posts from {Name}.");
 
             // order posts by datetime
-            var posts = (container.ImportantPosts 
-                                                ?? container.TimelinePosts
-                                                ?? Enumerable.Empty<ArticlePostDTO>()).OrderByDescending(post => post.Created).ToList();
+            var posts = (container.ImportantPosts
+                                ?? container.TimelinePosts
+                                ?? Enumerable.Empty<ArticlePostDTO>()).OrderByDescending(post => post.Created).ToList();
             
             return posts.Count > 0 && count > 0
                 ? posts.Take(count).ToList()

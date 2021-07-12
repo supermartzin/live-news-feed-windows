@@ -37,7 +37,7 @@ namespace LiveNewsFeed.DataSource.DennikNsk
 
         public static NewsArticlePost ToNewsArticlePost(ArticlePostDTO postDto, string newsFeedName) =>
             new(postDto.Id.ToString(),
-                newsFeedName,
+                string.Empty,
                 postDto.Content.MainText,
                 postDto.Created,
                 postDto.Updated,

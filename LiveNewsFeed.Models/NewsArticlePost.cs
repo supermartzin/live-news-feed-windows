@@ -61,10 +61,7 @@ namespace LiveNewsFeed.Models
             Tags = tags ?? new HashSet<Tag>();
         }
 
-        public int CompareTo(NewsArticlePost other)
-        {
-            return PublishTime.CompareTo(other.PublishTime);
-        }
+        public int CompareTo(NewsArticlePost other) => PublishTime.CompareTo(other.PublishTime);
 
         public override bool Equals(object? obj)
         {
@@ -78,14 +75,8 @@ namespace LiveNewsFeed.Models
             return Equals((NewsArticlePost) obj);
         }
 
-        public override int GetHashCode()
-        {
-            return Id.GetHashCode();
-        }
-        
-        protected bool Equals(NewsArticlePost other)
-        {
-            return Id == other.Id;
-        }
+        public override int GetHashCode() => Id.GetHashCode();
+
+        protected bool Equals(NewsArticlePost other) => Id == other.Id;
     }
 }

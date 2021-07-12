@@ -9,6 +9,7 @@ using Windows.Globalization;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
+using LiveNewsFeed.DataSource.AktualneCz;
 using Microsoft.Toolkit.Uwp.UI;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -251,6 +252,7 @@ namespace LiveNewsFeed.UI.UWP
 
             manager.RegisterDataSource(new NewsFeedDataSource(ServiceLocator.Container.GetRequiredService<DennikNskNewsFeed>(), new Uri("ms-appx:///Assets/Logos/denniknsk-logo.png")));
             manager.RegisterDataSource(new NewsFeedDataSource(ServiceLocator.Container.GetRequiredService<DenikNczNewsFeed>(), new Uri("ms-appx:///Assets/Logos/denikncz-logo.jpg")));
+            manager.RegisterDataSource(new NewsFeedDataSource(ServiceLocator.Container.GetRequiredService<AktualneCzNewsFeed>(), new Uri("ms-appx:///Assets/Logos/aktualnecz-logo-color-small.png")));
         }
 
         private static void OnUnhandledException(object sender, UnhandledExceptionEventArgs e)

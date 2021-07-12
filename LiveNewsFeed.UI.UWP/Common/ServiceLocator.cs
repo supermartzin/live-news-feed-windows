@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Net.Http;
+using LiveNewsFeed.DataSource.AktualneCz;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using NLog;
@@ -31,6 +32,7 @@ namespace LiveNewsFeed.UI.UWP.Common
             AddLogging(serviceCollection);
             AddCoreModules(serviceCollection);
             AddServices(serviceCollection);
+            AddNewsFeeds(serviceCollection);
             AddViewModels(serviceCollection);
 
             Container = serviceCollection.BuildServiceProvider();
@@ -38,12 +40,9 @@ namespace LiveNewsFeed.UI.UWP.Common
             _isInitialized = true;
         }
 
-
         private static void AddCoreModules(IServiceCollection serviceCollection)
         {
             serviceCollection.AddSingleton<HttpClient>();
-            serviceCollection.AddSingleton<DennikNskNewsFeed>();
-            serviceCollection.AddSingleton<DenikNczNewsFeed>();
         }
 
         private static void AddServices(IServiceCollection serviceCollection)
@@ -55,6 +54,13 @@ namespace LiveNewsFeed.UI.UWP.Common
             serviceCollection.AddSingleton<ISettingsManager, LocalSettingsManager>();
             serviceCollection.AddSingleton<IAutomaticUpdater, AutomaticUpdater>();
             serviceCollection.AddSingleton<IThemeManager, ThemeManager>();
+        }
+
+        private static void AddNewsFeeds(IServiceCollection serviceCollection)
+        {
+            serviceCollection.AddSingleton<DennikNskNewsFeed>();
+            serviceCollection.AddSingleton<DenikNczNewsFeed>();
+            serviceCollection.AddSingleton<AktualneCzNewsFeed>();
         }
 
         private static void AddViewModels(IServiceCollection serviceCollection)

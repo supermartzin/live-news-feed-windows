@@ -17,7 +17,7 @@ namespace LiveNewsFeed.Models
                 return false;
             if (ReferenceEquals(this, obj))
                 return true;
-            if (obj.GetType() != GetType()) 
+            if (obj.GetType() != GetType())
                 return false;
 
             return Equals((Tag) obj);

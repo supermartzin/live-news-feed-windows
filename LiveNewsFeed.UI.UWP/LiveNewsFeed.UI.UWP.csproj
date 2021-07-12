@@ -28,6 +28,7 @@
     <AppInstallerUri>D:\Projekty\Live News Feed for Windows\LiveNewsFeed.UI.UWP\AppPackages\</AppInstallerUri>
     <HoursBetweenUpdateChecks>0</HoursBetweenUpdateChecks>
     <AppxBundle>Always</AppxBundle>
+    <Nullable>enable</Nullable>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
     <DebugSymbols>true</DebugSymbols>
@@ -220,6 +221,10 @@
     <Content Include="Assets\LargeTile.scale-150.png" />
     <Content Include="Assets\LargeTile.scale-200.png" />
     <Content Include="Assets\LargeTile.scale-400.png" />
+    <Content Include="Assets\Logos\aktualnecz-logo-color-small.png" />
+    <Content Include="Assets\Logos\aktualnecz-logo-color.png" />
+    <Content Include="Assets\Logos\aktualnecz-logo-white-small.png" />
+    <Content Include="Assets\Logos\aktualnecz-logo-white.png" />
     <Content Include="Assets\Logos\app-logo.png" />
     <Content Include="Assets\Logos\apple-music-logo.png" />
     <Content Include="Assets\Logos\deezer-logo.png" />
@@ -348,6 +353,10 @@
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\LiveNewsFeed.DataSource.AktualneCz\LiveNewsFeed.DataSource.AktualneCz.csproj">
+      <Project>{fba37e3f-7dc8-449c-a8fa-a8815447f132}</Project>
+      <Name>LiveNewsFeed.DataSource.AktualneCz</Name>
+    </ProjectReference>
     <ProjectReference Include="..\LiveNewsFeed.DataSource.Common\LiveNewsFeed.DataSource.Common.csproj">
       <Project>{69c1d3b6-f187-45fb-b28f-d746b4d3c70f}</Project>
       <Name>LiveNewsFeed.DataSource.Common</Name>

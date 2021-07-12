@@ -68,12 +68,12 @@ namespace LiveNewsFeed.UI.UWP.Managers
             foreach (var dataSource in _dataSources.Values)
             {
                 var newPosts = await dataSource.NewsFeed
-                                                                    .GetPostsAsync(options?.Before,
-                                                                                   options?.After,
-                                                                                   options?.Category,
-                                                                                   options?.Tag,
-                                                                                   options?.Important,
-                                                                                   options?.Count).ConfigureAwait(false);
+                                               .GetPostsAsync(options?.Before,
+                                                              options?.After,
+                                                              options?.Category,
+                                                              options?.Tag,
+                                                              options?.Important,
+                                                              options?.Count).ConfigureAwait(false);
 
                 lock (_updateLock)
                 {
@@ -118,12 +118,12 @@ namespace LiveNewsFeed.UI.UWP.Managers
                 _logger?.LogDebug($"Loading older posts from '{dataSource.Name}' before {oldestPostTime}.");
 
                 var newPosts = await dataSource.NewsFeed
-                                                                    .GetPostsAsync(options?.Before ?? oldestPostTime,
-                                                                                   options?.After,
-                                                                                   options?.Category,
-                                                                                   options?.Tag,
-                                                                                   options?.Important,
-                                                                                   options?.Count).ConfigureAwait(false);
+                                               .GetPostsAsync(options?.Before ?? oldestPostTime,
+                                                              options?.After,
+                                                              options?.Category,
+                                                              options?.Tag,
+                                                              options?.Important,
+                                                              options?.Count).ConfigureAwait(false);
 
                 lock (_updateLock)
                 {
@@ -168,12 +168,12 @@ namespace LiveNewsFeed.UI.UWP.Managers
                     lastPostPublishTime = default;
 
                 var newPosts = await dataSource.NewsFeed
-                                                                    .GetPostsAsync(options?.Before,
-                                                                                   options?.After ?? lastPostPublishTime,
-                                                                                   options?.Category,
-                                                                                   options?.Tag,
-                                                                                   options?.Important,
-                                                                                   options?.Count).ConfigureAwait(false);
+                                               .GetPostsAsync(options?.Before,
+                                                              options?.After ?? lastPostPublishTime,
+                                                              options?.Category,
+                                                              options?.Tag,
+                                                              options?.Important,
+                                                              options?.Count).ConfigureAwait(false);
 
                 lock (_updateLock)
                 {

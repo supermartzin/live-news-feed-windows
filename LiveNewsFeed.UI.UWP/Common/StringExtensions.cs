@@ -14,11 +14,22 @@ namespace LiveNewsFeed.UI.UWP.Common
             // replace bullet list occurrences
             var content = htmlContent.Replace("<li>", "<li> • ");
 
-            // replace newlines
-            content = content.Replace("\n", Environment.NewLine);
+            // replace original newlines
+            content = content.Replace("\r\n", "($nl$)")
+                             .Replace("\n", "($nl$)");
 
             // remove HTML tags
             content = HtmlUtilities.ConvertToText(content);
+            
+            // replace newly converted newlines
+            content = content.Replace("\r\n", "($nl$)")
+                             .Replace("\n", "($nl$)");
+
+            // put original and new newlines back
+            content = content.Replace("($nl$)($nl$)($nl$)($nl$)", Environment.NewLine + Environment.NewLine)
+                             .Replace("($nl$)($nl$)($nl$)", Environment.NewLine + Environment.NewLine)
+                             .Replace("($nl$)($nl$)", Environment.NewLine + Environment.NewLine)
+                             .Replace("($nl$)", Environment.NewLine);
 
             return content.Trim();
         }

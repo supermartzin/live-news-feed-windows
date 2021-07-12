@@ -17,6 +17,8 @@ namespace LiveNewsFeed.UI.UWP.ViewModels
 
         public NewsArticlePost OriginalPost { get; }
 
+        public string NewsFeedName => OriginalPost.NewsFeedName;
+
         public string Title => OriginalPost.Title;
 
         public string Content => OriginalPost.Content.SanitizeHtmlForTextBlock().SanitizeHtmlContent();
@@ -106,10 +108,7 @@ namespace LiveNewsFeed.UI.UWP.ViewModels
             return OriginalPost.Equals(other.OriginalPost);
         }
 
-        public override int GetHashCode()
-        {
-            return OriginalPost.GetHashCode();
-        }
+        public override int GetHashCode() => OriginalPost.GetHashCode();
 
 
         private void InitializeCommands()
