@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Threading.Tasks;
 using Windows.ApplicationModel.Core;
 using Windows.UI.Xaml.Media;
@@ -51,7 +52,14 @@ namespace LiveNewsFeed.UI.UWP.Common
             if (logoPath == null)
                 throw new ArgumentNullException(nameof(logoPath));
 
-            NewsFeedLogos[newsFeedName] = new BitmapImage(logoPath);
+            if (Path.HasExtension(logoPath.AbsoluteUri))
+            {
+                var fileType = Path.GetExtension(logoPath.AbsoluteUri);
+                if (fileType is ".png" or ".jpg")
+                    NewsFeedLogos[newsFeedName] = new BitmapImage(logoPath);
+                if (fileType is ".svg")
+                    NewsFeedLogos[newsFeedName] = new SvgImageSource(logoPath);
+            }
 
             // cache logo in memory
             ImageCache.Instance.PreCacheAsync(logoPath, false, true);

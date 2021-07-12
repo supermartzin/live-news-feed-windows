@@ -97,33 +97,35 @@
 
                                 <!--  Logo  -->
                                 <Border Grid.Column="0"
-                                    Height="20"
-                                    Width="20"
-                                    Margin="0 0 5 0"
-                                    Background="{x:Bind NewsFeedLogo}"
-                                    HorizontalAlignment="Center"
-                                    VerticalAlignment="Center"
-                                    BorderBrush="Transparent"
-                                    BorderThickness="0"
-                                    CornerRadius="2"
-                                    x:Phase="1"/>
+                                        Height="20"
+                                        Width="20"
+                                        Margin="0 0 5 0"
+                                        HorizontalAlignment="Center"
+                                        VerticalAlignment="Center"
+                                        BorderBrush="Transparent"
+                                        BorderThickness="0"
+                                        CornerRadius="2"
+                                        Background="{x:Bind NewsFeedLogo}" 
+                                        x:Phase="1">
+                                </Border>
                                 <!--  News feed name  -->
                                 <TextBlock Grid.Column="1"
-                                       Text="{x:Bind NewsFeedName}"
-                                       HorizontalTextAlignment="Left"
-                                       FontWeight="Bold"
-                                       FontSize="14"/>
+                                           Text="{x:Bind NewsFeedName}"
+                                           HorizontalTextAlignment="Left"
+                                           FontWeight="Bold"
+                                           FontSize="14"/>
                                 <!--  Social post logo  -->
-                                <Image Grid.Column="2"
-                                   x:Name="SocialPostLogo"
-                                   x:Load="{x:Bind common:UiHelpers.IsNotNull(SocialPost)}"
-                                   x:Phase="1"
-                                   Source="{x:Bind SocialPost.SocialSiteLogo}"
-                                   Height="20"
-                                   Width="20"
-                                   Margin="15 0"
-                                   HorizontalAlignment="Left"
-                                   ToolTipService.ToolTip="{x:Bind SocialPost.ToolTip}"/>
+                                <mtuc:ImageEx Grid.Column="2"
+                                              x:Name="SocialPostLogo"
+                                              x:Load="{x:Bind common:UiHelpers.IsNotNull(SocialPost)}"
+                                              x:Phase="1"
+                                              Source="{x:Bind SocialPost.SocialSiteLogo}"
+                                              Height="20"
+                                              Width="20"
+                                              Margin="15 0"
+                                              HorizontalAlignment="Left"
+                                              IsCacheEnabled="True"
+                                              ToolTipService.ToolTip="{x:Bind SocialPost.ToolTip}"/>
                                 <!--  Categories  -->
                                 <ItemsControl Grid.Column="3"
                                           x:Name="CategoriesPanel"
@@ -207,20 +209,22 @@
                                            Visibility="{x:Bind Title, Converter={StaticResource EmptyStringToVisibilityConverter}}" />
 
                                 <!--  Article post image  -->
-                                <Image Grid.Row="1"
-                                       Grid.Column="0"
-                                       x:Name="ArticlePostImage"
-                                       x:Load="{x:Bind common:UiHelpers.IsNotNull(Image)}"
-                                       x:Phase="2"
-                                       Margin="0 5 10 0"
-                                       HorizontalAlignment="Left"
-                                       VerticalAlignment="Top"
-                                       ToolTipService.ToolTip="{x:Bind Image.Title}"
-                                       PointerPressed="ArticlePostImageThumbnail_OnPointerPressed">
-                                    <Image.Source>
+                                <mtuc:ImageEx Grid.Row="1"
+                                              Grid.Column="0"
+                                              x:Name="ArticlePostImage"
+                                              x:Load="{x:Bind common:UiHelpers.IsNotNull(Image)}"
+                                              x:Phase="2"
+                                              Margin="0 5 10 0"
+                                              IsCacheEnabled="True"
+                                              EnableLazyLoading="True"
+                                              HorizontalAlignment="Left"
+                                              VerticalAlignment="Top"
+                                              ToolTipService.ToolTip="{x:Bind Image.Title}"
+                                              PointerPressed="ArticlePostImageThumbnail_OnPointerPressed">
+                                    <mtuc:ImageEx.Source>
                                         <BitmapImage DecodePixelWidth="180"
-                                                 UriSource="{x:Bind Image.NormalImageUrl}"/>
-                                    </Image.Source>
+                                                     UriSource="{x:Bind Image.NormalImageUrl}"/>
+                                    </mtuc:ImageEx.Source>
                                     <i:Interaction.Behaviors>
                                         <core:EventTriggerBehavior EventName="PointerPressed">
                                             <core:EventTriggerBehavior.Actions>
@@ -228,7 +232,7 @@
                                             </core:EventTriggerBehavior.Actions>
                                         </core:EventTriggerBehavior>
                                     </i:Interaction.Behaviors>
-                                </Image>
+                                </mtuc:ImageEx>
 
                                 <!--  Article post Content  -->
                                 <TextBlock Grid.Row="1"
@@ -828,15 +832,16 @@
                                       Width="{Binding Path=ActualWidth, Mode=OneWay, ElementName=ZoomPanel}"
                                       Height="{Binding Path=ActualHeight, Mode=OneWay, ElementName=ZoomPanel}"
                                       IsMasked="True">
-                    <Image Stretch="Uniform">
-                        <Image.Source>
+                    <mtuc:ImageEx Stretch="Uniform"
+                                  IsCacheEnabled="True">
+                        <mtuc:ImageEx.Source>
                             <BitmapImage x:Name="BitmapImage"
                                          CreateOptions="IgnoreImageCache"
                                          UriSource="{x:Bind ViewModel.SelectedPost.Image.LargeImageUrl}" 
                                          ImageOpened="BitmapImage_OnImageOpened"
                                          ImageFailed="BitmapImage_OnImageFailed"/>
-                        </Image.Source>
-                    </Image>
+                        </mtuc:ImageEx.Source>
+                    </mtuc:ImageEx>
                 </mtuc:DropShadowPanel>
             </ScrollViewer>
         </Grid>

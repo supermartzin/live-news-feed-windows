@@ -23,7 +23,7 @@ namespace LiveNewsFeed.UI.UWP.ViewModels
 
         public string Content => OriginalPost.Content.SanitizeHtmlForTextBlock().SanitizeHtmlContent();
 
-        public string? ExtendedContent => OriginalPost.ExtendedContent?.SanitizeHtmlForTextBlock().SanitizeHtmlContent() ?? default;
+        public string? ExtendedContent => OriginalPost.ExtendedContent?.SanitizeHtmlForTextBlock().SanitizeHtmlContent();
 
         public DateTime PublishTime => OriginalPost.PublishTime;
 
