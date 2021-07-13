@@ -48,7 +48,7 @@ namespace LiveNewsFeed.UI.UWP.Managers
 
             var notificationBuilder = new ToastContentBuilder().AddAppLogoOverride(GetNewsFeedLogo(articlePost))
                                                                .AddToastActivationInfo($"action=showPost&notifId={notificationId}", ToastActivationType.Foreground)
-                                                               .AddText(articlePost.Title)
+                                                               .AddText(!string.IsNullOrEmpty(articlePost.Title) ? articlePost.Title : articlePost.NewsFeedName)
                                                                .AddCustomTimeStamp(articlePost.PublishTime);
 
             // add buttons
