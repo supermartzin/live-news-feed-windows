@@ -53,7 +53,7 @@ namespace LiveNewsFeed.UI.UWP.Services
         {
             builder.AddTile(TileSize.Medium | TileSize.Wide)
                    .SetDisplayName($"{newsArticlePost.PublishTime:t} | {AppInfo.Current.DisplayInfo.DisplayName}", size: TileSize.Medium | TileSize.Wide)
-                   .AddText(newsArticlePost.Title, hintStyle: AdaptiveTextStyle.Base, size: TileSize.Medium | TileSize.Wide)
+                   .AddText(GetTitle(newsArticlePost), hintStyle: AdaptiveTextStyle.Base, size: TileSize.Medium | TileSize.Wide)
                    .AddText(newsArticlePost.Content.SanitizeHtmlContent(),
                             hintStyle: AdaptiveTextStyle.Caption, hintMaxLines: 3, hintWrap: true, size: TileSize.Medium | TileSize.Wide);
             
@@ -74,7 +74,7 @@ namespace LiveNewsFeed.UI.UWP.Services
                     var articlePost = _postsOnTileQueue.ElementAt(i);
 
                     content?.Children.Add(CreateLargeTileGroup(
-                        header: $"{articlePost.PublishTime:t} | {articlePost.Title}",
+                        header: $"{articlePost.PublishTime:t} | {GetTitle(articlePost)}",
                         content: articlePost.Content.SanitizeHtmlContent()));
 
                     if (i == 0 && articlePost.Image != null)
@@ -93,7 +93,7 @@ namespace LiveNewsFeed.UI.UWP.Services
 
                 // create content
                 builder.AddTile(TileSize.Large)
-                    .AddText(newsArticlePost.Title, hintStyle: AdaptiveTextStyle.Subtitle, size: TileSize.Large)
+                    .AddText(GetTitle(newsArticlePost), hintStyle: AdaptiveTextStyle.Subtitle, size: TileSize.Large)
                     .AddText($"{newsArticlePost.PublishTime:t} {newsArticlePost.PublishTime:d}", hintStyle: AdaptiveTextStyle.BaseSubtle, size: TileSize.Large)
                     .AddText(newsArticlePost.Content.SanitizeHtmlContent(), hintStyle: AdaptiveTextStyle.Default, hintWrap: true, size: TileSize.Large);
 
@@ -103,6 +103,10 @@ namespace LiveNewsFeed.UI.UWP.Services
                 numberOfCreatedTiles++;
             }
         }
+
+        private static string GetTitle(NewsArticlePost articlePost) => !string.IsNullOrEmpty(articlePost.Title)
+                ? articlePost.Title
+                : articlePost.NewsFeedName;
 
         private static AdaptiveGroup CreateLargeTileGroup(string header, string content) => new()
         {
