@@ -213,10 +213,8 @@
     <Content Include="Assets\LargeTile.scale-150.png" />
     <Content Include="Assets\LargeTile.scale-200.png" />
     <Content Include="Assets\LargeTile.scale-400.png" />
-    <Content Include="Assets\Logos\aktualnecz-logo-color-small.png" />
-    <Content Include="Assets\Logos\aktualnecz-logo-color.png" />
-    <Content Include="Assets\Logos\aktualnecz-logo-white-small.png" />
-    <Content Include="Assets\Logos\aktualnecz-logo-white.png" />
+    <Content Include="Assets\Logos\aktualnecz-logo-darktheme.png" />
+    <Content Include="Assets\Logos\aktualnecz-logo-lighttheme.png" />
     <Content Include="Assets\Logos\app-logo.png" />
     <Content Include="Assets\Logos\apple-music-logo.png" />
     <Content Include="Assets\Logos\deezer-logo.png" />

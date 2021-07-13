@@ -3,10 +3,12 @@
                 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                 xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
                 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                xmlns:i="using:Microsoft.Xaml.Interactivity"
                 xmlns:views="using:LiveNewsFeed.UI.UWP.Views"
                 xmlns:viewModels="using:LiveNewsFeed.UI.UWP.ViewModels"
                 xmlns:common="using:LiveNewsFeed.UI.UWP.Common"
                 xmlns:controls="using:LiveNewsFeed.UI.UWP.Controls"
+                xmlns:core="using:Microsoft.Xaml.Interactions.Core"
                 mc:Ignorable="d"
                 Background="{ThemeResource CustomAcrylicBackgroundBrush}"
                 DataContext="{x:Bind ViewModel}">
@@ -40,9 +42,16 @@
                         Margin="0 20"
                         BorderBrush="Transparent"
                         BorderThickness="0"
-                        VerticalAlignment="Center">
+                        VerticalAlignment="Center"
+                        x:Name="LogoBorder">
                     <Border.Background>
-                        <ImageBrush ImageSource="{x:Bind ViewModel.NewsArticlePost.NewsFeedLogo.FilePath.AbsoluteUri, Mode=OneWay}" />
+                        <ImageBrush>
+                            <ImageBrush.ImageSource>
+                                <BitmapImage UriSource="{x:Bind ViewModel.NewsArticlePost.NewsFeedLogo.FilePath.AbsoluteUri, Mode=OneWay}"
+                                             DecodePixelWidth="{Binding Width, ElementName=LogoBorder}"
+                                             DecodePixelHeight="{Binding Height, ElementName=LogoBorder}" />
+                            </ImageBrush.ImageSource>
+                        </ImageBrush>
                     </Border.Background>
                 </Border>
 

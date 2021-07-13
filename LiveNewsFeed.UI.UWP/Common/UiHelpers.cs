@@ -4,7 +4,6 @@ using Windows.ApplicationModel;
 using Windows.ApplicationModel.DataTransfer;
 using Windows.Data.Html;
 using Windows.System;
-using Microsoft.Toolkit.Uwp.Helpers;
 
 using LiveNewsFeed.Models;
 
@@ -17,7 +16,7 @@ namespace LiveNewsFeed.UI.UWP.Common
             if (articlePost == null)
                 throw new ArgumentNullException(nameof(articlePost));
 
-            DispatcherHelper.ExecuteOnUIThreadAsync(() =>
+            Helpers.InvokeOnUiAsync(() =>
             {
                 DataTransferManager.GetForCurrentView().DataRequested += OnDataRequested;
                 DataTransferManager.ShowShareUI();
@@ -44,7 +43,7 @@ namespace LiveNewsFeed.UI.UWP.Common
             var dataPackage = new DataPackage();
             dataPackage.SetText(url.AbsoluteUri);
 
-            DispatcherHelper.ExecuteOnUIThreadAsync(() => Clipboard.SetContent(dataPackage));
+            Helpers.InvokeOnUiAsync(() => Clipboard.SetContent(dataPackage));
         }
 
         public static async Task OpenInDefaultBrowser(Uri? uri) => await Launcher.LaunchUriAsync(uri);

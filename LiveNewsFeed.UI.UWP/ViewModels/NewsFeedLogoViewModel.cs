@@ -1,5 +1,4 @@
 ﻿using System;
-using System.IO;
 using Windows.UI.Xaml;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -17,8 +16,6 @@ namespace LiveNewsFeed.UI.UWP.ViewModels
         public Uri FilePath => _themeManager.CurrentApplicationTheme is ApplicationTheme.Light
                                     ? _lightThemeFilePath
                                     : _darkThemeFilePath;
-
-        public string FileType => Path.GetExtension(FilePath.AbsoluteUri);
 
         public NewsFeedLogoViewModel(Uri lightThemeFilePath, Uri darkThemeFilePath)
         {

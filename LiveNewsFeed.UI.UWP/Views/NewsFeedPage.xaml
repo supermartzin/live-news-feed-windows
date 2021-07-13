@@ -100,13 +100,20 @@
                                         Height="20"
                                         Width="20"
                                         Margin="0 0 5 0"
+                                        BorderBrush="Transparent"
                                         HorizontalAlignment="Center"
                                         VerticalAlignment="Center"
-                                        BorderBrush="Transparent"
                                         BorderThickness="0"
-                                        CornerRadius="2">
+                                        CornerRadius="2"
+                                        x:Name="LogoBorder">
                                     <Border.Background>
-                                        <ImageBrush ImageSource="{x:Bind NewsFeedLogo.FilePath.AbsoluteUri, Mode=OneWay}" />
+                                        <ImageBrush>
+                                            <ImageBrush.ImageSource>
+                                                <BitmapImage UriSource="{x:Bind NewsFeedLogo.FilePath.AbsoluteUri, Mode=OneWay}"
+                                                             DecodePixelHeight="{Binding Height, ElementName=LogoBorder}"
+                                                             DecodePixelWidth="{Binding Width, ElementName=LogoBorder}" />
+                                            </ImageBrush.ImageSource>
+                                        </ImageBrush>
                                     </Border.Background>
                                 </Border>
                                 <!--  News feed name  -->

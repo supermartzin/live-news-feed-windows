@@ -49,15 +49,9 @@ namespace LiveNewsFeed.UI.UWP.Views
             base.OnNavigatedFrom(e);
         }
 
-        protected override void OnApplicationThemeChanged(Theme theme)
-        {
-            SetTitleBarButtonColors();
-        }
+        protected override void OnApplicationThemeChanged(Theme theme) => SetTitleBarButtonColors();
 
-        protected override void OnSystemThemeChanged(ApplicationTheme theme)
-        {
-            SetTitleBarButtonColors();
-        }
+        protected override void OnSystemThemeChanged(ApplicationTheme theme) => SetTitleBarButtonColors();
 
 
         private void ImagePreviewOpened()
@@ -74,10 +68,7 @@ namespace LiveNewsFeed.UI.UWP.Views
             Window.Current.SetTitleBar(NewsFeedTitleBar);
         }
 
-        private void SetImagePreviewZoom(float zoomFactor)
-        {
-            ZoomPanel.ChangeView(0, 0, zoomFactor);
-        }
+        private void SetImagePreviewZoom(float zoomFactor) => ZoomPanel.ChangeView(0, 0, zoomFactor);
 
         private void SetTitleBarButtonColors()
         {
