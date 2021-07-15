@@ -273,6 +273,12 @@
   <data name="NewsFeed_OpenSettingsButton.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
     <value>Open Settings page</value>
   </data>
+  <data name="NewsFeed_OpenSourcesSelectionButton.Label" xml:space="preserve">
+    <value>News Sources</value>
+  </data>
+  <data name="NewsFeed_OpenSourcesSelectionButton.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
+    <value>Open News Sources selection page</value>
+  </data>
   <data name="NewsFeed_RefreshFeedButton.Label" xml:space="preserve">
     <value>Refresh</value>
   </data>

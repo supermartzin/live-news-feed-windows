@@ -177,6 +177,7 @@
     <Compile Include="Services\NavigationService.cs" />
     <Compile Include="ApplicationInfo.cs" />
     <Compile Include="ViewModels\ArticlePreviewPageViewModel.cs" />
+    <Compile Include="ViewModels\NewsFeedDataSourceViewModel.cs" />
     <Compile Include="ViewModels\NewsFeedLogoViewModel.cs" />
     <Compile Include="ViewModels\SettingsMenuViewModel.cs" />
     <Compile Include="ViewModels\SocialPostViewModel.cs" />

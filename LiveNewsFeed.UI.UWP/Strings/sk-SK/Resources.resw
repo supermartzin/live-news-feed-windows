@@ -273,6 +273,12 @@
   <data name="NewsFeed_OpenSettingsButton.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
     <value>Otvoriť nastavenia</value>
   </data>
+  <data name="NewsFeed_OpenSourcesSelectionButton.Label" xml:space="preserve">
+    <value>Zdroje správ</value>
+  </data>
+  <data name="NewsFeed_OpenSourcesSelectionButton.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
+    <value>Otvoriť výber zdrojov správ</value>
+  </data>
   <data name="NewsFeed_RefreshFeedButton.Label" xml:space="preserve">
     <value>Aktualizovať</value>
   </data>

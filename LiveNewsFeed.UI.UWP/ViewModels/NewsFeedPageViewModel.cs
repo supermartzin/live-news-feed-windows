@@ -78,6 +78,8 @@ namespace LiveNewsFeed.UI.UWP.ViewModels
 
         public AdvancedCollectionView ArticlePosts { get; private set; }
 
+        public IList<NewsFeedDataSourceViewModel> DataSources { get; private set; }
+
         public IAsyncRelayCommand RefreshNewsFeedCommand { get; private set; }
 
         public IAsyncRelayCommand LoadOlderPostsCommand { get; private set; }
@@ -103,6 +105,7 @@ namespace LiveNewsFeed.UI.UWP.ViewModels
             _articlePosts = new ObservableCollection<NewsArticlePostViewModel>();
             _articlePostsViewFilters = new HashSet<Predicate<NewsArticlePostViewModel>>();
 
+            LoadDataSources();
             SetArticlePostsView();
             RegisterEventHandlers();
             InitializeCommands();
@@ -110,6 +113,21 @@ namespace LiveNewsFeed.UI.UWP.ViewModels
             StartUpdater();
         }
 
+
+        private void LoadDataSources()
+        {
+            DataSources = new List<NewsFeedDataSourceViewModel>();
+
+            foreach (var dataSource in _dataSourcesManager.GetRegisteredDataSources())
+            {
+                var dataSourceViewModel = new NewsFeedDataSourceViewModel(dataSource);
+
+                // ensure filter refresh when data source enabled/disabled
+                dataSourceViewModel.IsEnabledChanged += (_, _) => ArticlePosts.RefreshFilter();
+
+                DataSources.Add(dataSourceViewModel);
+            }
+        }
 
         private void SetArticlePostsView()
         {
@@ -128,6 +146,13 @@ namespace LiveNewsFeed.UI.UWP.ViewModels
 
             if (_settingsManager.NewsFeedDisplaySettings.ShowOnlyImportantPosts)
                 _articlePostsViewFilters.Add(ViewFilters.ShowOnlyImportantPostsFilter);
+
+            _articlePostsViewFilters.Add(viewModel =>
+            {
+                var dataSource = _dataSourcesManager.GetDataSourceByName(viewModel.NewsFeedName);
+                
+                return dataSource is not null && dataSource.IsEnabled;
+            });
         }
 
         private void RegisterEventHandlers()

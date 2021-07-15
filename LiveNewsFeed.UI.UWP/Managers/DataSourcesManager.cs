@@ -67,7 +67,7 @@ namespace LiveNewsFeed.UI.UWP.Managers
         {
             var posts = new List<NewsArticlePost>();
 
-            foreach (var dataSource in _dataSources.Values)
+            foreach (var dataSource in _dataSources.Values.Where(dataSource => dataSource.IsEnabled))
             {
                 var newPosts = await dataSource.NewsFeed
                                                .GetPostsAsync(options?.Before,
@@ -106,7 +106,7 @@ namespace LiveNewsFeed.UI.UWP.Managers
         {
             var posts = new List<NewsArticlePost>();
 
-            foreach (var dataSource in _dataSources.Values)
+            foreach (var dataSource in _dataSources.Values.Where(dataSource => dataSource.IsEnabled))
             {
                 // get oldest post time
                 DateTime? oldestPostTime;
@@ -158,7 +158,7 @@ namespace LiveNewsFeed.UI.UWP.Managers
         {
             var posts = new List<NewsArticlePost>();
 
-            foreach (var dataSource in _dataSources.Values)
+            foreach (var dataSource in _dataSources.Values.Where(dataSource => dataSource.IsEnabled))
             {
                 // get last update time
                 DateTime? lastPostPublishTime;

@@ -575,6 +575,70 @@
                 </AppBarButton>
             </CommandBar.Content>
 
+            <!--  Sources selection menu  -->
+            <AppBarButton x:Uid="NewsFeed_OpenSourcesSelectionButton"
+                          Style="{ThemeResource AppBarButtonRevealStyle}"
+                          AllowFocusOnInteraction="True">
+                <AppBarButton.Icon>
+                    <FontIcon Glyph="&#xF57E;"/>
+                </AppBarButton.Icon>
+
+                <AppBarButton.Flyout>
+                    <Flyout api8:ShouldConstrainToRootBounds="False">
+                        <GridView ItemsSource="{x:Bind ViewModel.DataSources}"
+                                  SelectionMode="None">
+                            <GridView.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <ItemsStackPanel Orientation="Vertical"
+                                                     HorizontalAlignment="Left"/>
+                                </ItemsPanelTemplate>
+                            </GridView.ItemsPanel>
+
+                            <GridView.ItemContainerStyle>
+                                <Style TargetType="GridViewItem">
+                                    <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                                    <Setter Property="Margin" Value="10 5" />
+                                </Style>
+                            </GridView.ItemContainerStyle>
+                            
+                            <GridView.ItemTemplate>
+                                <DataTemplate x:DataType="vm:NewsFeedDataSourceViewModel">
+                                    <StackPanel Orientation="Horizontal"
+                                                HorizontalAlignment="Left"
+                                                VerticalAlignment="Center">
+                                        <CheckBox IsChecked="{x:Bind IsEnabled, Mode=TwoWay}"
+                                                  Padding="0"
+                                                  Margin="0 0 15 0"
+                                                  MinWidth="0"/>
+                                        <Border Height="35"
+                                                Width="35"
+                                                CornerRadius="2"
+                                                Margin="5 0 10 0"
+                                                BorderBrush="Transparent"
+                                                BorderThickness="0"
+                                                x:Name="LogoBorder">
+                                            <Border.Background>
+                                                <ImageBrush>
+                                                    <ImageBrush.ImageSource>
+                                                        <BitmapImage UriSource="{x:Bind Logo.FilePath.AbsoluteUri, Mode=OneWay}"
+                                                                     DecodePixelHeight="{Binding Height, ElementName=LogoBorder}"
+                                                                     DecodePixelWidth="{Binding Width, ElementName=LogoBorder}" />
+                                                    </ImageBrush.ImageSource>
+                                                </ImageBrush>
+                                            </Border.Background>
+                                        </Border>
+                                        <TextBlock Text="{x:Bind Name}"
+                                                   FontWeight="SemiBold"
+                                                   VerticalAlignment="Center"
+                                                   HorizontalAlignment="Left"/>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </GridView.ItemTemplate>
+                        </GridView>
+                    </Flyout>
+                </AppBarButton.Flyout>
+            </AppBarButton>
+
             <!--  Settings menu  -->
             <AppBarButton x:Uid="NewsFeed_OpenSettingsButton"
                           Style="{ThemeResource AppBarButtonRevealStyle}"
