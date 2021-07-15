@@ -2,10 +2,14 @@
 
 using LiveNewsFeed.DataSource.Common;
 
+using LiveNewsFeed.UI.UWP.Managers;
+
 namespace LiveNewsFeed.UI.UWP.ViewModels
 {
     public class NewsFeedDataSourceViewModel : ViewModelBase
     {
+        private readonly ISettingsManager _settingsManager;
+
         private readonly NewsFeedDataSource _originalDataSource;
 
         public string Name => _originalDataSource.Name;
@@ -23,7 +27,7 @@ namespace LiveNewsFeed.UI.UWP.ViewModels
 
                 _originalDataSource.IsEnabled = value;
 
-                // TODO set in settings
+                _settingsManager.NewsFeedDisplaySettings.SetNewsFeedDataSourceState(Name, value);
 
                 if (set)
                     IsEnabledChanged?.Invoke(this, EventArgs.Empty);
@@ -32,9 +36,11 @@ namespace LiveNewsFeed.UI.UWP.ViewModels
 
         public event EventHandler IsEnabledChanged;
 
-        public NewsFeedDataSourceViewModel(NewsFeedDataSource originalDataSource)
+        public NewsFeedDataSourceViewModel(NewsFeedDataSource originalDataSource,
+                                           ISettingsManager settingsManager)
         {
             _originalDataSource = originalDataSource ?? throw new ArgumentNullException(nameof(originalDataSource));
+            _settingsManager = settingsManager ?? throw new ArgumentNullException(nameof(settingsManager));
 
             _isEnabled = originalDataSource.IsEnabled;
             Logo = new NewsFeedLogoViewModel(originalDataSource.Logo.LightThemeUrl,

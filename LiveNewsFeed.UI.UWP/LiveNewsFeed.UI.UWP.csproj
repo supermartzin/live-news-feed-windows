@@ -219,11 +219,14 @@
     <Content Include="Assets\Logos\app-logo.png" />
     <Content Include="Assets\Logos\apple-music-logo.png" />
     <Content Include="Assets\Logos\deezer-logo.png" />
-    <Content Include="Assets\Logos\denikncz-logo.jpg" />
-    <Content Include="Assets\Logos\denniknsk-logo.png" />
+    <Content Include="Assets\Logos\denikncz-logo-darktheme.png" />
+    <Content Include="Assets\Logos\denikncz-logo-lighttheme.png" />
+    <Content Include="Assets\Logos\denniknsk-logo-darktheme.png" />
+    <Content Include="Assets\Logos\denniknsk-logo-lighttheme.png" />
     <Content Include="Assets\Logos\facebook-logo.png" />
     <Content Include="Assets\Logos\instagram.png" />
-    <Content Include="Assets\Logos\seznamzpravy-logo.png" />
+    <Content Include="Assets\Logos\seznamzpravy-logo-darktheme.png" />
+    <Content Include="Assets\Logos\seznamzpravy-logo-lighttheme.png" />
     <Content Include="Assets\Logos\spotify-logo.png" />
     <Content Include="Assets\Logos\twitter-logo.png" />
     <Content Include="Assets\Logos\youtube-logo.png" />

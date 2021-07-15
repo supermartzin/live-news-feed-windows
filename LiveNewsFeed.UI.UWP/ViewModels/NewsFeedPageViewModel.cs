@@ -120,7 +120,7 @@ namespace LiveNewsFeed.UI.UWP.ViewModels
 
             foreach (var dataSource in _dataSourcesManager.GetRegisteredDataSources())
             {
-                var dataSourceViewModel = new NewsFeedDataSourceViewModel(dataSource);
+                var dataSourceViewModel = new NewsFeedDataSourceViewModel(dataSource, _settingsManager);
 
                 // ensure filter refresh when data source enabled/disabled
                 dataSourceViewModel.IsEnabledChanged += (_, _) => ArticlePosts.RefreshFilter();

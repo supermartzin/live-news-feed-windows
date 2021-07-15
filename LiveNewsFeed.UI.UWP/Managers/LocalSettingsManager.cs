@@ -21,6 +21,7 @@ namespace LiveNewsFeed.UI.UWP.Managers
             public const string AutomaticUpdatesIntervalKey = "interval";
             public const string NewsFeedDisplaySettingsKey = "newsFeedDisplaySettings";
             public const string ShowOnlyImportantPostsKey = "onlyImportant";
+            public const string NewsFeedDataSourceStates = "newsFeedDataSourceStates";
         }
 
         private static class DefaultSettings
@@ -170,6 +171,16 @@ namespace LiveNewsFeed.UI.UWP.Managers
 
                 SaveNewsFeedDisplaySettings();
             }
+            if (_appDataSettings.Values[SettingsKeys.NewsFeedDataSourceStates] is ApplicationDataCompositeValue newsFeedDataSourceStates)
+            {
+                foreach (var (name, state) in newsFeedDataSourceStates)
+                {
+                    if (state is bool isEnabled)
+                    {
+                        NewsFeedDisplaySettings.SetNewsFeedDataSourceState(name, isEnabled);
+                    }
+                }
+            }
 
             NewsFeedDisplaySettings.SettingChanged += (_, _) => SaveNewsFeedDisplaySettings();
         }
@@ -206,7 +217,14 @@ namespace LiveNewsFeed.UI.UWP.Managers
 
         private void SaveNewsFeedDisplaySettings()
         {
+            var newsFeedDataSourceStates = new ApplicationDataCompositeValue();
+            foreach (var (name, isEnabled) in NewsFeedDisplaySettings.NewsFeedDataSourceStates)
+            {
+                newsFeedDataSourceStates[name] = isEnabled;
+            }
+
             // save to Local AppData
+            _appDataSettings.Values[SettingsKeys.NewsFeedDataSourceStates] = newsFeedDataSourceStates;
             _appDataSettings.Values[SettingsKeys.NewsFeedDisplaySettingsKey] = new ApplicationDataCompositeValue
             {
                 [SettingsKeys.ShowOnlyImportantPostsKey] = NewsFeedDisplaySettings.ShowOnlyImportantPosts

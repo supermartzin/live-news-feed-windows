@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.Threading.Tasks;
 using Windows.ApplicationModel;
@@ -9,13 +10,13 @@ using Windows.Globalization;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
-using LiveNewsFeed.DataSource.AktualneCz;
 using Microsoft.Toolkit.Uwp.UI;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using UnhandledExceptionEventArgs = Windows.UI.Xaml.UnhandledExceptionEventArgs;
 
 using LiveNewsFeed.DataSource.Common;
+using LiveNewsFeed.DataSource.AktualneCz;
 using LiveNewsFeed.DataSource.DenikNcz;
 using LiveNewsFeed.DataSource.DennikNsk;
 using LiveNewsFeed.DataSource.SeznamZpravyCzNewsFeed;
@@ -249,19 +250,26 @@ namespace LiveNewsFeed.UI.UWP
         private static void LoadDataSources()
         {
             var manager = ServiceLocator.Container.GetRequiredService<IDataSourcesManager>();
+            var settings = ServiceLocator.Container.GetRequiredService<ISettingsManager>();
 
-            manager.RegisterDataSource(new NewsFeedDataSource(ServiceLocator.Container.GetRequiredService<DennikNskNewsFeed>(),
-                                                              new Logo(new Uri("ms-appx:///Assets/Logos/denniknsk-logo.png"),
-                                                                       new Uri("ms-appx:///Assets/Logos/denniknsk-logo.png")), true));
-            manager.RegisterDataSource(new NewsFeedDataSource(ServiceLocator.Container.GetRequiredService<DenikNczNewsFeed>(),
-                                                              new Logo(new Uri("ms-appx:///Assets/Logos/denikncz-logo.jpg"),
-                                                                       new Uri("ms-appx:///Assets/Logos/denikncz-logo.jpg")), true));
-            manager.RegisterDataSource(new NewsFeedDataSource(ServiceLocator.Container.GetRequiredService<AktualneCzNewsFeed>(),
-                                                              new Logo(new Uri("ms-appx:///Assets/Logos/aktualnecz-logo-lighttheme.png"),
-                                                                       new Uri("ms-appx:///Assets/Logos/aktualnecz-logo-darktheme.png")), true));
-            manager.RegisterDataSource(new NewsFeedDataSource(ServiceLocator.Container.GetRequiredService<SeznamZpravyCzNewsFeed>(),
-                                                              new Logo(new Uri("ms-appx:///Assets/Logos/seznamzpravy-logo.png"),
-                                                                       new Uri("ms-appx:///Assets/Logos/seznamzpravy-logo.png")), true));
+            var newsFeeds = new Dictionary<Type, string>
+            {
+                [typeof(DennikNskNewsFeed)] = "denniknsk",
+                [typeof(DenikNczNewsFeed)] = "denikncz",
+                [typeof(AktualneCzNewsFeed)] = "aktualnecz",
+                [typeof(SeznamZpravyCzNewsFeed)] = "seznamzpravy"
+            };
+
+            foreach (var (type, fileName) in newsFeeds)
+            {
+                var newsFeed = (INewsFeed) ServiceLocator.Container.GetRequiredService(type);
+                var logo = new Logo(new Uri($"ms-appx:///Assets/Logos/{fileName}-logo-lighttheme.png"),
+                                    new Uri($"ms-appx:///Assets/Logos/{fileName}-logo-darktheme.png"));
+                if (!settings.NewsFeedDisplaySettings.NewsFeedDataSourceStates.TryGetValue(newsFeed.Name, out var isEnabled))
+                    isEnabled = true;
+
+                manager.RegisterDataSource(new NewsFeedDataSource(newsFeed, logo, isEnabled));
+            }
         }
 
         private static void OnUnhandledException(object sender, UnhandledExceptionEventArgs e)
