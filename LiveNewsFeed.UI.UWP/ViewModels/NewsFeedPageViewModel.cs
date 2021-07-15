@@ -3,6 +3,10 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
+using Windows.UI;
+using Windows.UI.ViewManagement;
+using Windows.UI.Xaml;
+using Windows.UI.Xaml.Media;
 using Microsoft.Toolkit.Uwp.UI;
 using Microsoft.Toolkit.Mvvm.Input;
 using Microsoft.Extensions.Logging;
@@ -69,6 +73,8 @@ namespace LiveNewsFeed.UI.UWP.ViewModels
             get => _selectedPost;
             set => SetProperty(ref _selectedPost, value);
         }
+
+        public SolidColorBrush HyperlinkAccentColor => new(GetCurrentHyperlinkColor());
 
         public AdvancedCollectionView ArticlePosts { get; private set; }
 
@@ -278,9 +284,9 @@ namespace LiveNewsFeed.UI.UWP.ViewModels
 
         private bool CanLoadOlderPosts() => !ArePostsLoadingManually;
 
-        private void DataSourcesManager_OnNewsArticlePostReceived(object sender, NewsArticlePost newsArticlePost)
+        private async void DataSourcesManager_OnNewsArticlePostReceived(object sender, NewsArticlePost newsArticlePost)
         {
-            InvokeOnUi(() =>
+            await InvokeOnUiAsync(() =>
             {
                 var viewModel = new NewsArticlePostViewModel(newsArticlePost);
 
@@ -326,5 +332,18 @@ namespace LiveNewsFeed.UI.UWP.ViewModels
             Important = _settingsManager.NewsFeedDisplaySettings.ShowOnlyImportantPosts,
             Count = 20
         };
+
+        private Color GetCurrentHyperlinkColor() => ThemeManager.CurrentApplicationTheme switch
+        {
+            ApplicationTheme.Dark => ThemeManager.GetSystemColor(UIColorType.AccentLight1),
+            ApplicationTheme.Light => ThemeManager.GetSystemColor(UIColorType.AccentDark1),
+            _ => ThemeManager.GetSystemColor(UIColorType.Accent)
+        };
+
+        protected override void OnSystemThemeChanged(ApplicationTheme theme) => OnPropertyChanged(nameof(HyperlinkAccentColor));
+
+        protected override void OnApplicationThemeChanged(Theme theme) => OnPropertyChanged(nameof(HyperlinkAccentColor));
+
+        protected override void OnSystemAccentColorChanged(Color accentColor) => OnPropertyChanged(nameof(HyperlinkAccentColor));
     }
 }

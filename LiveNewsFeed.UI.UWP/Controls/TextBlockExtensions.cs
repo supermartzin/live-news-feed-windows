@@ -180,7 +180,7 @@ namespace LiveNewsFeed.UI.UWP.Controls
         {
             await Helpers.InvokeOnUiAsync(() =>
             {
-                foreach (Hyperlink hyperlink in Hyperlinks)
+                foreach (var hyperlink in Hyperlinks)
                 {
                     hyperlink.Foreground = new SolidColorBrush(GetCurrentHyperlinkColor());
                 }

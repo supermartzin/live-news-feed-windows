@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Windows.ApplicationModel.Resources;
+using Windows.UI;
 using Windows.UI.Xaml;
 using Microsoft.Toolkit.Mvvm.ComponentModel;
 using Microsoft.Extensions.DependencyInjection;
@@ -12,15 +13,17 @@ namespace LiveNewsFeed.UI.UWP.ViewModels
 {
     public abstract class ViewModelBase : ObservableObject
     {
+        protected IThemeManager ThemeManager { get; }
+
         protected ViewModelBase()
         {
+            ThemeManager = ServiceLocator.Container.GetRequiredService<IThemeManager>();
+
             RegisterThemeChangingEventHandlers();
         }
         
         protected virtual async Task InvokeOnUiAsync(Action action) => await Helpers.InvokeOnUiAsync(action);
-
-        protected virtual void InvokeOnUi(Action action) => Helpers.InvokeOnUiAsync(action);
-
+        
         protected virtual string GetLocalizedString(string key)
         {
             if (key == null)
@@ -39,12 +42,15 @@ namespace LiveNewsFeed.UI.UWP.ViewModels
         {
         }
 
+        protected virtual void OnSystemAccentColorChanged(Color accentColor)
+        {
+        }
+
         private void RegisterThemeChangingEventHandlers()
         {
-            IThemeManager themeManager = ServiceLocator.Container.GetRequiredService<IThemeManager>();
-
-            themeManager.ApplicationThemeChanged += async (_, _) => await InvokeOnUiAsync(() => OnApplicationThemeChanged(themeManager.CurrentTheme));
-            themeManager.SystemThemeChanged += async (_, _) => await InvokeOnUiAsync(() => OnSystemThemeChanged(themeManager.CurrentSystemTheme));
+            ThemeManager.ApplicationThemeChanged += async (_, _) => await InvokeOnUiAsync(() => OnApplicationThemeChanged(ThemeManager.CurrentTheme));
+            ThemeManager.SystemThemeChanged += async (_, _) => await InvokeOnUiAsync(() => OnSystemThemeChanged(ThemeManager.CurrentSystemTheme));
+            ThemeManager.SystemAccentColorChanged += async (_, _) => await InvokeOnUiAsync(() => OnSystemAccentColorChanged(ThemeManager.CurrentAccentColor));
         }
     }
 }

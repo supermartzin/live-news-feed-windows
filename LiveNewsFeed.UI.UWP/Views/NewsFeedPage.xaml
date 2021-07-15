@@ -544,24 +544,28 @@
                                     <Run Text="{x:Bind app:ApplicationInfo.Author}"
                                          FontWeight="SemiBold"/>
                                     <LineBreak/>
-                                    <Hyperlink NavigateUri="mailto:supermartzin@gmail.com">
+                                    <Hyperlink NavigateUri="mailto:supermartzin@gmail.com"
+                                               Foreground="{x:Bind ViewModel.HyperlinkAccentColor, Mode=OneWay}">
                                         <Run x:Uid="AppInfo_SendEmailToAuthor"
                                              FontSize="12"/>    
                                     </Hyperlink>
                                     <LineBreak/>
                                     <LineBreak/>
                                     <Run x:Uid="AppInfo_License" />
-                                    <Hyperlink NavigateUri="https://choosealicense.com/licenses/gpl-3.0/">GNU GPLv3</Hyperlink>
+                                    <Hyperlink NavigateUri="https://choosealicense.com/licenses/gpl-3.0/"
+                                               Foreground="{x:Bind ViewModel.HyperlinkAccentColor, Mode=OneWay}">GNU GPLv3</Hyperlink>
                                     <LineBreak/>
                                     <LineBreak/>
                                     <Run x:Uid="AppInfo_SourceCode"
                                          FontWeight="SemiBold" />
                                     <LineBreak/>
-                                    <Hyperlink NavigateUri="https://github.com/supermartzin/live-news-feed-windows">
+                                    <Hyperlink NavigateUri="https://github.com/supermartzin/live-news-feed-windows"
+                                               Foreground="{x:Bind ViewModel.HyperlinkAccentColor, Mode=OneWay}">
                                         <Run x:Uid="AppInfo_Repository"/>
                                     </Hyperlink>
                                     <LineBreak/>
-                                    <Hyperlink NavigateUri="https://github.com/supermartzin/live-news-feed-windows/network/dependencies">
+                                    <Hyperlink NavigateUri="https://github.com/supermartzin/live-news-feed-windows/network/dependencies"
+                                               Foreground="{x:Bind ViewModel.HyperlinkAccentColor, Mode=OneWay}">
                                         <Run x:Uid="AppInfo_ThirdPartyLibraries" />
                                     </Hyperlink>
                                 </TextBlock>
