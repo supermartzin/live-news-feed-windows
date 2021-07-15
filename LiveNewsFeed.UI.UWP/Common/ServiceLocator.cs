@@ -9,7 +9,7 @@ using LogLevel = Microsoft.Extensions.Logging.LogLevel;
 
 using LiveNewsFeed.DataSource.DenikNcz;
 using LiveNewsFeed.DataSource.DennikNsk;
-
+using LiveNewsFeed.DataSource.SeznamZpravyCzNewsFeed;
 using LiveNewsFeed.UI.UWP.Managers;
 using LiveNewsFeed.UI.UWP.Services;
 using LiveNewsFeed.UI.UWP.ViewModels;
@@ -61,6 +61,7 @@ namespace LiveNewsFeed.UI.UWP.Common
             serviceCollection.AddSingleton<DennikNskNewsFeed>();
             serviceCollection.AddSingleton<DenikNczNewsFeed>();
             serviceCollection.AddSingleton<AktualneCzNewsFeed>();
+            serviceCollection.AddSingleton<SeznamZpravyCzNewsFeed>();
         }
 
         private static void AddViewModels(IServiceCollection serviceCollection)

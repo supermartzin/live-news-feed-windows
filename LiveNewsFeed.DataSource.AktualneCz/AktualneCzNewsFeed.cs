@@ -36,7 +36,7 @@ namespace LiveNewsFeed.DataSource.AktualneCz
         {
             if (after is not null && after >= DateTime.Now)
                 throw new ArgumentOutOfRangeException(nameof(after));
-            if (after is not null && before is null && after >= before)
+            if (after >= before)
                 throw new ArgumentException("Before and after dates have invalid relative values.");
             if (count < 0)
                 throw new ArgumentOutOfRangeException(nameof(count));
@@ -226,6 +226,8 @@ namespace LiveNewsFeed.DataSource.AktualneCz
                 var page = await htmlWeb.LoadFromWebAsync(link).ConfigureAwait(false);
 
                 var head = page.DocumentNode.SelectSingleNode("//head");
+                if (head.SelectSingleNode("./meta[1]") is null)
+                    return null;
 
                 var id = ParseId(link);
                 var title = head.SelectSingleNode("./meta[@name='twitter:title']").GetAttributeValue("content", string.Empty);

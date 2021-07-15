@@ -18,7 +18,7 @@ using UnhandledExceptionEventArgs = Windows.UI.Xaml.UnhandledExceptionEventArgs;
 using LiveNewsFeed.DataSource.Common;
 using LiveNewsFeed.DataSource.DenikNcz;
 using LiveNewsFeed.DataSource.DennikNsk;
-
+using LiveNewsFeed.DataSource.SeznamZpravyCzNewsFeed;
 using LiveNewsFeed.UI.UWP.Common;
 using LiveNewsFeed.UI.UWP.Managers;
 using LiveNewsFeed.UI.UWP.Managers.Settings;
@@ -259,6 +259,9 @@ namespace LiveNewsFeed.UI.UWP
             manager.RegisterDataSource(new NewsFeedDataSource(ServiceLocator.Container.GetRequiredService<AktualneCzNewsFeed>(),
                                                               new Logo(new Uri("ms-appx:///Assets/Logos/aktualnecz-logo-lighttheme.png"),
                                                                        new Uri("ms-appx:///Assets/Logos/aktualnecz-logo-darktheme.png"))));
+            manager.RegisterDataSource(new NewsFeedDataSource(ServiceLocator.Container.GetRequiredService<SeznamZpravyCzNewsFeed>(),
+                                                              new Logo(new Uri("ms-appx:///Assets/Logos/seznamzpravy-logo.png"),
+                                                                       new Uri("ms-appx:///Assets/Logos/seznamzpravy-logo.png"))));
         }
 
         private static void OnUnhandledException(object sender, UnhandledExceptionEventArgs e)

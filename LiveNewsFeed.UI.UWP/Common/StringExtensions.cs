@@ -57,7 +57,7 @@ namespace LiveNewsFeed.UI.UWP.Common
                 htmlContent = htmlContent.Replace(result.Value, linkTag);
             }
 
-            return htmlContent;
+            return htmlContent.Trim();
         }
     }
 }
