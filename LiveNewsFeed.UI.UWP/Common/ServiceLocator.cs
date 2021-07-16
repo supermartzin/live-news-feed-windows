@@ -1,15 +1,16 @@
 ﻿using System;
 using System.Net.Http;
-using LiveNewsFeed.DataSource.AktualneCz;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using NLog;
 using NLog.Extensions.Logging;
 using LogLevel = Microsoft.Extensions.Logging.LogLevel;
 
+using LiveNewsFeed.DataSource.AktualneCz;
 using LiveNewsFeed.DataSource.DenikNcz;
 using LiveNewsFeed.DataSource.DennikNsk;
 using LiveNewsFeed.DataSource.SeznamZpravyCzNewsFeed;
+
 using LiveNewsFeed.UI.UWP.Managers;
 using LiveNewsFeed.UI.UWP.Services;
 using LiveNewsFeed.UI.UWP.ViewModels;
@@ -69,6 +70,7 @@ namespace LiveNewsFeed.UI.UWP.Common
             serviceCollection.AddSingleton<NewsFeedPageViewModel>();
             serviceCollection.AddTransient<SettingsMenuViewModel>();
             serviceCollection.AddTransient<ArticlePreviewPageViewModel>();
+            serviceCollection.AddTransient<ApplicationInfoViewModel>();
         }
 
         private static void AddLogging(IServiceCollection serviceCollection)

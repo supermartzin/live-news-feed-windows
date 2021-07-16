@@ -66,6 +66,8 @@ namespace LiveNewsFeed.UI.UWP.ViewModels
         }
         
         public SettingsMenuViewModel SettingsMenu { get; }
+
+        public ApplicationInfoViewModel AppInfo { get; }
         
         private NewsArticlePostViewModel? _selectedPost;
         public NewsArticlePostViewModel? SelectedPost
@@ -91,6 +93,7 @@ namespace LiveNewsFeed.UI.UWP.ViewModels
                                      ILiveTileService liveTileService,
                                      IAutomaticUpdater automaticUpdater,
                                      SettingsMenuViewModel settingsMenuViewModel,
+                                     ApplicationInfoViewModel applicationInfoViewModel,
                                      ILogger<NewsFeedPageViewModel>? logger = default)
         {
             _dataSourcesManager = dataSourcesManager ?? throw new ArgumentNullException(nameof(dataSourcesManager));
@@ -100,6 +103,7 @@ namespace LiveNewsFeed.UI.UWP.ViewModels
             _liveTileService = liveTileService ?? throw new ArgumentNullException(nameof(liveTileService));
             _automaticUpdater = automaticUpdater ?? throw new ArgumentNullException(nameof(automaticUpdater));
             SettingsMenu = settingsMenuViewModel ?? throw new ArgumentNullException(nameof(settingsMenuViewModel));
+            AppInfo = applicationInfoViewModel ?? throw new ArgumentNullException(nameof(applicationInfoViewModel));
             _logger = logger;
 
             _articlePosts = new ObservableCollection<NewsArticlePostViewModel>();

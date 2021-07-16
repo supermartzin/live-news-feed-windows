@@ -175,7 +175,7 @@
     <Compile Include="Managers\LocalSettingsManager.cs" />
     <Compile Include="Services\INavigationService.cs" />
     <Compile Include="Services\NavigationService.cs" />
-    <Compile Include="ApplicationInfo.cs" />
+    <Compile Include="ViewModels\ApplicationInfoViewModel.cs" />
     <Compile Include="ViewModels\ArticlePreviewPageViewModel.cs" />
     <Compile Include="ViewModels\NewsFeedDataSourceViewModel.cs" />
     <Compile Include="ViewModels\NewsFeedLogoViewModel.cs" />
