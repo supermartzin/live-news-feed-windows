@@ -31,6 +31,11 @@ namespace LiveNewsFeed.UI.UWP.Common
                              .Replace("($nl$)($nl$)", Environment.NewLine + Environment.NewLine)
                              .Replace("($nl$)", Environment.NewLine);
 
+            content = content.Replace(Environment.NewLine + Environment.NewLine + Environment.NewLine,
+                                      Environment.NewLine + Environment.NewLine);
+
+            content = content.Replace($"{Environment.NewLine}•", "•");
+
             return content.Trim();
         }
 
