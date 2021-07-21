@@ -10,6 +10,7 @@ using Microsoft.Extensions.Logging;
 using LiveNewsFeed.Models;
 
 using LiveNewsFeed.DataSource.Common;
+using LiveNewsFeed.DataSource.Common.Utilities;
 
 namespace LiveNewsFeed.DataSource.SeznamZpravyCzNewsFeed
 {

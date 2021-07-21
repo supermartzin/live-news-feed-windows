@@ -9,7 +9,7 @@
   <Identity
     Name="LiveNewsFeed.UWP"
     Publisher="CN=Martin Vrábel"
-    Version="1.2.2.0" />
+    Version="1.2.3.0" />
 
   <mp:PhoneIdentity PhoneProductId="0b597019-cdaa-4f7e-b120-4bd333ac3f8d" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
 

@@ -9,7 +9,7 @@ using Microsoft.Extensions.Logging;
 using LiveNewsFeed.Models;
 
 using LiveNewsFeed.DataSource.Common;
-using LiveNewsFeed.DataSource.DenikNcz.Converters;
+using LiveNewsFeed.DataSource.Common.Converters;
 using LiveNewsFeed.DataSource.DenikNcz.DTO;
 
 namespace LiveNewsFeed.DataSource.DenikNcz
@@ -130,22 +130,22 @@ namespace LiveNewsFeed.DataSource.DenikNcz
 
             // get data string from response
             var data = await response.Content
-                                            .ReadAsStringAsync()
-                                            .ConfigureAwait(false);
+                                     .ReadAsStreamAsync()
+                                     .ConfigureAwait(false);
 
             // serialize to DTO objects
-            var container = JsonSerializer.Deserialize<RootContainer>(data, new JsonSerializerOptions
+            var container = await JsonSerializer.DeserializeAsync<RootContainer>(data, new JsonSerializerOptions
             {
                 Converters = { new DateTimeConverter(Constants.DateTimeFormat) }
-            });
+            }).ConfigureAwait(false);
 
             if (container == null)
                 throw new Exception("Error getting or parsing posts from Dennik N.");
 
             // order posts by datetime
             var posts = (container.ImportantPosts
-                                                ?? container.TimelinePosts
-                                                ?? Enumerable.Empty<ArticlePostDTO>()).OrderByDescending(post => post.Created).ToList();
+                            ?? container.TimelinePosts
+                            ?? Enumerable.Empty<ArticlePostDTO>()).OrderByDescending(post => post.Created).ToList();
 
             return posts.Count > 0 && count > 0
                     ? posts.Take(count).ToList()

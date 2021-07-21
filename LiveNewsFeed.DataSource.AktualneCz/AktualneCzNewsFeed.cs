@@ -10,6 +10,7 @@ using Microsoft.Extensions.Logging;
 using LiveNewsFeed.Models;
 
 using LiveNewsFeed.DataSource.Common;
+using LiveNewsFeed.DataSource.Common.Utilities;
 
 namespace LiveNewsFeed.DataSource.AktualneCz
 {
@@ -200,7 +201,7 @@ namespace LiveNewsFeed.DataSource.AktualneCz
                              .Where(link => link is not null)
                              .Cast<string>();
 
-            var tasks = links.Select(ParseLinkPost).ToList();
+            var tasks = links.Select(ParseLinkPost).ToArray();
 
             // wait until all posts are parsed
             await Task.WhenAll(tasks).ConfigureAwait(false);

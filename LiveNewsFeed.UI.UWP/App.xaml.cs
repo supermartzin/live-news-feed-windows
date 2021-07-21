@@ -10,6 +10,7 @@ using Windows.Globalization;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
+using LiveNewsFeed.DataSource.AktualitySk;
 using Microsoft.Toolkit.Uwp.UI;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -257,6 +258,7 @@ namespace LiveNewsFeed.UI.UWP
                 [typeof(DennikNskNewsFeed)] = "denniknsk",
                 [typeof(DenikNczNewsFeed)] = "denikncz",
                 [typeof(AktualneCzNewsFeed)] = "aktualnecz",
+                [typeof(AktualitySkNewsFeed)] = "aktualitysk",
                 [typeof(SeznamZpravyCzNewsFeed)] = "seznamzpravy"
             };
 

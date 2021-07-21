@@ -7,11 +7,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="HtmlAgilityPack" Version="1.11.34" />
     <PackageReference Include="System.Text.Json" Version="5.0.1" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="5.0.0" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\LiveNewsFeed.Models\LiveNewsFeed.Models.csproj" />
+    <ProjectReference Include="..\LiveNewsFeed.DataSource.Common\LiveNewsFeed.DataSource.Common.csproj" />
   </ItemGroup>
 
 </Project>

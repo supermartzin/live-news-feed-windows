@@ -214,6 +214,8 @@
     <Content Include="Assets\LargeTile.scale-150.png" />
     <Content Include="Assets\LargeTile.scale-200.png" />
     <Content Include="Assets\LargeTile.scale-400.png" />
+    <Content Include="Assets\Logos\aktualitysk-logo-darktheme.png" />
+    <Content Include="Assets\Logos\aktualitysk-logo-lighttheme.png" />
     <Content Include="Assets\Logos\aktualnecz-logo-darktheme.png" />
     <Content Include="Assets\Logos\aktualnecz-logo-lighttheme.png" />
     <Content Include="Assets\Logos\app-logo.png" />
@@ -348,6 +350,10 @@
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\LiveNewsFeed.DataSource.AktualitySk\LiveNewsFeed.DataSource.AktualitySk.csproj">
+      <Project>{ca6d1bb7-4d1c-4399-8dc4-0ebbdcb7c390}</Project>
+      <Name>LiveNewsFeed.DataSource.AktualitySk</Name>
+    </ProjectReference>
     <ProjectReference Include="..\LiveNewsFeed.DataSource.AktualneCz\LiveNewsFeed.DataSource.AktualneCz.csproj">
       <Project>{fba37e3f-7dc8-449c-a8fa-a8815447f132}</Project>
       <Name>LiveNewsFeed.DataSource.AktualneCz</Name>

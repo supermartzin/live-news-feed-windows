@@ -3,13 +3,13 @@ using System.Globalization;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
-namespace LiveNewsFeed.DataSource.DenikNcz.Converters
+namespace LiveNewsFeed.DataSource.Common.Converters
 {
     public class DateTimeConverter : JsonConverter<DateTime>
     {
         private readonly string _dateTimeFormat;
 
-        internal DateTimeConverter(string dateTimeFormat)
+        public DateTimeConverter(string dateTimeFormat)
         {
             _dateTimeFormat = dateTimeFormat ?? throw new ArgumentNullException(nameof(dateTimeFormat));
         }

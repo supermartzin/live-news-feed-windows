@@ -1,8 +1,8 @@
 ﻿using System;
 
-namespace LiveNewsFeed.DataSource.AktualneCz
+namespace LiveNewsFeed.DataSource.Common.Utilities
 {
-    internal static class TypeConverter
+    public static class TypeConverter
     {
         public static DateTime ToDateTime(string value, DateTime defaultValue = default) => DateTime.TryParse(value, out var parsed) ? parsed : defaultValue;
 

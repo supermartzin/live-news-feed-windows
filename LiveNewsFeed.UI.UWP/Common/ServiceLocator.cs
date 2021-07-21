@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Net.Http;
+using LiveNewsFeed.DataSource.AktualitySk;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using NLog;
@@ -62,6 +63,7 @@ namespace LiveNewsFeed.UI.UWP.Common
             serviceCollection.AddSingleton<DennikNskNewsFeed>();
             serviceCollection.AddSingleton<DenikNczNewsFeed>();
             serviceCollection.AddSingleton<AktualneCzNewsFeed>();
+            serviceCollection.AddSingleton<AktualitySkNewsFeed>();
             serviceCollection.AddSingleton<SeznamZpravyCzNewsFeed>();
         }
 

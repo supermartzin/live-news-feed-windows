@@ -6,10 +6,10 @@ using System.Text.Json;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 
-using LiveNewsFeed.DataSource.Common;
 using LiveNewsFeed.Models;
 
-using LiveNewsFeed.DataSource.DennikNsk.Converters;
+using LiveNewsFeed.DataSource.Common;
+using LiveNewsFeed.DataSource.Common.Converters;
 using LiveNewsFeed.DataSource.DennikNsk.DTO;
 
 namespace LiveNewsFeed.DataSource.DennikNsk
@@ -129,14 +129,14 @@ namespace LiveNewsFeed.DataSource.DennikNsk
 
             // get data string from response
             var data = await response.Content
-                                     .ReadAsStringAsync()
+                                     .ReadAsStreamAsync()
                                      .ConfigureAwait(false);
 
             // serialize to DTO objects
-            var container = JsonSerializer.Deserialize<RootContainer>(data, new JsonSerializerOptions
+            var container = await JsonSerializer.DeserializeAsync<RootContainer>(data, new JsonSerializerOptions
             {
                 Converters = { new DateTimeConverter(Constants.DateTimeFormat) }
-            });
+            }).ConfigureAwait(false);
 
             if (container == null)
                 throw new Exception($"Error getting or parsing posts from {Name}.");

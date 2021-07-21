@@ -77,15 +77,17 @@ namespace LiveNewsFeed.UI.UWP.Managers
                                                               options?.Important,
                                                               options?.Count).ConfigureAwait(false);
 
+                newPosts = newPosts.OrderBy(post => post.PublishTime).ToList();
+
                 lock (_updateLock)
                 {
                     // set last update time
-                    var latestPost = newPosts.FirstOrDefault();
+                    var latestPost = newPosts.LastOrDefault();
                     if (latestPost != null)
                         _dataSourcesLatestPostPublishTimes[dataSource.Name] = latestPost.PublishTime;
 
                     // set oldest post time
-                    var oldestPost = newPosts.LastOrDefault();
+                    var oldestPost = newPosts.FirstOrDefault();
                     if (oldestPost != null)
                         _dataSourcesOldestPostPublishTimes[dataSource.Name] = oldestPost.PublishTime;
                 }
@@ -127,10 +129,12 @@ namespace LiveNewsFeed.UI.UWP.Managers
                                                               options?.Important,
                                                               options?.Count).ConfigureAwait(false);
 
+                newPosts = newPosts.OrderBy(post => post.PublishTime).ToList();
+
                 lock (_updateLock)
                 {
                     // set oldest post time
-                    var oldestPost = newPosts.LastOrDefault();
+                    var oldestPost = newPosts.FirstOrDefault();
                     if (oldestPost != null)
                         _dataSourcesOldestPostPublishTimes[dataSource.Name] = oldestPost.PublishTime;
                 }
@@ -177,10 +181,12 @@ namespace LiveNewsFeed.UI.UWP.Managers
                                                               options?.Important,
                                                               options?.Count).ConfigureAwait(false);
 
+                newPosts = newPosts.OrderBy(post => post.PublishTime).ToList();
+
                 lock (_updateLock)
                 {
                     // set last update time
-                    var latestPost = newPosts.FirstOrDefault();
+                    var latestPost = newPosts.LastOrDefault();
                     if (latestPost != null)
                         _dataSourcesLatestPostPublishTimes[dataSource.Name] = latestPost.PublishTime;
                 }

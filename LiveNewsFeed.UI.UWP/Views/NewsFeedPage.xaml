@@ -16,7 +16,6 @@
                 xmlns:animations="using:Microsoft.Toolkit.Uwp.UI.Animations"
                 xmlns:core="using:Microsoft.Xaml.Interactions.Core"
                 xmlns:views="using:LiveNewsFeed.UI.UWP.Views"
-                xmlns:app="using:LiveNewsFeed.UI.UWP"
                 mc:Ignorable="d"
                 Background="{ThemeResource CustomAcrylicBackgroundBrush}"
                 ui:TitleBarExtensions.ButtonBackgroundColor="Transparent"
