@@ -9,6 +9,7 @@
         Arts,
         Science,
         Commentary,
+        Traveling,
         NotCategorized
     }
 }

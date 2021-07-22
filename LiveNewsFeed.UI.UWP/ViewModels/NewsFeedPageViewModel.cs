@@ -359,7 +359,7 @@ namespace LiveNewsFeed.UI.UWP.ViewModels
         private DataSourceUpdateOptions GetCurrentOptions() => new()
         {
             Important = _settingsManager.NewsFeedDisplaySettings.ShowOnlyImportantPosts,
-            Count = 20
+            Count = 15
         };
 
         private Color GetCurrentHyperlinkColor() => ThemeManager.CurrentApplicationTheme switch

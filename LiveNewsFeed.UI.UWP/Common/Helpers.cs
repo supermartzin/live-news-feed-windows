@@ -32,6 +32,7 @@ namespace LiveNewsFeed.UI.UWP.Common
             CategoriesMap[Category.Arts] = new CategoryViewModel(Category.Arts, "\U0001F3A8", SegoeUiSymbolFontFamily);
             CategoriesMap[Category.Science] = new CategoryViewModel(Category.Science, "\U0001F4A1", SegoeUiSymbolFontFamily);
             CategoriesMap[Category.Commentary] = new CategoryViewModel(Category.Commentary, "\uE206", SegoeMdl2AssetsFontFamily);
+            CategoriesMap[Category.Traveling] = new CategoryViewModel(Category.Traveling, "\uE709", SegoeMdl2AssetsFontFamily);
         }
 
         public static Uri? GetLogoForNewsFeed(string newsFeedName, ApplicationTheme theme)

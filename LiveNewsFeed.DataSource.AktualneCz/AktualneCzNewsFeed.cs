@@ -86,12 +86,14 @@ namespace LiveNewsFeed.DataSource.AktualneCz
                     }
                     if (count is not null && allPosts.Count >= count)
                     {
-                        allPosts = allPosts.Take(count.Value).ToList();
                         parametersFilled = true;
+                        allPosts = allPosts.OrderByDescending(post => post.PublishTime)
+                                           .Take(count.Value)
+                                           .ToList();
                     }
                 }
                 
-                return allPosts.OrderByDescending(post => post.PublishTime).ToList();
+                return allPosts;
             }
             catch (Exception ex)
             {

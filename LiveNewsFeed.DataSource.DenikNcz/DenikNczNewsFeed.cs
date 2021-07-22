@@ -52,8 +52,8 @@ namespace LiveNewsFeed.DataSource.DenikNcz
                 {
                     // get missing number of posts
                     var anotherPosts = await GetPostsAsync(posts.Last().PublishTime,
-                                                                                after, category, tag, important,
-                                                                                count - posts.Count).ConfigureAwait(false);
+                                                           after, category, tag, important,
+                                                           count - posts.Count).ConfigureAwait(false);
                     posts = posts.Union(anotherPosts)
                                  .OrderByDescending(post => post.PublishTime)
                                  .ToList();

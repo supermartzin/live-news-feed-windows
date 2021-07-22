@@ -225,6 +225,9 @@
   <data name="CategoryEnum_Sport" xml:space="preserve">
     <value>Sport</value>
   </data>
+  <data name="CategoryEnum_Traveling" xml:space="preserve">
+    <value>Traveling</value>
+  </data>
   <data name="CategoryEnum_World" xml:space="preserve">
     <value>World</value>
   </data>

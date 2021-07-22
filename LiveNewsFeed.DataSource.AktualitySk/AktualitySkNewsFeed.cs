@@ -88,8 +88,10 @@ namespace LiveNewsFeed.DataSource.AktualitySk
                 }
                 if (count is not null && allShortPosts.Count >= count)
                 {
-                    allShortPosts = allShortPosts.Take(count.Value).ToList();
                     parametersFilled = true;
+                    allShortPosts = allShortPosts.OrderByDescending(container => container.PublishTime)
+                                                 .Take(count.Value)
+                                                 .ToList();
                 }
             }
 
@@ -237,6 +239,10 @@ namespace LiveNewsFeed.DataSource.AktualitySk
             if (categoriesValue.Contains("Komentáre"))
             {
                 categories.Add(Category.Commentary);
+            }
+            if (categoriesValue.Contains("Cestovanie"))
+            {
+                categories.Add(Category.Traveling);
             }
 
             return categories;

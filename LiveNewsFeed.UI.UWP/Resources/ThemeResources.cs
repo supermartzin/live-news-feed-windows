@@ -28,7 +28,8 @@ namespace LiveNewsFeed.UI.UWP.Resources
                     {"CategorySportColor", "#005627".ToColor()},
                     {"CategoryArtsColor", "#07618D".ToColor()},
                     {"CategoryScienceColor", "#B51675".ToColor()},
-                    {"CategoryCommentaryColor", "#BF2134".ToColor()}
+                    {"CategoryCommentaryColor", "#BF2134".ToColor()},
+                    {"CategoryTravelingColor", "#779e0d".ToColor()}
                 }
             },
             {
@@ -43,7 +44,8 @@ namespace LiveNewsFeed.UI.UWP.Resources
                     {"CategorySportColor", "#00D660".ToColor()},
                     {"CategoryArtsColor", "#0A95D9".ToColor()},
                     {"CategoryScienceColor", "#FF1F86".ToColor()},
-                    {"CategoryCommentaryColor", "#FF2C45".ToColor()}
+                    {"CategoryCommentaryColor", "#FF2C45".ToColor()},
+                    {"CategoryTravelingColor", "#b3e036".ToColor()}
                 }
             }
         };
