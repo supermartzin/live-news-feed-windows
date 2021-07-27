@@ -44,8 +44,8 @@ namespace LiveNewsFeed.DataSource.DennikNsk
 
                 // convert to model
                 var posts = postsDtos.Select(dto => ModelsConverter.ToNewsArticlePost(dto, Name))
-                                                                   .OrderByDescending(post => post.PublishTime)
-                                                                   .ToList();
+                                     .OrderByDescending(post => post.PublishTime)
+                                     .ToList();
 
                 if (count is not null && posts.Count < count)
                 {
@@ -103,7 +103,7 @@ namespace LiveNewsFeed.DataSource.DennikNsk
                 parameters += $"cat={ModelsConverter.ToCode(category.Value)}&";
             if (important is true)
                 parameters += "important=1&";
-            if (tag != null)
+            if (tag is not null)
             {
                 var code = ModelsConverter.ToCode(tag);
                 if (code > 0)
@@ -125,11 +125,9 @@ namespace LiveNewsFeed.DataSource.DennikNsk
             var response = await _httpClient.GetAsync(url)
                                             .ConfigureAwait(false);
 
-            response.EnsureSuccessStatusCode();
-
             // get data string from response
-            var data = await response.Content
-                                     .ReadAsStreamAsync()
+            var data = await response.EnsureSuccessStatusCode()
+                                     .Content.ReadAsStreamAsync()
                                      .ConfigureAwait(false);
 
             // serialize to DTO objects
@@ -146,9 +144,9 @@ namespace LiveNewsFeed.DataSource.DennikNsk
                                 ?? container.TimelinePosts
                                 ?? Enumerable.Empty<ArticlePostDTO>()).OrderByDescending(post => post.Created).ToList();
             
-            return posts.Count > 0 && count > 0
-                ? posts.Take(count).ToList()
-                : posts;
+            return posts.Count > 0 && count > 0 && posts.Count > count
+                    ? posts.Take(count).ToList()
+                    : posts;
         }
     }
 }

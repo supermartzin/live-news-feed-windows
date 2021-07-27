@@ -233,24 +233,33 @@ namespace LiveNewsFeed.DataSource.AktualneCz
                     return null;
 
                 var id = ParseId(link);
-                var title = head.SelectSingleNode("./meta[@name='twitter:title']").GetAttributeValue("content", string.Empty);
-                var content = head.SelectSingleNode("./meta[@property='og:description']").GetAttributeValue("content", string.Empty);
-                var time = TypeConverter.ToDateTime(head.SelectSingleNode("./meta[@property='article:modified_time']")
-                                                                .GetAttributeValue("content", string.Empty), DateTime.Now);
-                var extendedContent = page.DocumentNode.SelectSingleNode("//div[@class='article__perex']")?.InnerText?.Trim();
-                var imageUrl = head.SelectSingleNode("./meta[@name='twitter:image']").GetAttributeValue("content", string.Empty);
-                var largeImageUrl = head.SelectSingleNode("./meta[@property='og:image']").GetAttributeValue("content", string.Empty);
-                var tags = head.SelectSingleNode("./meta[@name='keywords']").GetAttributeValue("content", string.Empty)?.Split(new[]{ ", "}, StringSplitOptions.RemoveEmptyEntries);
-
+                var title = head.SelectSingleNode("./meta[@name='twitter:title']")?
+                                .GetAttributeValue("content", string.Empty);
+                var content = head.SelectSingleNode("./meta[@property='og:description']")?
+                                  .GetAttributeValue("content", string.Empty);
+                var timeValue = head.SelectSingleNode("./meta[@property='article:modified_time']")?
+                                    .GetAttributeValue("content", string.Empty);
+                var time = timeValue is not null ? TypeConverter.ToDateTime(timeValue, DateTime.Now) : DateTime.Now;
+                var extendedContent = page.DocumentNode
+                                          .SelectSingleNode("//div[@class='article__perex']")?
+                                          .InnerText?.Trim();
+                var imageUrl = head.SelectSingleNode("./meta[@name='twitter:image']")?
+                                   .GetAttributeValue("content", string.Empty);
+                var largeImageUrl = head.SelectSingleNode("./meta[@property='og:image']")?
+                                        .GetAttributeValue("content", string.Empty);
+                var tags = head.SelectSingleNode("./meta[@name='keywords']")?
+                               .GetAttributeValue("content", string.Empty)?
+                               .Split(new[]{ ", "}, StringSplitOptions.RemoveEmptyEntries);
+                
                 return new NewsArticlePost(id,
-                                           HttpUtility.HtmlDecode(title),
-                                           HttpUtility.HtmlDecode(content),
+                                           HttpUtility.HtmlDecode(title ?? string.Empty),
+                                           HttpUtility.HtmlDecode(content ?? string.Empty),
                                            time, time,
                                            new Uri(link),
                                            false,
                                            Name,
                                            HttpUtility.HtmlDecode(extendedContent),
-                                           new Image(new Uri(imageUrl), null, new Uri(largeImageUrl)),
+                                           CreateImage(imageUrl, largeImageUrl),
                                            tags: tags is not null ? new HashSet<Tag>(tags.Select(tag => new Tag(HttpUtility.HtmlDecode(tag)))) : null);
             }
             catch (Exception ex)
@@ -268,6 +277,18 @@ namespace LiveNewsFeed.DataSource.AktualneCz
                     ? match.Groups[1].Value
                     : link;
             }
+        }
+
+        private static Image? CreateImage(string? imageUrl, string? largeImageUrl)
+        {
+            if (imageUrl is null && largeImageUrl is not null)
+                return new Image(new Uri(largeImageUrl), null, new Uri(largeImageUrl));
+            if (imageUrl is not null && largeImageUrl is null)
+                return new Image(new Uri(imageUrl), null, null);
+            if (imageUrl is not null && largeImageUrl is not null)
+                return new Image(new Uri(imageUrl), null, new Uri(largeImageUrl));
+            
+            return null;
         }
     }
 }

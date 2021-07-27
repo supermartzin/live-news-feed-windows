@@ -157,8 +157,11 @@ namespace LiveNewsFeed.DataSource.AktualitySk
             return posts;
         }
 
-        private async Task<NewsArticlePost?> DownloadPostAsync(ShortPostContainer shortPost)
+        private async Task<NewsArticlePost?> DownloadPostAsync(ShortPostContainer? shortPost)
         {
+            if (shortPost is null)
+                return null;
+
             try
             {
                 var htmlWeb = new HtmlWeb();
