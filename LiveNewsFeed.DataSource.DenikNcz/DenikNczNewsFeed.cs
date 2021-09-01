@@ -45,8 +45,8 @@ namespace LiveNewsFeed.DataSource.DenikNcz
 
                 // convert to model
                 var posts = postsDtos.Select(dto => ModelsConverter.ToNewsArticlePost(dto, Name))
-                                                        .OrderByDescending(post => post.PublishTime)
-                                                        .ToList();
+                                     .OrderByDescending(post => post.PublishTime)
+                                     .ToList();
 
                 if (count > 0 && posts.Count > 0 && posts.Count < count)
                 {

@@ -47,12 +47,13 @@ namespace LiveNewsFeed.DataSource.DennikNsk
                                      .OrderByDescending(post => post.PublishTime)
                                      .ToList();
 
-                if (count is not null && posts.Count < count)
+                if (count > 0 && posts.Count > 0 && posts.Count < count)
                 {
                     // get missing number of posts
                     var anotherPosts = await GetPostsAsync(posts.Last().PublishTime,
                                                            after, category, tag, important,
                                                            count - posts.Count).ConfigureAwait(false);
+                    
                     posts = posts.Union(anotherPosts)
                                  .OrderByDescending(post => post.PublishTime)
                                  .ToList();
