@@ -47,10 +47,16 @@ namespace LiveNewsFeed.DataSource.SeznamZpravyCzNewsFeed
 
                 string? startId = null;
                 var parametersFilled = false;
+                var passCount = 0;
+                const int maxPassCount = 3;
                 while (!parametersFilled)
                 {
                     allPosts.AddRange(await DownloadPostsAsync(startId).ConfigureAwait(false));
                     allPosts = allPosts.OrderBy(post => post.PublishTime).ToList();
+
+                    // prevent endless loop when no content available
+                    if (allPosts.Count == 0 && passCount == maxPassCount)
+                        break;
 
                     // set ID of the oldest post
                     startId = allPosts.FirstOrDefault()?.Id;
@@ -90,6 +96,8 @@ namespace LiveNewsFeed.DataSource.SeznamZpravyCzNewsFeed
                                            .Take(count.Value)
                                            .ToList();
                     }
+
+                    passCount++;
                 }
 
                 return allPosts.OrderByDescending(post => post.PublishTime).ToList();
@@ -115,12 +123,15 @@ namespace LiveNewsFeed.DataSource.SeznamZpravyCzNewsFeed
                                     .ConfigureAwait(false);
             
             var tasks = page.DocumentNode
-                            .SelectNodes("//ul[contains(@class,'timeline')]/li[contains(@class,'d_hE')]/article[not(contains(@class,'advert'))]//a[contains(@class,'title-link')]")?
+                            .SelectNodes("//ul[contains(@class,'timeline')]/li[contains(@class,'d_hK')]/article[not(contains(@class,'advert'))]//a[contains(@class,'title-link')]")?
                             .Select(node => (node.GetAttributeValue("href", null),
-                                             node.SelectSingleNode("./ancestor::article[contains(@class,'f_eb')]")?.GetAttributeValue("data-dot-data", null)))
+                                             node.SelectSingleNode("./ancestor::article[contains(@class,'g_ei')]")?.GetAttributeValue("data-dot-data", null)))
                             .Where(tuple => tuple.Item1 is not null)
                             .Select(ParseArticlePost)
                             .ToArray() ?? Array.Empty<Task<NewsArticlePost?>>();
+
+            if (tasks.Length == 0)
+                return Array.Empty<NewsArticlePost>();
 
             await Task.WhenAll(tasks).ConfigureAwait(false);
 
