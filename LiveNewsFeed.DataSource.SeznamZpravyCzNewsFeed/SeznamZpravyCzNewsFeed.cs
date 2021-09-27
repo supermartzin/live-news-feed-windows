@@ -77,7 +77,11 @@ namespace LiveNewsFeed.DataSource.SeznamZpravyCzNewsFeed
                                 parametersFilled = false;
                             }
                         }
-                        else continue;
+                        else
+                        {
+                            passCount++;
+                            continue;
+                        }
                     }
                     if (after is not null)
                     {
@@ -87,7 +91,11 @@ namespace LiveNewsFeed.DataSource.SeznamZpravyCzNewsFeed
                             allPosts = allPosts.Where(post => post.PublishTime >= after).ToList();
                             parametersFilled = true;
                         }
-                        else continue;
+                        else
+                        {
+                            passCount++;
+                            continue;
+                        }
                     }
                     if (count is not null && allPosts.Count >= count)
                     {

@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Net.Http;
-using LiveNewsFeed.DataSource.AktualitySk;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using NLog;
 using NLog.Extensions.Logging;
 using LogLevel = Microsoft.Extensions.Logging.LogLevel;
 
+using LiveNewsFeed.DataSource.AktualitySk;
 using LiveNewsFeed.DataSource.AktualneCz;
 using LiveNewsFeed.DataSource.DenikNcz;
 using LiveNewsFeed.DataSource.DennikNsk;

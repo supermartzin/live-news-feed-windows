@@ -111,13 +111,12 @@ namespace LiveNewsFeed.UI.UWP.Managers
             foreach (var dataSource in _dataSources.Values.Where(dataSource => dataSource.IsEnabled))
             {
                 // get oldest post time
-                DateTime? oldestPostTime;
+                DateTime oldestPostTime;
                 lock (_updateLock)
                 {
-                    oldestPostTime = _dataSourcesOldestPostPublishTimes[dataSource.Name];
+                    if (!_dataSourcesOldestPostPublishTimes.TryGetValue(dataSource.Name, out oldestPostTime))
+                        oldestPostTime = DateTime.Now;
                 }
-                if (oldestPostTime == DateTime.MinValue)
-                    oldestPostTime = default;
 
                 _logger?.LogDebug($"Loading older posts from '{dataSource.Name}' before {oldestPostTime}.");
 
@@ -148,7 +147,9 @@ namespace LiveNewsFeed.UI.UWP.Managers
 
         public async Task LoadLatestPostsSinceLastUpdateAsync(DataSourceUpdateOptions? options = default)
         {
-            var posts = await LatestPostsSinceLastUpdateAsync(options).ConfigureAwait(false);
+            var posts = (await LatestPostsSinceLastUpdateAsync(options).ConfigureAwait(false)).ToList();
+
+            _logger?.LogDebug($"Downloaded {posts.Count} posts since last update");
 
             // raise events
             foreach (var post in posts)
@@ -165,13 +166,12 @@ namespace LiveNewsFeed.UI.UWP.Managers
             foreach (var dataSource in _dataSources.Values.Where(dataSource => dataSource.IsEnabled))
             {
                 // get last update time
-                DateTime? lastPostPublishTime;
+                DateTime lastPostPublishTime;
                 lock (_updateLock)
                 {
-                    lastPostPublishTime = _dataSourcesLatestPostPublishTimes[dataSource.Name];
+                    if (!_dataSourcesLatestPostPublishTimes.TryGetValue(dataSource.Name, out lastPostPublishTime))
+                        lastPostPublishTime = DateTime.MinValue;
                 }
-                if (lastPostPublishTime == DateTime.MinValue)
-                    lastPostPublishTime = default;
 
                 var newPosts = await dataSource.NewsFeed
                                                .GetPostsAsync(options?.Before,
