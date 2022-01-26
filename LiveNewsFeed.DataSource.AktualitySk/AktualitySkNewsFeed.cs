@@ -174,9 +174,9 @@ namespace LiveNewsFeed.DataSource.AktualitySk
                 var body = page.DocumentNode.SelectSingleNode("//body");
 
                 var title = head.SelectSingleNode("./meta[@property='og:title']")
-                                .GetAttributeValue("content", string.Empty);
-                var content = body.SelectSingleNode(".//div[@itemprop='articleBody']/p[1]")?.InnerText
-                              ?? body.SelectSingleNode(".//span[@itemprop='description']")?.InnerText;
+                                       .GetAttributeValue("content", string.Empty);
+                var extendedContent = body.SelectSingleNode(".//div[@itemprop='articleBody']/p[not(strong)][1]")?.InnerText ?? string.Empty;
+                var content = body.SelectSingleNode(".//span[@itemprop='description']")?.InnerText ?? extendedContent;
                 var publishTime = TypeConverter.ToDateTime(body.SelectSingleNode(".//meta[@itemprop='datePublished']")
                                                                .GetAttributeValue("content", string.Empty), DateTime.Now);
                 var updatedTime = TypeConverter.ToDateTime(body.SelectSingleNode(".//meta[@itemprop='dateModified']")
@@ -195,7 +195,8 @@ namespace LiveNewsFeed.DataSource.AktualitySk
                                            new Uri(shortPost.Link),
                                            false,
                                            Name,
-                                           image: new Image(new Uri(imageUrl), imageTitle?.Trim(), new Uri(imageUrl)),
+                                           extendedContent != string.Empty ? HttpUtility.HtmlDecode(extendedContent).Trim() : null,
+                                           new Image(new Uri(imageUrl), imageTitle?.Trim(), new Uri(imageUrl)),
                                            categories: new HashSet<Category>(categories));
             }
             catch (Exception ex)

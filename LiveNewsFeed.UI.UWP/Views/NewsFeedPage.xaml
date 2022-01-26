@@ -81,8 +81,8 @@
                     <DataTemplate x:DataType="vm:NewsArticlePostViewModel">
                         <!--  Article post  -->
                         <StackPanel Orientation="Vertical"
-                                HorizontalAlignment="Stretch"
-                                Padding="10">
+                                    HorizontalAlignment="Stretch"
+                                    Padding="10">
                             <!--  Data source - Logo, Title, Social post logo, Categories and Publish time  -->
                             <Grid Margin="0 0 0 5">
                                 <Grid.ColumnDefinitions>
