@@ -49,12 +49,18 @@ namespace LiveNewsFeed.DataSource.AktualitySk
 
             var offset = 0;
             var parametersFilled = false;
+            var passCount = 0;
+            const int maxPassCount = 3;
             var allShortPosts = new List<ShortPostContainer>();
 
             while (!parametersFilled)
             {
                 allShortPosts.AddRange(await DownloadShortPostsAsync(offset).ConfigureAwait(false));
                 allShortPosts = allShortPosts.OrderBy(container => container.PublishTime).ToList();
+
+                // prevent endless loop when no content available
+                if (allShortPosts.Count == 0 && passCount == maxPassCount)
+                    break;
 
                 offset += PostsCountPerRequest;
 
@@ -74,7 +80,11 @@ namespace LiveNewsFeed.DataSource.AktualitySk
                             parametersFilled = false;
                         }
                     }
-                    else continue;
+                    else
+                    {
+                        passCount++;
+                        continue;
+                    }
                 }
                 if (after is not null)
                 {
@@ -84,7 +94,11 @@ namespace LiveNewsFeed.DataSource.AktualitySk
                         allShortPosts = allShortPosts.Where(container => container.PublishTime >= after).ToList();
                         parametersFilled = true;
                     }
-                    else continue;
+                    else
+                    {
+                        passCount++;
+                        continue;
+                    }
                 }
                 if (count is not null && allShortPosts.Count >= count)
                 {
@@ -93,6 +107,8 @@ namespace LiveNewsFeed.DataSource.AktualitySk
                                                  .Take(count.Value)
                                                  .ToList();
                 }
+
+                passCount++;
             }
 
             // download full articles from short posts
