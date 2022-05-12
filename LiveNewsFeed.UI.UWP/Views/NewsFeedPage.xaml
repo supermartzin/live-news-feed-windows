@@ -902,27 +902,16 @@
                           HorizontalContentAlignment="Stretch"
                           VerticalContentAlignment="Stretch"
                           DoubleTapped="ZoomPanel_OnDoubleTapped">
-                <mtuc:DropShadowPanel BlurRadius="40"
-                                      ShadowOpacity="0.5"
-                                      OffsetX="0"
-                                      OffsetY="0"
-                                      Color="{ThemeResource SystemBaseHighColor}"
-                                      VerticalAlignment="Center"
-                                      HorizontalAlignment="Center"
-                                      Width="{Binding Path=ActualWidth, Mode=OneWay, ElementName=ZoomPanel}"
-                                      Height="{Binding Path=ActualHeight, Mode=OneWay, ElementName=ZoomPanel}"
-                                      IsMasked="True">
-                    <mtuc:ImageEx Stretch="Uniform"
-                                  IsCacheEnabled="True">
-                        <mtuc:ImageEx.Source>
-                            <BitmapImage x:Name="BitmapImage"
-                                         CreateOptions="IgnoreImageCache"
-                                         UriSource="{x:Bind ViewModel.SelectedPost.Image.LargeImageUrl}" 
-                                         ImageOpened="BitmapImage_OnImageOpened"
-                                         ImageFailed="BitmapImage_OnImageFailed"/>
-                        </mtuc:ImageEx.Source>
-                    </mtuc:ImageEx>
-                </mtuc:DropShadowPanel>
+                <mtuc:ImageEx Stretch="Uniform"
+                              IsCacheEnabled="True">
+                    <mtuc:ImageEx.Source>
+                        <BitmapImage x:Name="BitmapImage"
+                                     CreateOptions="IgnoreImageCache"
+                                     UriSource="{x:Bind ViewModel.SelectedPost.Image.LargeImageUrl}" 
+                                     ImageOpened="BitmapImage_OnImageOpened"
+                                     ImageFailed="BitmapImage_OnImageFailed"/>
+                    </mtuc:ImageEx.Source>
+                </mtuc:ImageEx>
             </ScrollViewer>
         </Grid>
     </Grid>
