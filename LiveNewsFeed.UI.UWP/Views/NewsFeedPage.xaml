@@ -315,6 +315,7 @@
                                                         FontSize="12">
                                                     <Button.Background>
                                                         <AcrylicBrush TintColor="{ThemeResource SystemAccentColor}"
+                                                                      FallbackColor="{ThemeResource SystemAccentColor}"
                                                                       TintOpacity="0.6"/>
                                                     </Button.Background>
 
@@ -453,7 +454,8 @@
             <Button.Background>
                 <AcrylicBrush BackgroundSource="Backdrop"
                               TintOpacity="0.75"
-                              TintColor="{ThemeResource SystemAccentColor}"/>
+                              TintColor="{ThemeResource SystemAccentColor}"
+                              FallbackColor="{ThemeResource SystemAccentColor}"/>
             </Button.Background>
             
             <FontIcon Glyph="&#xE110;" />

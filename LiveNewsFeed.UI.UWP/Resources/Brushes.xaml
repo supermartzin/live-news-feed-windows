@@ -4,13 +4,16 @@
     <AcrylicBrush x:Key="CustomAcrylicBackgroundBrush"
                   BackgroundSource="HostBackdrop"
                   TintOpacity="0.6"
-                  TintColor="{ThemeResource SystemAltHighColor}" />
+                  TintColor="{ThemeResource SystemAltHighColor}"
+                  FallbackColor="{ThemeResource SystemAltHighColor}" />
     <AcrylicBrush x:Key="CustomAcrylicElementBrush" 
                   BackgroundSource="Backdrop"
                   TintOpacity="0.0"
-                  TintColor="{ThemeResource SystemAltHighColor}" />
+                  TintColor="{ThemeResource SystemAltHighColor}"
+                  FallbackColor="{ThemeResource SystemAltHighColor}" />
     <AcrylicBrush x:Key="AccentAcrylicElementBrush"
                   BackgroundSource="Backdrop"
                   TintOpacity="0.4"
-                  TintColor="{ThemeResource SystemAccentColor}"/>
+                  TintColor="{ThemeResource SystemAccentColor}"
+                  FallbackColor="{ThemeResource SystemAccentColor}" />
 </ResourceDictionary>
